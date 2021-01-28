@@ -1,23 +1,19 @@
-import React, { useState, useEffect } from "react";
-import openSocket from "socket.io-client";
-const ENDPOINT = "http://93.23.204.103:3000";
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import "./index.css";
+import Home from "./Component/Home/Home";
+import ChatRoom from "./Component/ChatRoom/ChatRoom";
+import GameRoom from "./Component/GameRoom/GameRoom";
 
 function App() {
-  const [response, setResponse] = useState("");
-
-  useEffect(() => {
-    //const socket = socketIOClient(ENDPOINT);
-    const socket = openSocket(ENDPOINT,  {transports: ['websocket']});
-    socket.on("FromAPI", data => {
-      setResponse(data);
-    });
-  }, []);
-
   return (
-    <p>
-      It's <time dateTime={response}>{response}</time>
-    </p>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/:roomId" component={GameRoom} />
+      </Switch>
+    </Router>
   );
 }
 

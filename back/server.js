@@ -27,7 +27,7 @@ io.on("connection", (socket) => {
 
  // Listen for new messages
   socket.on(NEW_MESSAGE_EVENT, (data) => {
-    console.log(`message dans ${roomId} :  ${data} `);
+    console.log(`message dans ${roomId} :  ${data.body} `);
     io.in(roomId).emit(NEW_MESSAGE_EVENT, data);
   });
 
