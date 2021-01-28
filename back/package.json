@@ -2,15 +2,18 @@
   "name": "backend_the_poll_party",
   "version": "1.0.0",
   "description": "The poll party backend",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server",
     "dev": "nodemon server"
   },
   "author": "Betsara MARCELLIN, Aldric DUCREUX",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "http": "0.0.1-security",
     "moment": "^2.29.1",
     "socket.io": "^3.1.0"
   },

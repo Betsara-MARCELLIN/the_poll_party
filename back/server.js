@@ -1,28 +1,35 @@
-const express = require('express');
-const htpp = require('http');
-const socketio = require('socket.io');
+const express = require("express");
+const http = require("http");
+const socketIo = require("socket.io");
+
+const port = process.env.PORT || 3000;
+const index = require("./routes/index");
 
 const app = express();
-const server = htpp.createServer(app);
-const io = socketio(server);
+app.use(index);
 
+const server = http.createServer(app);
 
-// Run when client connects
-io.on('connection', socket => {
+const io = socketIo(server);
 
-  // Welcome current user
-  socket.emit('message', 'You are connected to server');
+let interval;
 
-  // Broadcast when a user connects
-  socket.broadcast.emit('message', 'A user has joined the game');
-
-  // Runs when clent disconnects
-  socket.on('disconnect', () => {
-    io.emit('message', 'A user has left the game');
+io.on("connection", (socket) => {
+  console.log("New client connected");
+  if (interval) {
+    clearInterval(interval);
+  }
+  interval = setInterval(() => getApiAndEmit(socket), 1000);
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+    clearInterval(interval);
   });
-
 });
 
-const PORT = 3000 || process.env.PORT;
+const getApiAndEmit = socket => {
+  const response = new Date();
+  // Emitting a new message. Will be consumed by the client
+  socket.emit("FromAPI", response);
+};
 
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+server.listen(port, () => console.log(`Listening on port ${port}`));
