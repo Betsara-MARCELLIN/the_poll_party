@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import openSocket from "socket.io-client";
-const ENDPOINT = "http://93.23.204.103:3000";
+const ENDPOINT = "http://127.0.0.1:3000";
 
 export default function ClientComponent() {
   const [response, setResponse] = useState("");

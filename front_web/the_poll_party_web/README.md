@@ -1,3 +1,6 @@
+# The poll party web [public]
+
+be aware of package " socket.io-client " version to be compatible with your backend socket.io version
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
