@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import "./index.css";
 import Home from "./Component/Home/Home";
-import ChatRoom from "./Component/ChatRoom/ChatRoom";
 import GameRoom from "./Component/GameRoom/GameRoom";
 
 function App() {
