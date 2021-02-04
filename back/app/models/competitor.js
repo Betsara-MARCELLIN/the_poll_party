@@ -1,8 +1,8 @@
 const Player = require('./player.js');
 
 module.exports = class Competitor extends Player {
-    constructor(score,...args){
+    constructor(...args){
         super(...args);
-        this.score = score;
+        this.score = 0;
     }
 }

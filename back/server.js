@@ -14,7 +14,7 @@ const io = require("socket.io")(server, {
 const Party = require('./app/service/party');
 const Public = require('./app/models/public');
 const Competitor = require('./app/models/competitor');
-const Question = require('./app/models/questions');
+const Question = require('./app/models/question');
 
 const NEW_MESSAGE_EVENT = "newMessage";
 const JOIN_ROOM = "joinRoom";
@@ -33,14 +33,16 @@ io.on("connection", (socket) => {
   let { roomId } = socket.handshake.query;
   if (roomId) {
     socket.join(roomId);
-    party.publics.push(new Public(socket.id, `public${party.competitors.length}`, "PUBLIC", roomId));
+    party.publics.push(new Public(socket.id, `public${party.competitors.length}`, roomId));
   }
 
   // Join a room from mobile
-  socket.on(JOIN_ROOM, (room) => {
-    roomId = room;
+  socket.on(JOIN_ROOM, (data) => {
+    roomId = data.roomId;
     socket.join(roomId);
-    party.competitors.push(new Competitor(socket.id, `competitor${party.competitors.length}`, "COMPETITOR", roomId, 0));
+    party.competitors.push(new Competitor(socket.id, data.playerName, data.roomId));
+    console.log(party.competitors)
+    console.log(data)
   });
 
   // add last questions and send them to all competitors
@@ -72,6 +74,11 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log(`Client ${socket.id} diconnected`);
+
+    // Remove disconnected player : public or competitor
+    party.competitors.splice(party.competitors.findIndex(c => c.id === socket.id ), 1);
+    party.publics.splice(party.publics.findIndex(p => p.id === socket.id ), 1);
+
     socket.leave(roomId);
   });
 });
