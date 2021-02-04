@@ -1,17 +1,15 @@
 import React from "react";
 
 import "./ChatRoom.css";
-import useChat from "../../useChat";
 
 const ChatRoom = (props) => {
-  const { roomId } = props; // Gets roomId from parents
-  const { messages, sendMessage } = useChat(roomId); // Creates a websocket and manages messaging
+  const { messages, sendMessage } = props; // Gets messages, sendMessage from parents
   const [newMessage, setNewMessage] = React.useState(""); // Message to be sent
 
   const handleNewMessageChange = (event) => {
     setNewMessage(event.target.value);
   };
-  console.log(roomId);
+  
   const handleSendMessage = () => {
     sendMessage(newMessage);
     setNewMessage("");
