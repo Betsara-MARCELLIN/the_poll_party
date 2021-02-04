@@ -14,6 +14,7 @@ const io = require("socket.io")(server, {
 const Party = require('./app/service/party');
 const Public = require('./app/models/public');
 const Competitor = require('./app/models/competitor');
+const Question = require('./app/models/question');
 
 const NEW_MESSAGE_EVENT = "newMessage";
 const JOIN_ROOM = "joinRoom";
