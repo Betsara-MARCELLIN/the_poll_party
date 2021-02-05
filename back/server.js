@@ -10,19 +10,20 @@ const io = require("socket.io")(server, {
   },
 });
 
-// imports objects
+// Imports 
 const Party = require('./app/service/party');
 const Public = require('./app/models/public');
 const Competitor = require('./app/models/competitor');
 const Question = require('./app/models/question');
 
+// Topics
 const NEW_MESSAGE_EVENT = "newMessage";
 const JOIN_ROOM = "joinRoom";
 const RESPONSES = "responses";
 const NEW_QUESTIONS = "addQuestions";
 const RANKING = "ranking";
 
-//PERSISTENCE
+// PERSISTENCE
 const party = new Party();
 
 
@@ -49,7 +50,7 @@ io.on("connection", (socket) => {
   socket.on(NEW_QUESTIONS, (data) => {
     party.questions.push(new Question(data.question, data.responses, data.type, data.timer, socket.id));
     party.competitors.forEach( competitor => {
-      io.sockets.socket(competitor.id).emit(party.questions[party.questions.length - 1]);
+      socket.broadcast.to(competitor.id).emit(NEW_QUESTIONS, party.questions[party.questions.length - 1]);
     });
   });
 
@@ -57,8 +58,12 @@ io.on("connection", (socket) => {
   socket.on(RESPONSES, (data) => {
     //check answer and add point
     if(data) {
-      party.competitors.forEach( c => {if(c.id === socket.id) c.score += 1;});
-    };
+      party.competitors.forEach( c => {
+        if(c.id === socket.id) {
+        c.score += 1;
+        console.log(c.name + " : " + c.score)
+      }});
+    }
   });
 
   // Listen for ranking

@@ -19,6 +19,7 @@ class _GamePageState extends State<GamePage> {
   String playerName;
   Socket socket;
   String lastMessage = "";
+  String lastQuestion = "";
 
   @override
   void initState() {
@@ -34,7 +35,7 @@ class _GamePageState extends State<GamePage> {
   void connectToServer() {
     try {
       // Configure socket transports must be sepecified
-      socket = io('http://192.168.43.156:3000', <String, dynamic>{
+      socket = io('http://localhost:3000', <String, dynamic>{
         'transports': ['websocket'],
         'autoConnect': false,
       });
@@ -45,7 +46,7 @@ class _GamePageState extends State<GamePage> {
       // Handle socket events
       socket.on('connect', (_) {
         print('connect: ${socket.id}');
-        socket.on('newMessage', (_) => handleMessage(_));
+        socket.on('addQuestions', (_) => handleQuestion(_));
       });
     } catch (e) {
       print(e.toString());
@@ -53,22 +54,16 @@ class _GamePageState extends State<GamePage> {
   }
 
   // Send a Message to the server
-  sendMessage(String message) {
-    print(message);
-    socket.emit(
-      "newMessage",
-      {
-        "senderId": socket.id,
-        "body": message, // Message to be sent
-      },
-    );
+  sendAnswer(String answer) {
+    print(answer);
+    socket.emit("responses", answer);
   }
 
-  // Listen to all message events from connected users
-  void handleMessage(Map<String, dynamic> data) {
-    print(data['body']);
+  // Listen to all question events from public
+  void handleQuestion(Map<String, dynamic> data) {
+    print(data['question']);
     setState(() {
-      lastMessage = data['body'].toString();
+      lastQuestion = data['question'].toString();
     });
   }
 
@@ -90,7 +85,7 @@ class _GamePageState extends State<GamePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Spacer(),
-          Text("Question: $lastMessage",
+          Text("Question: $lastQuestion",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
           Padding(
             padding: const EdgeInsets.all(15.0),
@@ -101,7 +96,7 @@ class _GamePageState extends State<GamePage> {
           Padding(
             padding: const EdgeInsets.all(50.0),
             child: MyIconButton(
-                callback: () => {sendMessage(_answerController.text)},
+                callback: () => {sendAnswer(_answerController.text)},
                 text: 'Envoyer ma réponse',
                 icon: Icons.check),
           ),
