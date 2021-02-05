@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:the_poll_party_mobile/pages/gamePage.dart';
 import 'package:the_poll_party_mobile/pages/roomPage.dart';
 import 'package:provider/provider.dart';
+import 'package:the_poll_party_mobile/pages/waitingRoomPage.dart';
 import 'package:the_poll_party_mobile/providers/roomProvider.dart';
 
 void main() {
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/room': (context) => RoomPage(),
           '/game': (context) => GamePage(),
+          '/waiting-room': (context) => WaitinRoomPage()
         });
   }
 }

@@ -18,7 +18,6 @@ class _GamePageState extends State<GamePage> {
   String roomId;
   String playerName;
   Socket socket;
-  String lastMessage = "";
   String lastQuestion = "";
 
   @override
@@ -35,7 +34,7 @@ class _GamePageState extends State<GamePage> {
   void connectToServer() {
     try {
       // Configure socket transports must be sepecified
-      socket = io('http://localhost:3000', <String, dynamic>{
+      socket = io('http://192.168.43.156:3000', <String, dynamic>{
         'transports': ['websocket'],
         'autoConnect': false,
       });
@@ -62,9 +61,11 @@ class _GamePageState extends State<GamePage> {
   // Listen to all question events from public
   void handleQuestion(Map<String, dynamic> data) {
     print(data['question']);
-    setState(() {
-      lastQuestion = data['question'].toString();
-    });
+    if (mounted) {
+      setState(() {
+        lastQuestion = data['question'].toString();
+      });
+    }
   }
 
   void enterRoom(String roomId, String playerName) {

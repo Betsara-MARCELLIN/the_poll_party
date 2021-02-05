@@ -22,7 +22,6 @@ class _RoomPageState extends State<RoomPage> {
     return Scaffold(
       body: Center(
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Spacer(),
             Padding(
@@ -76,7 +75,7 @@ class _RoomPageState extends State<RoomPage> {
                   context
                       .read<RoomProvider>()
                       .enterRoom(_roomController.text, _nameController.text);
-                  Navigator.pushNamed(context, '/game');
+                  Navigator.pushNamed(context, '/waiting-room');
                 }),
             Spacer(),
           ],
