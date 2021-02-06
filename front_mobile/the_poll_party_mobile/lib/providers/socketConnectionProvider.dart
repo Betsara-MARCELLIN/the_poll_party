@@ -41,6 +41,7 @@ class SocketConnectionProvider extends ChangeNotifier {
         print('connect: ${socket.id}');
         socket.on('addQuestions', (_) => _handleQuestions(_));
         socket.on('partyConnections', (_) => _handleConnections(_));
+        socket.on('ranking', (_) => _handleCompetitorRanking(_));
       });
 
       // Join room
@@ -81,6 +82,12 @@ class SocketConnectionProvider extends ChangeNotifier {
         .map((e) => Competitor.fromJson(e))
         .toList();
     publics = (data['publics'] as List).map((e) => Public.fromJson(e)).toList();
+    notifyListeners();
+  }
+
+  void _handleCompetitorRanking(Map<String, dynamic> data) {
+    competitors =
+        (data['ranking'] as List).map((e) => Competitor.fromJson(e)).toList();
     notifyListeners();
   }
 }

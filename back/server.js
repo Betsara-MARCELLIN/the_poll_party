@@ -67,6 +67,7 @@ io.on("connection", (socket) => {
         console.log(c.name + " : " + c.score)
       }});
     }
+    io.in(roomId).emit(RANKING, { 'ranking': party.getRankedCompetitorsOfRoom(roomId)});
   });
 
   // Listen to connections 
@@ -102,6 +103,7 @@ io.on("connection", (socket) => {
 const InformRoomConnections = (roomId) => {
   io.in(roomId).emit(PARTY_CONNECTIONS, { "publics": party.getPublicsOfRoom(roomId), "competitors": party.getCompetitorsOfRoom(roomId)});
 };
+
 
 const getApiAndEmit = socket => {
   const response = new Date();

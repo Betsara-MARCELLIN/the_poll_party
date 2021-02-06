@@ -72,8 +72,23 @@ class _GamePageState extends State<GamePage> {
                     ],
                   ),
                 )
-              : Text("Vous n'avez pas de nouvelles questions",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+              : Container(
+                  child: Column(
+                    children: [
+                      Text("Vous n'avez pas de nouvelles questions",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20)),
+                      Padding(
+                        padding: const EdgeInsets.all(30.0),
+                        child: MyIconButton(
+                            callback: () =>
+                                Navigator.pushNamed(context, '/ranking'),
+                            text: 'Voir classement',
+                            icon: Icons.emoji_events),
+                      )
+                    ],
+                  ),
+                ),
           Spacer(),
           Padding(
             padding: const EdgeInsets.all(8.0),

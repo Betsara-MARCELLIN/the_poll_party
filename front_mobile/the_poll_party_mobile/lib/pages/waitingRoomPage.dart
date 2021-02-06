@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:the_poll_party_mobile/components/borderedText.dart';
 import 'package:the_poll_party_mobile/components/myIconButton.dart';
 import 'package:the_poll_party_mobile/providers/roomProvider.dart';
 import 'package:the_poll_party_mobile/providers/socketConnectionProvider.dart';
@@ -110,37 +111,13 @@ class WaitingPlayerHolder extends StatelessWidget {
                   height: 6,
                 ),
                 itemBuilder: (BuildContext context, int index) {
-                  return PlayerElement(player: _players[index].name);
+                  return BorderedText(text: _players[index].name);
                 },
               ),
             ),
           ),
         ],
       ),
-    );
-  }
-}
-
-class PlayerElement extends StatelessWidget {
-  const PlayerElement({
-    Key key,
-    @required String player,
-  })  : _player = player,
-        super(key: key);
-
-  final String _player;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text(
-        _player,
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: normalTextSize, color: Colors.white),
-      ),
-      decoration:
-          BoxDecoration(color: secondaryColor, borderRadius: roundedBorder),
-      padding: EdgeInsets.all(10),
     );
   }
 }
