@@ -18,8 +18,6 @@ class _GamePageState extends State<GamePage> {
   String roomId;
   String playerName;
 
-  String lastQuestion = "";
-
   @override
   void initState() {
     super.initState();
@@ -30,36 +28,52 @@ class _GamePageState extends State<GamePage> {
 
   @override
   void dispose() {
-    // socket.disconnect();
     super.dispose();
   }
 
+  // if(Provider.of<SocketConnectionProvider>(context, listen: true).getQuestions.length > 0){
+  // }
   @override
   Widget build(BuildContext context) {
+    var socketProvider =
+        Provider.of<SocketConnectionProvider>(context, listen: true);
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Spacer(),
-          Text("Question: $lastQuestion",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: MyTextField(
-                textController: _answerController,
-                hintText: 'veuillez écrire votre réponse ici'),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(50.0),
-            child: MyIconButton(
-                callback: () => {
-                      Provider.of<SocketConnectionProvider>(context,
-                              listen: false)
-                          .sendAnswer(_answerController.text)
-                    },
-                text: 'Envoyer ma réponse',
-                icon: Icons.check),
-          ),
+          socketProvider.getQuestions.length > 0
+              ? Container(
+                  child: Column(
+                    children: [
+                      Text('Question: ${socketProvider.getCurrentQuestion()}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20)),
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: MyTextField(
+                            textController: _answerController,
+                            hintText: 'veuillez écrire votre réponse ici'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(50.0),
+                        child: MyIconButton(
+                            callback: () => {
+                                  Provider.of<SocketConnectionProvider>(context,
+                                          listen: false)
+                                      .sendAnswer(_answerController.text),
+                                  Provider.of<SocketConnectionProvider>(context,
+                                          listen: false)
+                                      .nextQuestion()
+                                },
+                            text: 'Envoyer ma réponse',
+                            icon: Icons.check),
+                      ),
+                    ],
+                  ),
+                )
+              : Text("Vous n'avez pas de nouvelles questions",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
           Spacer(),
           Padding(
             padding: const EdgeInsets.all(8.0),

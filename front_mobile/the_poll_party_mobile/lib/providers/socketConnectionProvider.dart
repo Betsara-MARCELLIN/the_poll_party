@@ -15,6 +15,15 @@ class SocketConnectionProvider extends ChangeNotifier {
   List<Competitor> get getCompetitors => competitors;
   List<String> get getQuestions => questions;
 
+  String getCurrentQuestion() {
+    return questions[0];
+  }
+
+  void nextQuestion() {
+    if (questions.length > 0) questions.removeAt(0);
+    notifyListeners();
+  }
+
   void connectToServer(String roomId, String playerName) {
     try {
       // TODO change socket.io server when deploied
