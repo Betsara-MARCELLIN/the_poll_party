@@ -25,11 +25,11 @@ class MyTextField extends StatelessWidget {
         filled: true,
         hintText: _hintText,
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+          borderRadius: roundedBorder,
           borderSide: BorderSide(color: lightBlack, width: 2),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+          borderRadius: roundedBorder,
           borderSide: BorderSide(color: accentColor, width: 2),
         ),
       ),

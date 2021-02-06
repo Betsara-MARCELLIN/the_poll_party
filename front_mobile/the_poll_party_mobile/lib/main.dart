@@ -4,11 +4,15 @@ import 'package:the_poll_party_mobile/pages/roomPage.dart';
 import 'package:provider/provider.dart';
 import 'package:the_poll_party_mobile/pages/waitingRoomPage.dart';
 import 'package:the_poll_party_mobile/providers/roomProvider.dart';
+import 'package:the_poll_party_mobile/providers/socketConnectionProvider.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (_) => RoomProvider(),
+    ),
+    ChangeNotifierProvider(
+      create: (_) => SocketConnectionProvider(),
     )
   ], child: MyApp()));
 }
@@ -26,7 +30,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/room': (context) => RoomPage(),
           '/game': (context) => GamePage(),
-          '/waiting-room': (context) => WaitinRoomPage()
+          '/waiting-room': (context) => WaitingRoomPage()
         });
   }
 }

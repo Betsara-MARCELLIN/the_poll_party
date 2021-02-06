@@ -22,6 +22,7 @@ const JOIN_ROOM = "joinRoom";
 const RESPONSES = "responses";
 const NEW_QUESTIONS = "addQuestions";
 const RANKING = "ranking";
+const PARTY_CONNECTIONS = "partyConnections";
 
 // PERSISTENCE
 const party = new Party();
@@ -34,7 +35,9 @@ io.on("connection", (socket) => {
   let { roomId } = socket.handshake.query;
   if (roomId) {
     socket.join(roomId);
-    party.publics.push(new Public(socket.id, `public${party.competitors.length}`, roomId));
+    party.publics.push(new Public(socket.id, `public${party.publics.length}`, roomId));
+
+    InformRoomConnections(roomId);
   }
 
   // Join a room from mobile
@@ -42,8 +45,8 @@ io.on("connection", (socket) => {
     roomId = data.roomId;
     socket.join(roomId);
     party.competitors.push(new Competitor(socket.id, data.playerName, data.roomId));
-    console.log(party.competitors)
-    console.log(data)
+
+    InformRoomConnections(roomId);
   });
 
   // add last questions and send them to all competitors
@@ -66,6 +69,11 @@ io.on("connection", (socket) => {
     }
   });
 
+  // Listen to connections 
+  socket.on(PARTY_CONNECTIONS, (data) => {
+    // TODO handle game starts when game ready
+  });
+
   // Listen for ranking
   socket.on(RANKING, () => {
     //TODO
@@ -83,10 +91,17 @@ io.on("connection", (socket) => {
     // Remove disconnected player : public or competitor
     party.competitors.splice(party.competitors.findIndex(c => c.id === socket.id ), 1);
     party.publics.splice(party.publics.findIndex(p => p.id === socket.id ), 1);
+    
+    InformRoomConnections(roomId);
 
     socket.leave(roomId);
   });
 });
+
+// Since party is used by all rooms, we need to filter data according to the corresponding room
+const InformRoomConnections = (roomId) => {
+  io.in(roomId).emit(PARTY_CONNECTIONS, { "publics": party.getPublicsOfRoom(roomId), "competitors": party.getCompetitorsOfRoom(roomId)});
+};
 
 const getApiAndEmit = socket => {
   const response = new Date();

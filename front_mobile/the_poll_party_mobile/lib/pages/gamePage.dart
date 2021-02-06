@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:socket_io_client/socket_io_client.dart';
 import 'package:provider/provider.dart';
 import 'package:the_poll_party_mobile/components/myIconButton.dart';
 import 'package:the_poll_party_mobile/components/myTextField.dart';
 import 'package:the_poll_party_mobile/providers/roomProvider.dart';
+import 'package:the_poll_party_mobile/providers/socketConnectionProvider.dart';
 
 class GamePage extends StatefulWidget {
   GamePage({Key key, this.title}) : super(key: key);
@@ -17,7 +17,7 @@ class _GamePageState extends State<GamePage> {
   TextEditingController _answerController = TextEditingController();
   String roomId;
   String playerName;
-  Socket socket;
+
   String lastQuestion = "";
 
   @override
@@ -26,56 +26,11 @@ class _GamePageState extends State<GamePage> {
     roomId = Provider.of<RoomProvider>(context, listen: false).getRoomId;
     playerName =
         Provider.of<RoomProvider>(context, listen: false).getPlayerName;
-    connectToServer();
-    enterRoom(roomId, playerName);
-    print("Room: " + roomId);
-  }
-
-  void connectToServer() {
-    try {
-      // Configure socket transports must be sepecified
-      socket = io('http://192.168.43.156:3000', <String, dynamic>{
-        'transports': ['websocket'],
-        'autoConnect': false,
-      });
-
-      // Connect to websocket
-      socket.connect();
-
-      // Handle socket events
-      socket.on('connect', (_) {
-        print('connect: ${socket.id}');
-        socket.on('addQuestions', (_) => handleQuestion(_));
-      });
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-  // Send a Message to the server
-  sendAnswer(String answer) {
-    print(answer);
-    socket.emit("responses", answer);
-  }
-
-  // Listen to all question events from public
-  void handleQuestion(Map<String, dynamic> data) {
-    print(data['question']);
-    if (mounted) {
-      setState(() {
-        lastQuestion = data['question'].toString();
-      });
-    }
-  }
-
-  void enterRoom(String roomId, String playerName) {
-    print("Joining: " + roomId);
-    socket.emit("joinRoom", {'playerName': playerName, 'roomId': roomId});
   }
 
   @override
   void dispose() {
-    socket.disconnect();
+    // socket.disconnect();
     super.dispose();
   }
 
@@ -97,7 +52,11 @@ class _GamePageState extends State<GamePage> {
           Padding(
             padding: const EdgeInsets.all(50.0),
             child: MyIconButton(
-                callback: () => {sendAnswer(_answerController.text)},
+                callback: () => {
+                      Provider.of<SocketConnectionProvider>(context,
+                              listen: false)
+                          .sendAnswer(_answerController.text)
+                    },
                 text: 'Envoyer ma réponse',
                 icon: Icons.check),
           ),
