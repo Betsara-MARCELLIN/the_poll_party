@@ -1,0 +1,294 @@
+webpackHotUpdate("main",{
+
+/***/ "./src/Component/GameRoom/GameRoom.js":
+/*!********************************************!*\
+  !*** ./src/Component/GameRoom/GameRoom.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(__react_refresh_utils__, __react_refresh_error_overlay__) {/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var reactstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! reactstrap */ "./node_modules/reactstrap/es/index.js");
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
+/* harmony import */ var _Table_Table_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Table/Table.js */ "./src/Component/Table/Table.js");
+/* harmony import */ var _CustomTabs_CustomTabs_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../CustomTabs/CustomTabs.js */ "./src/Component/CustomTabs/CustomTabs.js");
+/* harmony import */ var _Card_Card_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Card/Card.js */ "./src/Component/Card/Card.js");
+/* harmony import */ var _Card_CardHeader_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Card/CardHeader.js */ "./src/Component/Card/CardHeader.js");
+/* harmony import */ var _Card_CardIcon_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../Card/CardIcon.js */ "./src/Component/Card/CardIcon.js");
+/* harmony import */ var _Card_CardBody_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../Card/CardBody.js */ "./src/Component/Card/CardBody.js");
+/* harmony import */ var _Card_CardFooter_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../Card/CardFooter.js */ "./src/Component/Card/CardFooter.js");
+/* harmony import */ var _useServer__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../useServer */ "./src/useServer.js");
+/* harmony import */ var _ChatRoom_ChatRoom__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../ChatRoom/ChatRoom */ "./src/Component/ChatRoom/ChatRoom.js");
+/* harmony import */ var _Questions_QuestionList__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../Questions/QuestionList */ "./src/Component/Questions/QuestionList.js");
+/* harmony import */ var _Questions_QuestionListVoting__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../Questions/QuestionListVoting */ "./src/Component/Questions/QuestionListVoting.js");
+/* harmony import */ var _Questions_QuestionVoting__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../Questions/QuestionVoting */ "./src/Component/Questions/QuestionVoting.js");
+/* harmony import */ var _EventsTabs_EventsTabs__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../EventsTabs/EventsTabs */ "./src/Component/EventsTabs/EventsTabs.js");
+/* harmony import */ var _GameRoom_css__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./GameRoom.css */ "./src/Component/GameRoom/GameRoom.css");
+/* harmony import */ var _GameRoom_css__WEBPACK_IMPORTED_MODULE_17___default = /*#__PURE__*/__webpack_require__.n(_GameRoom_css__WEBPACK_IMPORTED_MODULE_17__);
+/* harmony import */ var _assets_jss_material_dashboard_react_views_dashboardStyle__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../assets/jss/material-dashboard-react/views/dashboardStyle */ "./src/assets/jss/material-dashboard-react/views/dashboardStyle.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! react-refresh/runtime */ "./node_modules/react-refresh/runtime.js");
+__webpack_require__.$Refresh$.setup(module.i);
+
+
+
+var _jsxFileName = "C:\\Users\\neoge\\Desktop\\polytech\\SI5\\Bimestre 2\\interfaces\\the_poll_party\\front_web\\the_poll_party_web\\src\\Component\\GameRoom\\GameRoom.js",
+    _s = __webpack_require__.$Refresh$.signature();
+
+
+
+ // core components
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3__["makeStyles"])(_assets_jss_material_dashboard_react_views_dashboardStyle__WEBPACK_IMPORTED_MODULE_18__["default"]);
+
+const GameRoom = props => {
+  _s();
+
+  const {
+    roomId
+  } = props.match.params; // Gets roomId from URL
+
+  const {
+    messages,
+    sendMessage,
+    sendQuestion
+  } = Object(_useServer__WEBPACK_IMPORTED_MODULE_11__["default"])(roomId); // Creates a websocket and manages 
+
+  const classes = useStyles();
+  return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])("div", {
+    children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])(reactstrap__WEBPACK_IMPORTED_MODULE_2__["Row"], {
+      children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])(reactstrap__WEBPACK_IMPORTED_MODULE_2__["Col"], {
+        md: "2",
+        className: "Question-list",
+        children: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])(_Questions_QuestionList__WEBPACK_IMPORTED_MODULE_13__["default"], {}, void 0, false, {
+          fileName: _jsxFileName,
+          lineNumber: 37,
+          columnNumber: 21
+        }, undefined)
+      }, void 0, false, {
+        fileName: _jsxFileName,
+        lineNumber: 36,
+        columnNumber: 17
+      }, undefined), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])(reactstrap__WEBPACK_IMPORTED_MODULE_2__["Col"], {
+        md: "8",
+        children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])("h1", {
+          className: "room-name",
+          children: ["Room: ", roomId]
+        }, void 0, true, {
+          fileName: _jsxFileName,
+          lineNumber: 40,
+          columnNumber: 21
+        }, undefined), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])(_Questions_QuestionListVoting__WEBPACK_IMPORTED_MODULE_14__["default"], {}, void 0, false, {
+          fileName: _jsxFileName,
+          lineNumber: 41,
+          columnNumber: 21
+        }, undefined), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])(_Questions_QuestionVoting__WEBPACK_IMPORTED_MODULE_15__["default"], {}, void 0, false, {
+          fileName: _jsxFileName,
+          lineNumber: 42,
+          columnNumber: 21
+        }, undefined), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])(reactstrap__WEBPACK_IMPORTED_MODULE_2__["Row"], {
+          children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])(reactstrap__WEBPACK_IMPORTED_MODULE_2__["Col"], {
+            md: "6"
+          }, void 0, false, {
+            fileName: _jsxFileName,
+            lineNumber: 44,
+            columnNumber: 25
+          }, undefined), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])(reactstrap__WEBPACK_IMPORTED_MODULE_2__["Col"], {
+            md: "6",
+            children: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])(_Card_Card_js__WEBPACK_IMPORTED_MODULE_6__["default"], {
+              children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])(_Card_CardHeader_js__WEBPACK_IMPORTED_MODULE_7__["default"], {
+                color: "primary",
+                children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])("h4", {
+                  className: classes.cardTitleWhite,
+                  children: "Classement"
+                }, void 0, false, {
+                  fileName: _jsxFileName,
+                  lineNumber: 50,
+                  columnNumber: 37
+                }, undefined), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])("p", {
+                  className: classes.cardCategoryWhite,
+                  children: "Classement de la partie en cours"
+                }, void 0, false, {
+                  fileName: _jsxFileName,
+                  lineNumber: 51,
+                  columnNumber: 37
+                }, undefined)]
+              }, void 0, true, {
+                fileName: _jsxFileName,
+                lineNumber: 49,
+                columnNumber: 33
+              }, undefined), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])(_Card_CardBody_js__WEBPACK_IMPORTED_MODULE_9__["default"], {
+                children: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])(_Table_Table_js__WEBPACK_IMPORTED_MODULE_4__["default"], {
+                  tableHead: ["Rang", "Nom", "Points"],
+                  tableData: [["1", "Dakota Rice", "$36,738"], ["2", "Minerva Hooper", "$23,789"], ["3", "Sage Rodriguez", "$56,142"], ["4", "Philip Chaney", "$38,735"]]
+                }, void 0, false, {
+                  fileName: _jsxFileName,
+                  lineNumber: 56,
+                  columnNumber: 37
+                }, undefined)
+              }, void 0, false, {
+                fileName: _jsxFileName,
+                lineNumber: 55,
+                columnNumber: 33
+              }, undefined)]
+            }, void 0, true, {
+              fileName: _jsxFileName,
+              lineNumber: 48,
+              columnNumber: 29
+            }, undefined)
+          }, void 0, false, {
+            fileName: _jsxFileName,
+            lineNumber: 47,
+            columnNumber: 25
+          }, undefined)]
+        }, void 0, true, {
+          fileName: _jsxFileName,
+          lineNumber: 43,
+          columnNumber: 21
+        }, undefined)]
+      }, void 0, true, {
+        fileName: _jsxFileName,
+        lineNumber: 39,
+        columnNumber: 17
+      }, undefined)]
+    }, void 0, true, {
+      fileName: _jsxFileName,
+      lineNumber: 35,
+      columnNumber: 13
+    }, undefined), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])(reactstrap__WEBPACK_IMPORTED_MODULE_2__["Row"], {
+      children: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])(reactstrap__WEBPACK_IMPORTED_MODULE_2__["Col"], {
+        md: "2",
+        children: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])(_ChatRoom_ChatRoom__WEBPACK_IMPORTED_MODULE_12__["default"], {
+          messages: messages,
+          sendMessage: sendMessage
+        }, void 0, false, {
+          fileName: _jsxFileName,
+          lineNumber: 74,
+          columnNumber: 21
+        }, undefined)
+      }, void 0, false, {
+        fileName: _jsxFileName,
+        lineNumber: 73,
+        columnNumber: 17
+      }, undefined)
+    }, void 0, false, {
+      fileName: _jsxFileName,
+      lineNumber: 72,
+      columnNumber: 17
+    }, undefined)]
+  }, void 0, true, {
+    fileName: _jsxFileName,
+    lineNumber: 34,
+    columnNumber: 9
+  }, undefined);
+};
+
+_s(GameRoom, "IPwsyA1PCDqbvKiOxpSZ3qXUQ0I=", false, function () {
+  return [_useServer__WEBPACK_IMPORTED_MODULE_11__["default"], useStyles];
+});
+
+_c = GameRoom;
+/* harmony default export */ __webpack_exports__["default"] = (GameRoom);
+
+var _c;
+
+__webpack_require__.$Refresh$.register(_c, "GameRoom");
+
+const currentExports = __react_refresh_utils__.getModuleExports(module.i);
+__react_refresh_utils__.registerExportsForReactRefresh(currentExports, module.i);
+
+if (true) {
+  const isHotUpdate = !!module.hot.data;
+  const prevExports = isHotUpdate ? module.hot.data.prevExports : null;
+
+  if (__react_refresh_utils__.isReactRefreshBoundary(currentExports)) {
+    module.hot.dispose(
+      /**
+       * A callback to performs a full refresh if React has unrecoverable errors,
+       * and also caches the to-be-disposed module.
+       * @param {*} data A hot module data object from Webpack HMR.
+       * @returns {void}
+       */
+      function hotDisposeCallback(data) {
+        // We have to mutate the data object to get data registered and cached
+        data.prevExports = currentExports;
+      }
+    );
+    module.hot.accept(
+      /**
+       * An error handler to allow self-recovering behaviours.
+       * @param {Error} error An error occurred during evaluation of a module.
+       * @returns {void}
+       */
+      function hotErrorHandler(error) {
+        if (
+          typeof __react_refresh_error_overlay__ !== 'undefined' &&
+          __react_refresh_error_overlay__
+        ) {
+          __react_refresh_error_overlay__.handleRuntimeError(error);
+        }
+
+        if (typeof __react_refresh_test__ !== 'undefined' && __react_refresh_test__) {
+          if (window.onHotAcceptError) {
+            window.onHotAcceptError(error.message);
+          }
+        }
+
+        __webpack_require__.c[module.i].hot.accept(hotErrorHandler);
+      }
+    );
+
+    if (isHotUpdate) {
+      if (
+        __react_refresh_utils__.isReactRefreshBoundary(prevExports) &&
+        __react_refresh_utils__.shouldInvalidateReactRefreshBoundary(prevExports, currentExports)
+      ) {
+        module.hot.invalidate();
+      } else {
+        __react_refresh_utils__.enqueueUpdate(
+          /**
+           * A function to dismiss the error overlay after performing React refresh.
+           * @returns {void}
+           */
+          function updateCallback() {
+            if (
+              typeof __react_refresh_error_overlay__ !== 'undefined' &&
+              __react_refresh_error_overlay__
+            ) {
+              __react_refresh_error_overlay__.clearRuntimeErrors();
+            }
+          }
+        );
+      }
+    }
+  } else {
+    if (isHotUpdate && __react_refresh_utils__.isReactRefreshBoundary(prevExports)) {
+      module.hot.invalidate();
+    }
+  }
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js"), __webpack_require__(/*! ./node_modules/react-dev-utils/refreshOverlayInterop.js */ "./node_modules/react-dev-utils/refreshOverlayInterop.js")))
+
+/***/ })
+
+})
+//# sourceMappingURL=main.9a1f9ed419a1c62dd1a2.hot-update.js.map

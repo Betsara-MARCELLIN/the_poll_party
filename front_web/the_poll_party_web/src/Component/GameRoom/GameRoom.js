@@ -1,29 +1,46 @@
 import React from "react";
 import {Row, Col  } from 'reactstrap';
 
+import { makeStyles } from "@material-ui/core/styles";
+
 import useServer from "../../useServer";
 import ChatRoom from "../ChatRoom/ChatRoom";
-import QuestionForm from "../QuestionForm/QuestionForm"
+import QuestionList from "../Questions/QuestionList"
+import QuestionListVoting from "../Questions/QuestionListVoting"
+import QuestionVoting from "../Questions/QuestionVoting"
+import EventsTabs from "../EventsTabs/EventsTabs"
+import Classement from "../Classement/Classement"
 
 import "./GameRoom.css";
+import styles from "../../assets/jss/material-dashboard-react/views/dashboardStyle";
+
+const useStyles = makeStyles(styles);
 
 const GameRoom = (props) => {
     const { roomId } = props.match.params; // Gets roomId from URL
     const { messages, sendMessage, sendQuestion } = useServer(roomId); // Creates a websocket and manages 
+    const classes = useStyles(); 
 
     return (
         <div>
             <Row>
-                <Col sm="2" class='bg'>
-                    <strong>Question list</strong>
+                <Col md="2" className="Question-list">
+                    <QuestionList />
                 </Col>
-                <Col sm="8">
+                <Col md="8" >
                     <h1 className="room-name">Room: {roomId}</h1>
-                    <QuestionForm sendQuestion={sendQuestion}/>
+                    <QuestionListVoting />
+                    <QuestionVoting />
+                    <Row>
+                        <Col md="8">
+                            <EventsTabs sendQuestion={sendQuestion} />
+                        </Col>
+                        <Col md="4">
+                            <Classement />
+                        </Col>
+                    </Row> 
                 </Col>
-                </Row>
-                <Row>
-                <Col sm="2">
+                <Col md="2">
                     <ChatRoom messages={messages} sendMessage={sendMessage}/>
                 </Col>
             </Row>

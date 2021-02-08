@@ -13,6 +13,7 @@
 
 
 .messages-container {
+    background-color: white;
     flex: 1;
     min-height: 100px;
     overflow: auto;
@@ -56,7 +57,7 @@
     font-size: 28px;
     font-weight: 600;
     color: white;
-    background: #31a24c;
+    background: #00acc1;
     padding: 5px 12px;
     border: none;
     border-radius: 0 0 7px 7px;

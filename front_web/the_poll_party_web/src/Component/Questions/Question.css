@@ -1,0 +1,10 @@
+.voting-timer {
+    position: absolute;
+    right: 0;
+}
+.voting-button-yes {
+    left: 33%;
+}
+.voting-button-no {
+    right: 33%;
+}
