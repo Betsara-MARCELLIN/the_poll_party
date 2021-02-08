@@ -2,11 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import socketIOClient from "socket.io-client";
 
 const NEW_MESSAGE_EVENT = "newMessage";
-const NEW_QUESTIONS = "addQuestions";
+const NEW_VOTING_QUESTIONS = "addQuestionsforVoting";
+const NEW_VOTING_QUESTIONS_RESPONSE = "addQuestionsforVotingResponse";
+const RANKING = "ranking";
 const SOCKET_SERVER_URL = "http://127.0.0.1:3000";
 
 const useServer = (roomId) => {
   const [messages, setMessages] = useState([]);
+  const [questionVoting, setQuestionVoting] = useState(null);
   const socketRef = useRef();
 
   useEffect(() => {
@@ -22,6 +25,10 @@ const useServer = (roomId) => {
       setMessages((messages) => [...messages, incomingMessage]);
     });
 
+    socketRef.current.on(NEW_VOTING_QUESTIONS, (question) => {
+      setQuestionVoting(question);
+    });
+
     return () => {
       socketRef.current.disconnect();
     };
@@ -35,16 +42,23 @@ const useServer = (roomId) => {
   };
 
   const sendQuestion = (question,responses,type,timer) => {
-    socketRef.current.emit(NEW_QUESTIONS, {
+    socketRef.current.emit(NEW_VOTING_QUESTIONS, {
       question: question,
-      responses: responses,
+      answer: responses,
       type: type,
       timer: timer,
       senderId: socketRef.current.id,
     });
   };
+  const sendQuestionVotingResult = (vote, question) => {
+    socketRef.current.emit(NEW_VOTING_QUESTIONS_RESPONSE, {
+      question: question,
+      vote: vote,
+    });
+    setQuestionVoting(null);
+  };
 
-  return { messages, sendMessage, sendQuestion};
+  return { messages, questionVoting, sendMessage, sendQuestion,sendQuestionVotingResult};
 };
 
 export default useServer;

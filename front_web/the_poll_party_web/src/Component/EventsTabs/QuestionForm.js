@@ -92,7 +92,7 @@ const QuestionForm = (props) => {
                 </Input>
             </FormGroup>
             {displayFormAnswerType()}
-            <Button onClick={handleSendQuestion} >Submit</Button>
+            <Button onClick={() => { handleSendQuestion() }} >Submit</Button>
         </Form>
     );
 }

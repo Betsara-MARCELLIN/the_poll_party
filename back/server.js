@@ -21,6 +21,8 @@ const NEW_MESSAGE_EVENT = "newMessage";
 const JOIN_ROOM = "joinRoom";
 const RESPONSES = "responses";
 const NEW_QUESTIONS = "addQuestions";
+const NEW_VOTING_QUESTIONS = "addQuestionsforVoting";
+const NEW_VOTING_QUESTIONS_RESPONSE = "addQuestionsforVotingResponse";
 const RANKING = "ranking";
 const PARTY_CONNECTIONS = "partyConnections";
 
@@ -48,13 +50,37 @@ io.on("connection", (socket) => {
 
     InformRoomConnections(roomId);
   });
+  
+  // send question for voting to the publics
+  socket.on(NEW_VOTING_QUESTIONS, (data) => {
+    let questionId = party.questionsVoting.length
+    party.questionsVoting.push(new Question(questionId, data.question, data.answer, data.type, data.timer, socket.id, roomId));
+    io.in(roomId).emit(NEW_VOTING_QUESTIONS, party.getQuestionsforVotingOfRoom(roomId)[party.getQuestionsforVotingOfRoom(roomId).length - 1]);
+  });
 
-  // add last questions and send them to all competitors
-  socket.on(NEW_QUESTIONS, (data) => {
-    party.questions.push(new Question(data.question, data.responses, data.type, data.timer, socket.id));
-    party.competitors.forEach( competitor => {
-      socket.broadcast.to(competitor.id).emit(NEW_QUESTIONS, party.questions[party.questions.length - 1]);
-    });
+  // send question for voting to the publics
+  socket.on(NEW_VOTING_QUESTIONS_RESPONSE, (data) => {
+    let questionVoting = party.getQuestionsforVotingByID(roomId, data.question.id);
+    switch(data.vote){
+      case 0:
+        questionVoting[0].neutral++
+        break;
+      case 1:
+        questionVoting[0].yes++ 
+        break;
+      case -1:
+        questionVoting[0].no++ 
+        break;      
+    }
+    let totalVote = (questionVoting[0].neutral + questionVoting[0].no + questionVoting[0].yes)
+    console.log(questionVoting)
+    console.log(party.publics.length)
+    if (totalVote == party.publics.length) {
+      console.log("c'est bien voté pour tous")
+      party.competitors.forEach( competitor => {
+        socket.broadcast.to(competitor.id).emit(NEW_QUESTIONS, questionVoting);
+      });
+    }
   });
 
   // add response and get points

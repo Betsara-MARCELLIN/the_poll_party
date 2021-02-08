@@ -18,7 +18,7 @@ const useStyles = makeStyles(styles);
 
 const GameRoom = (props) => {
     const { roomId } = props.match.params; // Gets roomId from URL
-    const { messages, sendMessage, sendQuestion } = useServer(roomId); // Creates a websocket and manages 
+    const { messages, questionVoting, sendMessage, sendQuestion , sendQuestionVotingResult} = useServer(roomId); // Creates a websocket and manages 
     const classes = useStyles(); 
 
     return (
@@ -30,7 +30,7 @@ const GameRoom = (props) => {
                 <Col md="8" >
                     <h1 className="room-name">Room: {roomId}</h1>
                     <QuestionListVoting />
-                    <QuestionVoting />
+                    <QuestionVoting questionVoting={questionVoting} sendQuestionVotingResult={sendQuestionVotingResult}/>
                     <Row>
                         <Col md="8">
                             <EventsTabs sendQuestion={sendQuestion} />
