@@ -16,64 +16,28 @@ import styles from "../../assets/jss/material-dashboard-react/views/dashboardSty
 const useStyles = makeStyles(styles);
 
 const QuestionListVoting = (props) => {
+    const {questionsVoting}= props;
     const classes = useStyles();
 
     return(
         <div>
-            <h4>Vous êtes actuellement : 6/15 </h4>
+            <h4>Total de question à voter : {questionsVoting.length}</h4>
             <Row>
-                <Col md="3">
+            {questionsVoting.slice(1,5).map((questionVoting, i) => (
+                <Col md="3" key={i}>
                     <Card>
                         <CardHeader icon>
                             <CardIcon color="success">
-                                <Icon>1</Icon>
+                                <Icon>{i+1}</Icon>
                             </CardIcon>
                             <CardBody>
                                 <h4 className={classes.cardTitle}>Question</h4>
-                                <p className={classes.cardCategory}>La Capital de la france ?</p>
+                                <p className={classes.cardCategory}>{questionVoting.question}</p>
                             </CardBody>
                         </CardHeader>
                     </Card>
                 </Col>
-                <Col md="3">
-                    <Card>
-                        <CardHeader  icon>
-                            <CardIcon color="success">
-                                <Icon>2</Icon>
-                            </CardIcon>
-                            <CardBody>
-                                <h4 className={classes.cardTitle}>Question</h4>
-                                <p className={classes.cardCategory}>La Capital de la france ?</p>
-                            </CardBody>
-                        </CardHeader>
-                    </Card>
-                </Col>
-                <Col md="3">
-                    <Card>
-                        <CardHeader icon>
-                            <CardIcon color="success">
-                                <Icon>3</Icon>
-                            </CardIcon>
-                            <CardBody>
-                                <h4 className={classes.cardTitle}>Question</h4>
-                                <p className={classes.cardCategory}>La Capital de la france ?</p>
-                            </CardBody>
-                        </CardHeader>
-                    </Card>
-                </Col>
-                <Col md="3">
-                    <Card>
-                        <CardHeader icon>
-                            <CardIcon color="success">
-                                <Icon>4</Icon>
-                            </CardIcon>
-                            <CardBody>
-                                <h4 className={classes.cardTitle}>Question</h4>
-                                <p className={classes.cardCategory}>La Capital de la france ?</p>
-                            </CardBody>
-                        </CardHeader>
-                    </Card>
-                </Col>
+          ))}
             </Row>
         </div>
     );

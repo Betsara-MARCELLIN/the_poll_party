@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import socketIOClient from "socket.io-client";
 
 const NEW_MESSAGE_EVENT = "newMessage";
+const NEW_QUESTIONS = "addQuestions";
 const NEW_VOTING_QUESTIONS = "addQuestionsforVoting";
 const NEW_VOTING_QUESTIONS_RESPONSE = "addQuestionsforVotingResponse";
 const RANKING = "ranking";
@@ -9,7 +10,9 @@ const SOCKET_SERVER_URL = "http://127.0.0.1:3000";
 
 const useServer = (roomId) => {
   const [messages, setMessages] = useState([]);
-  const [questionVoting, setQuestionVoting] = useState(null);
+  const [questionsVoting, setQuestionsVoting] = useState([]);
+  const [questions, setQuestions] = useState([]);
+  const [ranking, setRanking] = useState([]);
   const socketRef = useRef();
 
   useEffect(() => {
@@ -23,12 +26,29 @@ const useServer = (roomId) => {
         ownedByCurrentUser: message.senderId === socketRef.current.id,
       };
       setMessages((messages) => [...messages, incomingMessage]);
+      
     });
 
-    socketRef.current.on(NEW_VOTING_QUESTIONS, (question) => {
-      setQuestionVoting(question);
+    socketRef.current.on(NEW_VOTING_QUESTIONS, (questionVoting) => {
+      const incomingQuestion = {
+        ...questionVoting,
+      };
+      setQuestionsVoting((questionsVoting) => [...questionsVoting, incomingQuestion]);
     });
 
+    socketRef.current.on(NEW_QUESTIONS, (question) => {
+      if(question != "refuse"){
+        const incomingQuestion = {
+          ...question,
+        };
+        setQuestions((questions) => [...questions, incomingQuestion]);
+      }
+    });
+
+    socketRef.current.on(RANKING, (rank) => {
+      setRanking(rank);
+    });
+    
     return () => {
       socketRef.current.disconnect();
     };
@@ -55,10 +75,27 @@ const useServer = (roomId) => {
       question: question,
       vote: vote,
     });
-    setQuestionVoting(null);
+    
   };
 
-  return { messages, questionVoting, sendMessage, sendQuestion,sendQuestionVotingResult};
+  const removeItemOnceFromQuestionsVoting = (arr, value) => {
+    let index = -1;
+    console.log (arr)
+    if (arr[0] != null){
+      arr.forEach((element,i) => {
+        if(element.id == value.id){
+          index= i;
+        }
+      });
+    }
+
+    if (index > -1) {
+      arr.splice(index, 1);
+    }
+    setQuestionsVoting(arr);
+  };
+
+  return { messages, questionsVoting, questions, ranking, sendMessage, sendQuestion, sendQuestionVotingResult, removeItemOnceFromQuestionsVoting};
 };
 
 export default useServer;

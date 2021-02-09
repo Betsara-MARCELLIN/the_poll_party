@@ -32,6 +32,11 @@ const QuestionForm = (props) => {
                     <Label for="textlibre">Réponse</Label>
                     <Input required type="text" name="textlibre" id="textlibre" placeholder="Reponse" onChange={createAnswer} value={reponses}/>
                 </FormGroup>
+            case "Slider":
+                return <FormGroup>
+                    <Label for="textlibre">Réponse</Label>
+                    <Input required type="text" name="textlibre" id="textlibre" placeholder="Reponse" onChange={createAnswer} value={reponses}/>
+                </FormGroup>
             case "QCM":
                 return <div>
                         <FormGroup>

@@ -73,13 +73,14 @@ io.on("connection", (socket) => {
         break;      
     }
     let totalVote = (questionVoting[0].neutral + questionVoting[0].no + questionVoting[0].yes)
-    console.log(questionVoting)
-    console.log(party.publics.length)
     if (totalVote == party.publics.length) {
-      console.log("c'est bien voté pour tous")
-      party.competitors.forEach( competitor => {
-        socket.broadcast.to(competitor.id).emit(NEW_QUESTIONS, questionVoting);
-      });
+      if(questionVoting[0].no < questionVoting[0].yes){
+        io.in(roomId).emit(NEW_QUESTIONS, questionVoting);
+      }else{
+        party.publics.forEach( public => {
+          socket.broadcast.to(public.id).emit(NEW_QUESTIONS, "refuse");
+        });
+      }
     }
   });
 

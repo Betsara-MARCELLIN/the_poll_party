@@ -1,28 +1,20 @@
 import React from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
-
 // core components
 import Table from "../Table/Table.js";
 import Card from "../Card/Card.js";
 import CardHeader from "../Card/CardHeader.js";
 import CardBody from "../Card/CardBody.js";
-
-import styles from "../../assets/jss/material-dashboard-react/views/dashboardStyle";
-
-const useStyles = makeStyles(styles);
+import Icon from "@material-ui/core/Icon";
 
 
 const Classement =(props) => {
+    const { ranking }= props;
 
-    const classes = useStyles(); 
     return(
         <Card>
             <CardHeader color="primary">
-                <h4 className={classes.cardTitleWhite}>Classement</h4>
-                <p className={classes.cardCategoryWhite}>
-                    Classement de la partie en cours
-                </p>
+                <Icon>Classement</Icon>
             </CardHeader>
             <CardBody>
                 <Table

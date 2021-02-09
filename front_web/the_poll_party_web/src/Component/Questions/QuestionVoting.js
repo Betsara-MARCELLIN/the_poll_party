@@ -22,12 +22,12 @@ import styles from "../../assets/jss/material-dashboard-react/views/dashboardSty
 const useStyles = makeStyles(styles);
 
 const QuestionVoting = (props) => {
-    const {questionVoting, sendQuestionVotingResult} = props;
+    const {questionsVoting, sendQuestionVotingResult, removeItemOnceFromQuestionsVoting} = props;
     const [vote, setVote] = useState("null");
     const classes = useStyles();
 
     const displayFooter = ()=>{
-        if(questionVoting == null){
+        if(questionsVoting[0] == null){
             return <h4 className="text-center">En attente de question</h4>
         }
         
@@ -43,23 +43,28 @@ const QuestionVoting = (props) => {
     }
     const handleSendVote = (newVote)=>{
         setVote(newVote);
-        sendQuestionVotingResult(newVote,questionVoting)
-        setVote("null");
     }
     const renderer = ({ seconds, completed }) => {
-        if (completed) {
-            if(vote == "null"){
-                handleSendVote(0);
+        if(questionsVoting[0] != null){
+            if (completed) {
+                if(vote != "null"){
+                    sendQuestionVotingResult(vote,questionsVoting[0])
+                    
+                }else{
+                    sendQuestionVotingResult(0,questionsVoting[0])
+                }
+                removeItemOnceFromQuestionsVoting(questionsVoting,questionsVoting[0]);
+                setVote("null")
+            return "30";
+            } else {
+            return (<span>{seconds}</span>);
             }
-          return "30";
-        } else {
-          return (<span>{seconds}</span>);
         }
       };
     
     const renderTimer = () => {
-        if(questionVoting != null){
-            return (<Countdown date={Date.now() + 30000} renderer={renderer} />);
+        if(questionsVoting[0] != null){
+            return (<Countdown date={Date.now() + 5000} renderer={renderer} />);
         }else 
             return "30"
     }
@@ -70,18 +75,18 @@ const QuestionVoting = (props) => {
                 <Card>
                     <CardHeader color="info" icon>
                         <CardIcon color="info">
-                            <Icon>Voter pour la Question </Icon>
+                            <Icon>Voter pour la Question</Icon>
                         </CardIcon>
                         <CardIcon color="warning" className="voting-timer">
                             <Icon>
                                 {renderTimer()}
                             </Icon>
                         </CardIcon>
-                        <h3 className={classes.cardTitle}>{questionVoting? questionVoting.question:""}</h3>
+                        <h3 className={classes.cardTitle}>{questionsVoting[0]? questionsVoting[0].question:""}</h3>
                     </CardHeader>
                     <CardBody>
-                        <h4>Type : <span>{questionVoting? questionVoting.type:""}</span> </h4>
-                        <h4>Réponse : <span>{questionVoting? questionVoting.answer:""}</span></h4>
+                        <h4>Type : <span>{questionsVoting[0]? questionsVoting[0].type:""}</span> </h4>
+                        <h4>Réponse : <span>{questionsVoting[0]? questionsVoting[0].answer:""}</span></h4>
                     </CardBody>
                     {displayFooter()}
                 </Card>
