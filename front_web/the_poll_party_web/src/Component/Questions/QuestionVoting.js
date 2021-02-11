@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import {Row, Col  } from 'reactstrap';
 import { makeStyles } from "@material-ui/core/styles";
@@ -13,8 +13,6 @@ import CardIcon from "../Card/CardIcon.js";
 import CardBody from "../Card/CardBody.js";
 import CardFooter from "../Card/CardFooter.js";
 
-
-
 import "./Question.css";
 
 import styles from "../../assets/jss/material-dashboard-react/views/dashboardStyle";
@@ -22,7 +20,7 @@ import styles from "../../assets/jss/material-dashboard-react/views/dashboardSty
 const useStyles = makeStyles(styles);
 
 const QuestionVoting = (props) => {
-    const {questionsVoting, sendQuestionVotingResult, removeItemOnceFromQuestionsVoting} = props;
+    const {questionsVoting, sendQuestionVotingResult} = props;
     const [vote, setVote] = useState("null");
     const classes = useStyles();
 
@@ -33,30 +31,33 @@ const QuestionVoting = (props) => {
         
         if (vote == "null") {
             return <CardFooter stats >
-                <Button className="voting-button-yes" variant="contained" color="primary" onClick={() => { handleSendVote(1) }}>Pour</Button>
-                <Button className="voting-button-no" variant="contained" color="secondary" onClick={() => { handleSendVote(-1)}}>Contre</Button>
+                <Button className="voting-button-yes" variant="contained" color="primary" onClick={() => { handleSetVote(1) }}>Pour</Button>
+                <Button className="voting-button-no" variant="contained" color="secondary" onClick={() => { handleSetVote(-1)}}>Contre</Button>
             </CardFooter>
         }else {
             return <h4 className="text-center">A voté !</h4>
         }
 
     }
-    const handleSendVote = (newVote)=>{
+    const handleSetVote = (newVote)=>{
         setVote(newVote);
+        sendQuestionVotingResult(newVote,questionsVoting,questionsVoting[0])
+        setVote("null")
     }
+
+    const senderResult =() => {
+        if(vote == "null"){  
+            sendQuestionVotingResult(0,questionsVoting, questionsVoting[0])
+        }
+        setVote("null")
+    }
+
     const renderer = ({ seconds, completed }) => {
         if(questionsVoting[0] != null){
             if (completed) {
-                if(vote != "null"){
-                    sendQuestionVotingResult(vote,questionsVoting[0])
-                    
-                }else{
-                    sendQuestionVotingResult(0,questionsVoting[0])
-                }
-                removeItemOnceFromQuestionsVoting(questionsVoting,questionsVoting[0]);
-                setVote("null")
-            return "30";
+                return "15";
             } else {
+                console.log(seconds)
             return (<span>{seconds}</span>);
             }
         }
@@ -64,10 +65,15 @@ const QuestionVoting = (props) => {
     
     const renderTimer = () => {
         if(questionsVoting[0] != null){
-            return (<Countdown date={Date.now() + 5000} renderer={renderer} />);
+            console.log("questionsVoting[0]")
+            return (<Countdown date={Date.now() + 15000} renderer={renderer} /*onComplete={senderResult}*/ />);
         }else 
-            return "30"
+            return "15"
     }
+
+    useEffect(() => {
+        renderTimer();
+      });
 
     return(
         <Row>

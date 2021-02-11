@@ -7,7 +7,6 @@ import Card from "../Card/Card.js";
 import CardHeader from "../Card/CardHeader.js";
 import CardIcon from "../Card/CardIcon.js";
 import CardBody from "../Card/CardBody.js";
-import CardFooter from "../Card/CardFooter.js";
 import {Row, Col  } from 'reactstrap';
 
 
