@@ -52,6 +52,9 @@ io.on("connection", (socket) => {
         );
 
         InformRoomConnections(roomId);
+        io.in(roomId).emit(RANKING, {
+            ranking: party.getRankedCompetitorsOfRoom(roomId),
+        });
     });
 
     // send question for voting to the publics
@@ -133,7 +136,7 @@ io.on("connection", (socket) => {
 
     // Listen for ranking
     socket.on(RANKING, () => {
-        //TODO
+        //
     });
 
     // Listen for new messages
