@@ -46,7 +46,13 @@ const useServer = (roomId) => {
     });
 
     socketRef.current.on(RANKING, (rank) => {
-      setRanking(rank);
+      console.log(rank.ranking[0])
+      let ranks = []
+      rank.ranking.forEach((competitor, i) => {
+        const incomingRank = [i+1,competitor.name, competitor.score];
+        ranks.push(incomingRank)
+      });
+      setRanking(ranks);
     });
     
     return () => {
@@ -70,32 +76,32 @@ const useServer = (roomId) => {
       senderId: socketRef.current.id,
     });
   };
-  const sendQuestionVotingResult = (vote, question) => {
+  const sendQuestionVotingResult = (vote,questionlist,  question) => {
     socketRef.current.emit(NEW_VOTING_QUESTIONS_RESPONSE, {
       question: question,
       vote: vote,
     });
-    
+    removeItemOnceFromQuestionsVoting(questionlist,question);
   };
 
   const removeItemOnceFromQuestionsVoting = (arr, value) => {
-    let index = -1;
-    console.log (arr)
-    if (arr[0] != null){
-      arr.forEach((element,i) => {
+    var array = [...arr];
+    var index = -1
+    if (array[0] != null){
+      array.forEach((element,i) => {
         if(element.id == value.id){
-          index= i;
+          index= element;
         }
       });
     }
 
-    if (index > -1) {
-      arr.splice(index, 1);
+    if (index !== -1) {
+      array.splice(index, 1);
     }
-    setQuestionsVoting(arr);
+    setQuestionsVoting(array);
   };
 
-  return { messages, questionsVoting, questions, ranking, sendMessage, sendQuestion, sendQuestionVotingResult, removeItemOnceFromQuestionsVoting};
+  return { messages, questionsVoting, questions, ranking, sendMessage, sendQuestion, sendQuestionVotingResult};
 };
 
 export default useServer;
