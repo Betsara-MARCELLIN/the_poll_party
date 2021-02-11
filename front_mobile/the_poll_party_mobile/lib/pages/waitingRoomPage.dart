@@ -28,40 +28,42 @@ class _WaitingRoomPageState extends State<WaitingRoomPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0).copyWith(top: 45),
-            child: Text(
-              "Veuillez attendre les autres participants",
-              style: TextStyle(fontSize: titleTextSize, color: lightBlack),
-              textAlign: TextAlign.center,
+      body: SafeArea(
+              child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0).copyWith(top: 45),
+              child: Text(
+                "Veuillez attendre les autres participants",
+                style: TextStyle(fontSize: titleTextSize, color: lightBlack),
+                textAlign: TextAlign.center,
+              ),
             ),
-          ),
-          WaitingPlayerHolder(
-              title: "Membres du public",
-              players:
-                  Provider.of<SocketConnectionProvider>(context, listen: true)
-                      .getPublics),
-          WaitingPlayerHolder(
-              title: "Compétiteurs",
-              players:
-                  Provider.of<SocketConnectionProvider>(context, listen: true)
-                      .getCompetitors),
-          MyIconButton(
-              callback: () => {
-                    Provider.of<SocketConnectionProvider>(context,
-                            listen: false)
-                        .disconnect(),
-                    Navigator.pop(context)
-                  },
-              text: "Quitter",
-              icon: Icons.exit_to_app),
-          MyIconButton(
-              callback: () => {Navigator.pushNamed(context, '/game')},
-              text: "Jeux",
-              icon: Icons.play_arrow)
-        ],
+            WaitingPlayerHolder(
+                title: "Membres du public",
+                players:
+                    Provider.of<SocketConnectionProvider>(context, listen: true)
+                        .getPublics),
+            WaitingPlayerHolder(
+                title: "Compétiteurs",
+                players:
+                    Provider.of<SocketConnectionProvider>(context, listen: true)
+                        .getCompetitors),
+            MyIconButton(
+                callback: () => {
+                      Provider.of<SocketConnectionProvider>(context,
+                              listen: false)
+                          .disconnect(),
+                      Navigator.pop(context)
+                    },
+                text: "Quitter",
+                icon: Icons.exit_to_app),
+            MyIconButton(
+                callback: () => {Navigator.pushNamed(context, '/game')},
+                text: "Jeux",
+                icon: Icons.play_arrow)
+          ],
+        ),
       ),
     );
   }

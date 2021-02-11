@@ -9,10 +9,12 @@ class TextAnswerMode extends StatelessWidget {
     Key key,
     @required this.socketProvider,
     @required TextEditingController answerController,
+     @required this.timerCallback,
   }) : _answerController = answerController, super(key: key);
 
   final SocketConnectionProvider socketProvider;
   final TextEditingController _answerController;
+  final VoidCallback timerCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,8 @@ class TextAnswerMode extends StatelessWidget {
                         .sendAnswer(_answerController.text),
                     Provider.of<SocketConnectionProvider>(context,
                             listen: false)
-                        .nextQuestion()
+                        .nextQuestion(),
+                        timerCallback()
                   },
               text: 'Envoyer ma réponse',
               icon: Icons.check),
