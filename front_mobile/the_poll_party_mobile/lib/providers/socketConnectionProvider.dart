@@ -67,10 +67,11 @@ class SocketConnectionProvider extends ChangeNotifier {
   }
 
   // Listen to all question events from public
-  void _handleQuestions(Map<String, dynamic> data) {
-    print(data['question']);
+  void _handleQuestions(List<dynamic> datas) {
+    print("NEW QUESTION RECEIVED");
     print("Question length: ${questions.length}");
-    questions.add(data['question'].toString());
+    datas.forEach(
+        (element) => {this.questions.add(element['question'].toString())});
     notifyListeners();
   }
 
