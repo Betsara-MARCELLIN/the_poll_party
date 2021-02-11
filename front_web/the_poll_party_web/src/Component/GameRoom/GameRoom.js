@@ -16,7 +16,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const GameRoom = (props) => {
     const { roomId } = props.match.params; // Gets roomId from URL
-    const { messages, questionsVoting, questions, ranking, sendMessage, sendQuestion, sendQuestionVotingResult, removeItemOnceFromQuestionsVoting } = useServer(roomId); // Creates a websocket and manages 
+    const { messages, questionsVoting, questions, ranking, sendMessage, sendQuestion, sendQuestionVotingResult } = useServer(roomId); // Creates a websocket and manages 
 
     console.log(questionsVoting)
     return (
@@ -28,7 +28,7 @@ const GameRoom = (props) => {
                 <Col md="8" >
                     <h1 className="room-name">Room: {roomId}</h1>
                     <QuestionListVoting questionsVoting={questionsVoting}/>
-                    <QuestionVoting questionsVoting={questionsVoting} sendQuestionVotingResult={sendQuestionVotingResult} removeItemOnceFromQuestionsVoting={removeItemOnceFromQuestionsVoting} />
+                    <QuestionVoting questionsVoting={questionsVoting} sendQuestionVotingResult={sendQuestionVotingResult} />
                     <Row>
                         <Col md="8">
                             <EventsTabs sendQuestion={sendQuestion} />
