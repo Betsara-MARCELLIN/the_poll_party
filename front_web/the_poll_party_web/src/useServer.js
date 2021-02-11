@@ -6,7 +6,7 @@ const NEW_QUESTIONS = "addQuestions";
 const NEW_VOTING_QUESTIONS = "addQuestionsforVoting";
 const NEW_VOTING_QUESTIONS_RESPONSE = "addQuestionsforVotingResponse";
 const RANKING = "ranking";
-const SOCKET_SERVER_URL = "http://127.0.0.1:3000";
+const SOCKET_SERVER_URL = "http://93.23.204.103:3000";
 
 const useServer = (roomId) => {
   const [messages, setMessages] = useState([]);
