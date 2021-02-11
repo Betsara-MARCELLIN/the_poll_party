@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:the_poll_party_mobile/pages/gamePage.dart';
+import 'package:the_poll_party_mobile/pages/gamePage/gamePage.dart';
 import 'package:the_poll_party_mobile/pages/rankingPage.dart';
 import 'package:the_poll_party_mobile/pages/roomPage.dart';
 import 'package:provider/provider.dart';

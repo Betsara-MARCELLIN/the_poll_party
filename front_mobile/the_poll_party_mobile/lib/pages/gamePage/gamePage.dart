@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:the_poll_party_mobile/components/myIconButton.dart';
-import 'package:the_poll_party_mobile/components/myTextField.dart';
+import 'package:the_poll_party_mobile/pages/gamePage/components/motionAnswerMode.dart';
+import 'package:the_poll_party_mobile/pages/gamePage/components/textAnswerMode.dart';
 import 'package:the_poll_party_mobile/providers/roomProvider.dart';
 import 'package:the_poll_party_mobile/providers/socketConnectionProvider.dart';
 
@@ -31,8 +32,6 @@ class _GamePageState extends State<GamePage> {
     super.dispose();
   }
 
-  // if(Provider.of<SocketConnectionProvider>(context, listen: true).getQuestions.length > 0){
-  // }
   @override
   Widget build(BuildContext context) {
     var socketProvider =
@@ -44,34 +43,8 @@ class _GamePageState extends State<GamePage> {
           Spacer(),
           socketProvider.getQuestions.length > 0
               ? Container(
-                  child: Column(
-                    children: [
-                      Text('Question: ${socketProvider.getCurrentQuestion()}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20)),
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: MyTextField(
-                            textController: _answerController,
-                            hintText: 'veuillez écrire votre réponse ici'),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(50.0),
-                        child: MyIconButton(
-                            callback: () => {
-                                  Provider.of<SocketConnectionProvider>(context,
-                                          listen: false)
-                                      .sendAnswer(_answerController.text),
-                                  Provider.of<SocketConnectionProvider>(context,
-                                          listen: false)
-                                      .nextQuestion()
-                                },
-                            text: 'Envoyer ma réponse',
-                            icon: Icons.check),
-                      ),
-                    ],
-                  ),
-                )
+                  child:
+                      buildAnswerMode(socketProvider.getCurrentQuestion().type, socketProvider))
               : Container(
                   child: Column(
                     children: [
@@ -100,5 +73,15 @@ class _GamePageState extends State<GamePage> {
         ],
       ),
     );
+  }
+
+  buildAnswerMode(String type, var socketProvider) {
+    if (type == 'Libre') {
+      return TextAnswerMode(
+          socketProvider: socketProvider, answerController: _answerController);
+    } else {
+      return MotionAnswerMode(
+          socketProvider: socketProvider);
+    }
   }
 }

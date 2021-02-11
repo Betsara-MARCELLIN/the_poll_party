@@ -102,7 +102,7 @@ class WaitingPlayerHolder extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
             child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.27,
+              height: MediaQuery.of(context).size.height * 0.25,
               child: ListView.separated(
                 padding: EdgeInsets.zero,
                 shrinkWrap: true,

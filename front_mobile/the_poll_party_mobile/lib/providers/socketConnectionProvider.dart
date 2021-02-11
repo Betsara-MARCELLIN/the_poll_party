@@ -4,18 +4,19 @@ import 'package:flutter/foundation.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:the_poll_party_mobile/models/player.dart';
 import 'package:the_poll_party_mobile/models/public.dart';
+import 'package:the_poll_party_mobile/models/question.dart';
 
 class SocketConnectionProvider extends ChangeNotifier {
   Socket socket;
   List<Public> publics = [];
   List<Competitor> competitors = [];
-  List<String> questions = [];
+  List<Question> questions = [];
 
   List<Public> get getPublics => publics;
   List<Competitor> get getCompetitors => competitors;
-  List<String> get getQuestions => questions;
+  List<Question> get getQuestions => questions;
 
-  String getCurrentQuestion() {
+  Question getCurrentQuestion() {
     return questions[0];
   }
 
@@ -71,7 +72,7 @@ class SocketConnectionProvider extends ChangeNotifier {
     print("NEW QUESTION RECEIVED");
     print("Question length: ${questions.length}");
     datas.forEach(
-        (element) => {this.questions.add(element['question'].toString())});
+        (element) => {this.questions.add(new Question.fromJson(element))});
     notifyListeners();
   }
 
