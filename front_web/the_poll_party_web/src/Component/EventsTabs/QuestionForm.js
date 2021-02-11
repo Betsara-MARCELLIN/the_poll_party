@@ -40,10 +40,10 @@ const QuestionForm = (props) => {
                 </FormGroup>
             case "Slider":
                 return <FormGroup>
-                    <Label for="reponses">Réponse</Label>
-                    <Field name="reponses" id="reponses" placeholder="Reponse" value={formData.reponses}/>
-                    <FieldError name="reponses" />
-                </FormGroup>
+                <Label for="reponses">Réponse</Label>
+                <Field component={Input} type="input" name="reponses" id="reponses" placeholder="Reponse" value={formData.reponses} />
+                <FieldError name="reponses" />
+            </FormGroup>
             case "QCM":
                 return <div>
                         <FormGroup>
@@ -105,7 +105,7 @@ const QuestionForm = (props) => {
                 </Input>
             </FormGroup>
             {displayFormAnswerType()}
-            <Button type="submit">Submit</Button>
+            <Button type="submit" color="info">Envoyer</Button>
         </Form>
     );
 }

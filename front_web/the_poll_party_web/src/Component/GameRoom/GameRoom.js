@@ -26,7 +26,7 @@ const GameRoom = (props) => {
                     <QuestionList questions={questions}/>
                 </Col>
                 <Col md="8" >
-                    <h1 className="room-name">Room: {roomId}</h1>
+                    <h1 className="room-name">Salle: {roomId}</h1>
                     <QuestionListVoting questionsVoting={questionsVoting}/>
                     <QuestionVoting questionsVoting={questionsVoting} sendQuestionVotingResult={sendQuestionVotingResult} />
                     <Row>

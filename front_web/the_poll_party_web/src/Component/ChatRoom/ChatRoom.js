@@ -38,7 +38,7 @@ const ChatRoom = (props) => {
         className="new-message-input-field"
       />
       <button onClick={handleSendMessage} className="send-message-button">
-        Send
+        Chat
       </button>
     </div>
   );
