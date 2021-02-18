@@ -31,7 +31,11 @@ class _GamePageState extends State<GamePage> {
     roomId = Provider.of<RoomProvider>(context, listen: false).getRoomId;
     playerName =
         Provider.of<RoomProvider>(context, listen: false).getPlayerName;
-    _startTimer();
+    var socketProvider =
+        Provider.of<SocketConnectionProvider>(context, listen: false);
+    if (socketProvider.getCurrentQuestion() != null) {
+      _startTimer();
+    }
   }
 
   @override
@@ -43,7 +47,8 @@ class _GamePageState extends State<GamePage> {
   void _startTimer() {
     var socketProvider =
         Provider.of<SocketConnectionProvider>(context, listen: false);
-    remainingTime = socketProvider.getCurrentQuestion().timer;
+    int timer = socketProvider.getCurrentQuestion().timer;
+    remainingTime = timer != null ? timer : 30;
 
     if (_timer != null) {
       _timer.cancel();
@@ -71,23 +76,32 @@ class _GamePageState extends State<GamePage> {
         Provider.of<SocketConnectionProvider>(context, listen: true);
     return Scaffold(
       body: SafeArea(
-              child: Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Visibility(child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                child: Text("$remainingTime", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: normalTextSize),),
-                decoration:
-              BoxDecoration(color: Colors.amber, borderRadius: roundedBorder),
-        padding: EdgeInsets.all(10),),
-            ),
-              visible: socketProvider.getQuestions.length > 0),
+            Visibility(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    child: Text(
+                      "$remainingTime",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: normalTextSize),
+                    ),
+                    decoration: BoxDecoration(
+                        color: Colors.amber, borderRadius: roundedBorder),
+                    padding: EdgeInsets.all(10),
+                  ),
+                ),
+                visible: socketProvider.getQuestions.length > 0),
             Spacer(),
             socketProvider.getQuestions.length > 0
                 ? Container(
                     child: buildAnswerMode(
-                        socketProvider.getCurrentQuestion().type, socketProvider))
+                        socketProvider.getCurrentQuestion().type,
+                        socketProvider))
                 : Container(
                     child: Column(
                       children: [
@@ -122,9 +136,15 @@ class _GamePageState extends State<GamePage> {
   buildAnswerMode(String type, var socketProvider) {
     if (type == 'Libre') {
       return TextAnswerMode(
-          socketProvider: socketProvider, answerController: _answerController, timerCallback: _startTimer,);
+        socketProvider: socketProvider,
+        answerController: _answerController,
+        timerCallback: _startTimer,
+      );
     } else {
-      return MotionAnswerMode(socketProvider: socketProvider, timerCallback: _startTimer,);
+      return MotionAnswerMode(
+        socketProvider: socketProvider,
+        timerCallback: _startTimer,
+      );
     }
   }
 }

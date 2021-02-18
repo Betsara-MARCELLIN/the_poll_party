@@ -8,10 +8,10 @@ class Question {
 
   Question.fromJson(Map<String, dynamic> json)
       : question = json['question'],
-        answer = json['anwser'],
+        answer = json['answer'],
         type = json['type'],
         timer = json['timer'];
 
   Map<String, dynamic> toJson() =>
-      {"question": question, "anwser": answer, "type": type, "timer": timer};
+      {"question": question, "answer": answer, "type": type, "timer": timer};
 }

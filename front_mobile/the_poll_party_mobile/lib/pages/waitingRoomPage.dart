@@ -29,7 +29,7 @@ class _WaitingRoomPageState extends State<WaitingRoomPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-              child: Column(
+        child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.all(16.0).copyWith(top: 45),

@@ -17,7 +17,7 @@ class RankingPage extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-              child: Padding(
+        child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [

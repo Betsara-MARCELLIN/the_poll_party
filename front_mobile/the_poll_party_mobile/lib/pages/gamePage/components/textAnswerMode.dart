@@ -9,8 +9,9 @@ class TextAnswerMode extends StatelessWidget {
     Key key,
     @required this.socketProvider,
     @required TextEditingController answerController,
-     @required this.timerCallback,
-  }) : _answerController = answerController, super(key: key);
+    @required this.timerCallback,
+  })  : _answerController = answerController,
+        super(key: key);
 
   final SocketConnectionProvider socketProvider;
   final TextEditingController _answerController;
@@ -21,8 +22,7 @@ class TextAnswerMode extends StatelessWidget {
     return Column(
       children: [
         Text('Question: ${socketProvider.getCurrentQuestion().question}',
-            style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 20)),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
         Padding(
           padding: const EdgeInsets.all(15.0),
           child: MyTextField(
@@ -39,7 +39,7 @@ class TextAnswerMode extends StatelessWidget {
                     Provider.of<SocketConnectionProvider>(context,
                             listen: false)
                         .nextQuestion(),
-                        timerCallback()
+                    timerCallback()
                   },
               text: 'Envoyer ma réponse',
               icon: Icons.check),
