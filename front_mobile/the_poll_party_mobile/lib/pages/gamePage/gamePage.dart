@@ -29,14 +29,14 @@ class _GamePageState extends State<GamePage> {
   @override
   void initState() {
     super.initState();
-    // roomId = Provider.of<RoomProvider>(context, listen: false).getRoomId;
-    // playerName =
-    //     Provider.of<RoomProvider>(context, listen: false).getPlayerName;
-    // var socketProvider =
-    //     Provider.of<SocketConnectionProvider>(context, listen: false);
-    // if (socketProvider.getCurrentQuestion() != null) {
-    //   _startTimer();
-    // }
+    roomId = Provider.of<RoomProvider>(context, listen: false).getRoomId;
+    playerName =
+        Provider.of<RoomProvider>(context, listen: false).getPlayerName;
+    var socketProvider =
+        Provider.of<SocketConnectionProvider>(context, listen: false);
+    if (socketProvider.getCurrentQuestion() != null) {
+      _startTimer();
+    }
   }
 
   @override
@@ -48,8 +48,7 @@ class _GamePageState extends State<GamePage> {
   void _startTimer() {
     var socketProvider =
         Provider.of<SocketConnectionProvider>(context, listen: false);
-    int timer = socketProvider.getCurrentQuestion().timer;
-    remainingTime = timer != null ? timer : 30;
+    remainingTime = socketProvider.getCurrentQuestion().timer;
 
     if (_timer != null) {
       _timer.cancel();

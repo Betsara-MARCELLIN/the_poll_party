@@ -17,9 +17,7 @@ class SocketConnectionProvider extends ChangeNotifier {
   List<Question> get getQuestions => questions;
 
   Question getCurrentQuestion() {
-    print(
-        "BAAAAAAAAAAAAAAAAAAAAAAAAAADDDDDDDDDDDDDDDDDD*!*!*!*!*!*!*!*!*!!*!*!*");
-    return questions[0];
+    return questions.length > 0 ? questions[0] : null;
   }
 
   void nextQuestion() {
@@ -29,6 +27,13 @@ class SocketConnectionProvider extends ChangeNotifier {
 
   void connectToServer(String roomId, String playerName) {
     try {
+      if (socket != null) {
+        if (socket.connected) {
+          print("Was already connected. disconnection ...");
+          socket.disconnect();
+        }
+      }
+
       // TODO change socket.io server when deploied
       // Configure socket transports must be sepecified
       socket = io('http://192.168.43.156:3000', <String, dynamic>{
@@ -38,11 +43,13 @@ class SocketConnectionProvider extends ChangeNotifier {
 
       // Connect to websocket
       socket.connect();
+      print("connection ...");
 
       // Handle socket events
       socket.on('connect', (_) {
         print('connect: ${socket.id}');
       });
+
       socket.on('addQuestions', (_) => _handleQuestions(_));
       socket.on('partyConnections', (_) => _handleConnections(_));
       socket.on('ranking', (_) => _handleCompetitorRanking(_));
@@ -50,8 +57,10 @@ class SocketConnectionProvider extends ChangeNotifier {
       // Join room
       _enterRoom(roomId, playerName);
     } catch (e) {
+      print("CONNECTION ERROR !");
       print(e.toString());
     }
+    notifyListeners();
   }
 
   void _enterRoom(String roomId, String playerName) {
@@ -60,7 +69,14 @@ class SocketConnectionProvider extends ChangeNotifier {
   }
 
   void disconnect() {
+    print("Socket current status: " + socket.connected.toString());
+    socket.off('connect');
+    socket.off('addQuestions');
+    socket.off('partyConnections');
+    socket.off('ranking');
     socket.disconnect();
+    print("disconnection ...");
+    notifyListeners();
   }
 
   // Send a Message to the server
@@ -72,15 +88,18 @@ class SocketConnectionProvider extends ChangeNotifier {
   // Listen to all question events from public
   void _handleQuestions(List<dynamic> datas) {
     print("NEW QUESTION RECEIVED");
-    print("Question length: ${questions.length}");
+    print(datas);
     datas.forEach(
         (element) => {this.questions.add(new Question.fromJson(element))});
+    print("Question length: ${questions.length}");
+
     notifyListeners();
   }
 
   // Listen to party connection events
   void _handleConnections(Map<String, dynamic> data) {
     print("CONNECTION DETECTED");
+    print("Question length: " + questions.length.toString());
     print(data);
     competitors = (data['competitors'] as List)
         .map((e) => Competitor.fromJson(e))

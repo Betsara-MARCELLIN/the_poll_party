@@ -10,7 +10,7 @@ class Question {
       : question = json['question'],
         answer = json['answer'],
         type = json['type'],
-        timer = json['timer'];
+        timer = int.parse(json['timer'] ?? '30');
 
   Map<String, dynamic> toJson() =>
       {"question": question, "answer": answer, "type": type, "timer": timer};
