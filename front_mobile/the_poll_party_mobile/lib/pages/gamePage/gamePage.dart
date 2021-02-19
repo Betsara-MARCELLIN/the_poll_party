@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:the_poll_party_mobile/components/myIconButton.dart';
 import 'package:the_poll_party_mobile/pages/gamePage/components/motionAnswerMode.dart';
+import 'package:the_poll_party_mobile/pages/gamePage/components/photoAnswerMode.dart';
 import 'package:the_poll_party_mobile/pages/gamePage/components/textAnswerMode.dart';
 import 'package:the_poll_party_mobile/providers/roomProvider.dart';
 import 'package:the_poll_party_mobile/providers/socketConnectionProvider.dart';
@@ -28,14 +29,14 @@ class _GamePageState extends State<GamePage> {
   @override
   void initState() {
     super.initState();
-    roomId = Provider.of<RoomProvider>(context, listen: false).getRoomId;
-    playerName =
-        Provider.of<RoomProvider>(context, listen: false).getPlayerName;
-    var socketProvider =
-        Provider.of<SocketConnectionProvider>(context, listen: false);
-    if (socketProvider.getCurrentQuestion() != null) {
-      _startTimer();
-    }
+    // roomId = Provider.of<RoomProvider>(context, listen: false).getRoomId;
+    // playerName =
+    //     Provider.of<RoomProvider>(context, listen: false).getPlayerName;
+    // var socketProvider =
+    //     Provider.of<SocketConnectionProvider>(context, listen: false);
+    // if (socketProvider.getCurrentQuestion() != null) {
+    //   _startTimer();
+    // }
   }
 
   @override
@@ -102,23 +103,8 @@ class _GamePageState extends State<GamePage> {
                     child: buildAnswerMode(
                         socketProvider.getCurrentQuestion().type,
                         socketProvider))
-                : Container(
-                    child: Column(
-                      children: [
-                        Text("Vous n'avez pas de nouvelles questions",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20)),
-                        Padding(
-                          padding: const EdgeInsets.all(30.0),
-                          child: MyIconButton(
-                              callback: () =>
-                                  Navigator.pushNamed(context, '/ranking'),
-                              text: 'Voir classement',
-                              icon: Icons.emoji_events),
-                        )
-                      ],
-                    ),
-                  ),
+                : EndOfQuestions(),
+            // PhotoAnswerMode(),
             Spacer(),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -134,17 +120,48 @@ class _GamePageState extends State<GamePage> {
   }
 
   buildAnswerMode(String type, var socketProvider) {
-    if (type == 'Libre') {
-      return TextAnswerMode(
-        socketProvider: socketProvider,
-        answerController: _answerController,
-        timerCallback: _startTimer,
-      );
-    } else {
-      return MotionAnswerMode(
-        socketProvider: socketProvider,
-        timerCallback: _startTimer,
-      );
+    switch (type) {
+      case 'Libre':
+        return TextAnswerMode(
+          socketProvider: socketProvider,
+          answerController: _answerController,
+          timerCallback: _startTimer,
+        );
+      case 'Slider':
+        return MotionAnswerMode(
+          socketProvider: socketProvider,
+          timerCallback: _startTimer,
+        );
+      case 'Photo':
+        return PhotoAnswerMode(
+          socketProvider: socketProvider,
+          timerCallback: _startTimer,
+        );
     }
+  }
+}
+
+class EndOfQuestions extends StatelessWidget {
+  const EndOfQuestions({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          Text("Vous n'avez pas de nouvelles questions",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+          Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: MyIconButton(
+                callback: () => Navigator.pushNamed(context, '/ranking'),
+                text: 'Voir classement',
+                icon: Icons.emoji_events),
+          )
+        ],
+      ),
+    );
   }
 }

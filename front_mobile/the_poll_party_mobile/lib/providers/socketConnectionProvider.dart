@@ -17,6 +17,8 @@ class SocketConnectionProvider extends ChangeNotifier {
   List<Question> get getQuestions => questions;
 
   Question getCurrentQuestion() {
+    print(
+        "BAAAAAAAAAAAAAAAAAAAAAAAAAADDDDDDDDDDDDDDDDDD*!*!*!*!*!*!*!*!*!!*!*!*");
     return questions[0];
   }
 
@@ -40,10 +42,10 @@ class SocketConnectionProvider extends ChangeNotifier {
       // Handle socket events
       socket.on('connect', (_) {
         print('connect: ${socket.id}');
-        socket.on('addQuestions', (_) => _handleQuestions(_));
-        socket.on('partyConnections', (_) => _handleConnections(_));
-        socket.on('ranking', (_) => _handleCompetitorRanking(_));
       });
+      socket.on('addQuestions', (_) => _handleQuestions(_));
+      socket.on('partyConnections', (_) => _handleConnections(_));
+      socket.on('ranking', (_) => _handleCompetitorRanking(_));
 
       // Join room
       _enterRoom(roomId, playerName);
