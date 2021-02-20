@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sensors/sensors.dart';
 import 'package:the_poll_party_mobile/components/myIconButton.dart';
+import 'package:the_poll_party_mobile/models/answer.dart';
 import 'package:the_poll_party_mobile/providers/socketConnectionProvider.dart';
 import 'package:the_poll_party_mobile/styles/Colors.dart';
 
@@ -76,7 +77,9 @@ class _MotionAnswerModeState extends State<MotionAnswerMode> {
               callback: () => {
                     Provider.of<SocketConnectionProvider>(context,
                             listen: false)
-                        .sendAnswer(cursorValue.toString()),
+                        .sendAnswer(new Answer(
+                            widget.socketProvider.getCurrentQuestion().id,
+                            cursorValue.toString())),
                     Provider.of<SocketConnectionProvider>(context,
                             listen: false)
                         .nextQuestion(),

@@ -103,6 +103,8 @@ io.on("connection", (socket) => {
         if (totalVote == party.publics.length) {
             if (questionVoting[0].no < questionVoting[0].yes) {
                 io.in(roomId).emit(NEW_QUESTIONS, questionVoting);
+                party.questions.push(...questionVoting);
+                console.log(party.questions)
             } else {
                 party.publics.forEach((public) => {
                     socket.broadcast
@@ -116,10 +118,19 @@ io.on("connection", (socket) => {
     // add response and get points
     socket.on(RESPONSES, (data) => {
         //check answer and add point
+        console.log(data);
         if (data) {
             party.competitors.forEach((c) => {
                 if (c.id === socket.id) {
-                    c.score += 1;
+                    const q = party.questions.find(
+                        (e) => e.id === data.questionId
+                    );
+                    if (
+                        data.answer
+                            .toLowerCase()
+                            .localeCompare(q.answer.toLowerCase())
+                    )
+                        c.score += 10;
                     console.log(c.name + " : " + c.score);
                 }
             });

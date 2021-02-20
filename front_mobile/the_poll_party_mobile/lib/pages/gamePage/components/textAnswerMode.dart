@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:the_poll_party_mobile/components/myIconButton.dart';
 import 'package:the_poll_party_mobile/components/myTextField.dart';
+import 'package:the_poll_party_mobile/models/answer.dart';
 import 'package:the_poll_party_mobile/providers/socketConnectionProvider.dart';
 
 class TextAnswerMode extends StatelessWidget {
@@ -35,7 +36,9 @@ class TextAnswerMode extends StatelessWidget {
               callback: () => {
                     Provider.of<SocketConnectionProvider>(context,
                             listen: false)
-                        .sendAnswer(_answerController.text),
+                        .sendAnswer(new Answer(
+                            socketProvider.getCurrentQuestion().id,
+                            _answerController.text)),
                     Provider.of<SocketConnectionProvider>(context,
                             listen: false)
                         .nextQuestion(),

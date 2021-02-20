@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:the_poll_party_mobile/components/myIconButton.dart';
+import 'package:the_poll_party_mobile/models/answer.dart';
 import 'package:the_poll_party_mobile/providers/socketConnectionProvider.dart';
 
 class PhotoAnswerMode extends StatefulWidget {
@@ -106,7 +107,9 @@ class _PhotoAnswerModeState extends State<PhotoAnswerMode> {
                   final image = await _controller.takePicture();
                   print(image?.path);
                   Provider.of<SocketConnectionProvider>(context, listen: false)
-                      .sendAnswer(image.path.toString());
+                      .sendAnswer(new Answer(
+                          widget.socketProvider.getCurrentQuestion().id,
+                          image.path.toString()));
                   Provider.of<SocketConnectionProvider>(context, listen: false)
                       .nextQuestion();
                   widget.timerCallback();
