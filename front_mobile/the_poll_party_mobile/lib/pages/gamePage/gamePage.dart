@@ -48,26 +48,28 @@ class _GamePageState extends State<GamePage> {
   void _startTimer() {
     var socketProvider =
         Provider.of<SocketConnectionProvider>(context, listen: false);
-    remainingTime = socketProvider.getCurrentQuestion().timer;
+    if (socketProvider.getQuestions.isNotEmpty) {
+      remainingTime = socketProvider.getCurrentQuestion().timer;
 
-    if (_timer != null) {
-      _timer.cancel();
-    }
+      if (_timer != null) {
+        _timer.cancel();
+      }
 
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      setState(() {
-        if (remainingTime > 0) {
-          remainingTime--;
-        } else {
-          _timer.cancel();
-          if (socketProvider.getQuestions.length > 0) {
-            Provider.of<SocketConnectionProvider>(context, listen: false)
-                .nextQuestion();
-            _startTimer();
+      _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+        setState(() {
+          if (remainingTime > 0) {
+            remainingTime--;
+          } else {
+            _timer.cancel();
+            if (socketProvider.getQuestions.length > 0) {
+              Provider.of<SocketConnectionProvider>(context, listen: false)
+                  .nextQuestion();
+              _startTimer();
+            }
           }
-        }
+        });
       });
-    });
+    }
   }
 
   @override
@@ -120,18 +122,18 @@ class _GamePageState extends State<GamePage> {
 
   buildAnswerMode(String type, var socketProvider) {
     switch (type) {
-      case 'Libre':
-        return TextAnswerMode(
-          socketProvider: socketProvider,
-          answerController: _answerController,
-          timerCallback: _startTimer,
-        );
+      // case 'Libre':
+      //   return TextAnswerMode(
+      //     socketProvider: socketProvider,
+      //     answerController: _answerController,
+      //     timerCallback: _startTimer,
+      //   );
       case 'Slider':
         return MotionAnswerMode(
           socketProvider: socketProvider,
           timerCallback: _startTimer,
         );
-      case 'Photo':
+      case 'Libre':
         return PhotoAnswerMode(
           socketProvider: socketProvider,
           timerCallback: _startTimer,

@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:the_poll_party_mobile/pages/gamePage/gamePage.dart';
 import 'package:the_poll_party_mobile/pages/rankingPage.dart';
@@ -8,7 +9,9 @@ import 'package:the_poll_party_mobile/pages/waitingRoomPage.dart';
 import 'package:the_poll_party_mobile/providers/roomProvider.dart';
 import 'package:the_poll_party_mobile/providers/socketConnectionProvider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (_) => RoomProvider(),

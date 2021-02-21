@@ -26,9 +26,15 @@ dependencies:
     socket_io_client: ^0.9.12
     provider: ^4.3.2
     sensors: ^0.4.2+6
-    camera: ^0.7.0+2
+    camera:
+        git:
+            url: https://github.com/flutter/plugins.git
+            path: packages/camera/camera
+            ref: cfa709835ab85702ee8a9ed24bbe7a3fe736c3f5
     path_provider: ^1.6.27
     path: ^1.7.0
+    firebase_core: ^0.7.0
+    firebase_storage: ^7.0.0
 
     # The following adds the Cupertino Icons font to your application.
     # Use with the CupertinoIcons class for iOS style icons.

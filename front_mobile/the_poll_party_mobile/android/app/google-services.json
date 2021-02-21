@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "668202221043",
+    "project_id": "the-poll-party",
+    "storage_bucket": "the-poll-party.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:668202221043:android:aa2ea559f61e3d4530e686",
+        "android_client_info": {
+          "package_name": "com.example.the_poll_party_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "668202221043-tp0836peeqqo8suieenmtkben33d0295.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSxcCwhxdA3osUyOOgrIdsDiuK70mq4xQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "668202221043-tp0836peeqqo8suieenmtkben33d0295.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

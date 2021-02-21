@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:the_poll_party_mobile/components/myIconButton.dart';
@@ -19,21 +22,20 @@ class PhotoAnswerMode extends StatefulWidget {
   _PhotoAnswerModeState createState() => _PhotoAnswerModeState();
 }
 
-class _PhotoAnswerModeState extends State<PhotoAnswerMode> {
+class _PhotoAnswerModeState extends State<PhotoAnswerMode>
+    with WidgetsBindingObserver {
   CameraController _controller;
-  Future<void> _initializerControllerFuture;
+  Future<void> _initController;
   bool isCameraReady = false;
 
-  Future<CameraDescription> initCamera() async {
-    final cameras = await availableCameras();
-    return cameras.first;
-  }
+  //Firebase
+  FirebaseStorage storage = FirebaseStorage.instance;
 
   Future<void> _initializeCamera() async {
     final cameras = await availableCameras();
     final firstCamera = cameras.first;
     _controller = CameraController(firstCamera, ResolutionPreset.medium);
-    _initializerControllerFuture = _controller.initialize();
+    _initController = _controller.initialize();
     if (!mounted) {
       return;
     }
@@ -45,9 +47,13 @@ class _PhotoAnswerModeState extends State<PhotoAnswerMode> {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      _controller != null
-          ? _initializerControllerFuture = _controller.initialize()
+      _initController = _controller != null
+          ? _controller.initialize()
           : null; //on pause camera is disposed, so we need to call again "issue is only for android"
+      if (!mounted) return;
+      setState(() {
+        isCameraReady = true;
+      });
     }
   }
 
@@ -72,13 +78,12 @@ class _PhotoAnswerModeState extends State<PhotoAnswerMode> {
             padding: const EdgeInsets.all(20.0),
             child: Text(
                 'Question: ${widget.socketProvider.getCurrentQuestion().question}',
-                // 'Question: sqdsqd q qsd qs dqd qsd dsqd qsd qsddopskd ?',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
           ),
           Padding(
             padding: const EdgeInsets.all(20),
             child: FutureBuilder<void>(
-              future: _initializerControllerFuture,
+              future: _initController,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return SizedBox(
@@ -106,14 +111,27 @@ class _PhotoAnswerModeState extends State<PhotoAnswerMode> {
                 try {
                   final image = await _controller.takePicture();
                   print(image?.path);
-                  Provider.of<SocketConnectionProvider>(context, listen: false)
-                      .sendAnswer(new Answer(
-                          widget.socketProvider.getCurrentQuestion().id,
-                          image.path.toString()));
+                  Reference ref = storage.ref().child(image.name);
+                  UploadTask uploadTask = ref.putFile(File(image.path));
+                  print("image sent");
+                  var questionId = Provider.of<SocketConnectionProvider>(
+                          context,
+                          listen: false)
+                      .getCurrentQuestion()
+                      .id;
+                  uploadTask.whenComplete(() async {
+                    print("Complete");
+                    var downloadUrl = await ref.getDownloadURL();
+                    print("IMAGE URL: " + downloadUrl);
+                    widget.socketProvider
+                        .sendAnswer(new Answer(questionId, downloadUrl));
+                    print("Provider send");
+                  });
                   Provider.of<SocketConnectionProvider>(context, listen: false)
                       .nextQuestion();
                   widget.timerCallback();
                 } catch (e) {
+                  print("ERROR !!!!!!!!!!!!!!");
                   print(e);
                 }
               },

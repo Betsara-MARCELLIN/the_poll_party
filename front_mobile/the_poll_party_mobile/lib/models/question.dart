@@ -11,7 +11,7 @@ class Question {
       : question = json['question'],
         answer = json['answer'],
         type = json['type'],
-        timer = int.parse(json['timer'] ?? '30'),
+        timer = int.parse(_isNumeric(json['timer']) ? json['timer'] : '30'),
         id = json['id'];
 
   Map<String, dynamic> toJson() => {
@@ -21,4 +21,11 @@ class Question {
         "timer": timer,
         "id": id
       };
+}
+
+bool _isNumeric(String s) {
+  if (s == null) {
+    return false;
+  }
+  return double.parse(s, (e) => null) != null;
 }
