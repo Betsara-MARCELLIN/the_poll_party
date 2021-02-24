@@ -5,7 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:the_poll_party_mobile/components/myIconButton.dart';
-import 'package:the_poll_party_mobile/models/answer.dart';
+import 'package:the_poll_party_mobile/models/response.dart';
 import 'package:the_poll_party_mobile/providers/socketConnectionProvider.dart';
 
 class PhotoAnswerMode extends StatefulWidget {
@@ -114,17 +114,15 @@ class _PhotoAnswerModeState extends State<PhotoAnswerMode>
                   Reference ref = storage.ref().child(image.name);
                   UploadTask uploadTask = ref.putFile(File(image.path));
                   print("image sent");
-                  var questionId = Provider.of<SocketConnectionProvider>(
-                          context,
+                  var question = Provider.of<SocketConnectionProvider>(context,
                           listen: false)
-                      .getCurrentQuestion()
-                      .id;
+                      .getCurrentQuestion();
                   uploadTask.whenComplete(() async {
                     print("Complete");
                     var downloadUrl = await ref.getDownloadURL();
                     print("IMAGE URL: " + downloadUrl);
-                    widget.socketProvider
-                        .sendAnswer(new Answer(questionId, downloadUrl));
+                    widget.socketProvider.sendAnswer(
+                        new Response(question.id, downloadUrl, question.type));
                     print("Provider send");
                   });
                   Provider.of<SocketConnectionProvider>(context, listen: false)

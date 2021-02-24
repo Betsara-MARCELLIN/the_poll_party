@@ -4,6 +4,7 @@ module.exports = class Party {
         this.competitors = [];
         this.questions = [];
         this.questionsVoting = [];
+        this.competitorResponses = [];
     }
 
     getPublicsOfRoom(roomId) {
@@ -30,5 +31,9 @@ module.exports = class Party {
         return this.getQuestionsforVotingOfRoom(roomId).filter(
             (q) => q.id === questionID
         );
+    }
+
+    getCompetitorResponsesOfRoom(roomId) {
+        return this.competitorResponses.filter(r => r.room === roomId);
     }
 };

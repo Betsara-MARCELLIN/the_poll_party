@@ -15,6 +15,7 @@ const Party = require("./app/service/party");
 const Public = require("./app/models/public");
 const Competitor = require("./app/models/competitor");
 const Question = require("./app/models/question");
+const CompetitorResponse = require("./app/models/competitorResponse");
 
 // Topics
 const NEW_MESSAGE_EVENT = "newMessage";
@@ -117,27 +118,42 @@ io.on("connection", (socket) => {
 
     // add response and get points
     socket.on(RESPONSES, (data) => {
-        //check answer and add point
+        //check answer and add point accordingly
         console.log(data);
         if (data) {
             party.competitors.forEach((c) => {
                 if (c.id === socket.id) {
-                    const q = party.questions.find(
-                        (e) => e.id === data.questionId
-                    );
-                    if (
-                        data.answer
-                            .toLowerCase()
-                            .localeCompare(q.answer.toLowerCase())
-                    )
-                        c.score += 10;
-                    console.log(c.name + " : " + c.score);
+                    if(data.type.localeCompare('Photo')) {
+                        console.log("photo waiting for vote");
+                    } else {
+                        const q = party.questions.find(
+                            (e) => e.id === data.questionId
+                        );
+                        if (
+                            data.response
+                                .toLowerCase()
+                                .localeCompare(q.answer.toLowerCase())
+                        )
+                            c.score += 10;
+                        console.log(c.name + " : " + c.score);
+                    }
                 }
             });
         }
+
+        const r = new CompetitorResponse(data.questionId, data.response, data.type, socket.id, roomId);
+
+        //send ranking to room
         io.in(roomId).emit(RANKING, {
             ranking: party.getRankedCompetitorsOfRoom(roomId),
         });
+
+        //send answer to competitors
+        io.in(roomId).emit(RESPONSES, r);
+
+        //save answer 
+        party.questions.push(r);
+
     });
 
     // Listen to connections

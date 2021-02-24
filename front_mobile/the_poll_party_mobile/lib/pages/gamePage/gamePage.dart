@@ -122,18 +122,18 @@ class _GamePageState extends State<GamePage> {
 
   buildAnswerMode(String type, var socketProvider) {
     switch (type) {
-      // case 'Libre':
-      //   return TextAnswerMode(
-      //     socketProvider: socketProvider,
-      //     answerController: _answerController,
-      //     timerCallback: _startTimer,
-      //   );
+      case 'Libre':
+        return TextAnswerMode(
+          socketProvider: socketProvider,
+          answerController: _answerController,
+          timerCallback: _startTimer,
+        );
       case 'Slider':
         return MotionAnswerMode(
           socketProvider: socketProvider,
           timerCallback: _startTimer,
         );
-      case 'Libre':
+      case 'Photo':
         return PhotoAnswerMode(
           socketProvider: socketProvider,
           timerCallback: _startTimer,

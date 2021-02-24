@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:socket_io_client/socket_io_client.dart';
-import 'package:the_poll_party_mobile/models/answer.dart';
 import 'package:the_poll_party_mobile/models/player.dart';
 import 'package:the_poll_party_mobile/models/public.dart';
 import 'package:the_poll_party_mobile/models/question.dart';
+import 'package:the_poll_party_mobile/models/response.dart';
 
 class SocketConnectionProvider extends ChangeNotifier {
   Socket socket;
@@ -81,9 +81,9 @@ class SocketConnectionProvider extends ChangeNotifier {
   }
 
   // Send a Message to the server
-  sendAnswer(Answer answer) {
-    print(answer);
-    socket.emit("responses", answer.toJson());
+  sendAnswer(Response response) {
+    print(response);
+    socket.emit("responses", response.toJson());
   }
 
   // Listen to all question events from public
