@@ -12,13 +12,22 @@ class SocketConnectionProvider extends ChangeNotifier {
   List<Public> publics = [];
   List<Competitor> competitors = [];
   List<Question> questions = [];
+  List<Response> responses = [];
 
   List<Public> get getPublics => publics;
   List<Competitor> get getCompetitors => competitors;
   List<Question> get getQuestions => questions;
+  List<Response> get getResponses => responses;
 
   Question getCurrentQuestion() {
     return questions.length > 0 ? questions[0] : null;
+  }
+
+  List<Response> getCurrentResponse(int questionId) {
+    if (responses.length > 0) {
+      return responses.where((r) => r.questionId == questionId).toList();
+    }
+    return new List<Response>();
   }
 
   void nextQuestion() {
@@ -55,6 +64,7 @@ class SocketConnectionProvider extends ChangeNotifier {
       socket.on('partyConnections', (_) => _handleConnections(_));
       socket.on('ranking', (_) => _handleCompetitorRanking(_));
       socket.on('updateQuestionsOrder', (_) => _handleQuestionUpdate(_));
+      socket.on('responses', (_) => _handleResponses(_));
 
       // Join room
       _enterRoom(roomId, playerName);
@@ -109,6 +119,15 @@ class SocketConnectionProvider extends ChangeNotifier {
     questions.addAll(questionsOrderUpdated);
     print("UPDATED QUESTIONS");
     print(questions);
+    notifyListeners();
+  }
+
+  void _handleResponses(Map<String, dynamic> data) {
+    print("NEW RESPONSE RECEIVED");
+    print(data);
+    responses.add(new Response.fromJson(data));
+    print("responses:");
+    print(responses);
     notifyListeners();
   }
 

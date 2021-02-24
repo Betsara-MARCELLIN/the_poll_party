@@ -11,6 +11,8 @@ import 'package:the_poll_party_mobile/providers/socketConnectionProvider.dart';
 import 'package:the_poll_party_mobile/styles/Colors.dart';
 import 'package:the_poll_party_mobile/styles/Shapes.dart';
 
+import 'components/endOfQuestions.dart';
+
 class GamePage extends StatefulWidget {
   GamePage({Key key, this.title}) : super(key: key);
   final String title;
@@ -122,47 +124,22 @@ class _GamePageState extends State<GamePage> {
 
   buildAnswerMode(String type, var socketProvider) {
     switch (type) {
-      case 'Libre':
-        return TextAnswerMode(
-          socketProvider: socketProvider,
-          answerController: _answerController,
-          timerCallback: _startTimer,
-        );
+      // case 'Libre':
+      //   return TextAnswerMode(
+      //     socketProvider: socketProvider,
+      //     answerController: _answerController,
+      //     timerCallback: _startTimer,
+      //   );
       case 'Slider':
         return MotionAnswerMode(
           socketProvider: socketProvider,
           timerCallback: _startTimer,
         );
-      case 'Photo':
+      case 'Libre':
         return PhotoAnswerMode(
           socketProvider: socketProvider,
           timerCallback: _startTimer,
         );
     }
-  }
-}
-
-class EndOfQuestions extends StatelessWidget {
-  const EndOfQuestions({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Text("Vous n'avez pas de nouvelles questions",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-          Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: MyIconButton(
-                callback: () => Navigator.pushNamed(context, '/ranking'),
-                text: 'Voir classement',
-                icon: Icons.emoji_events),
-          )
-        ],
-      ),
-    );
   }
 }
