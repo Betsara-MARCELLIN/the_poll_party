@@ -24,6 +24,8 @@ const RESPONSES = "responses";
 const NEW_QUESTIONS = "addQuestions";
 const NEW_VOTING_QUESTIONS = "addQuestionsforVoting";
 const NEW_VOTING_QUESTIONS_RESPONSE = "addQuestionsforVotingResponse";
+const UPDATE_QUESTION = "updateQuestion";
+const UPDATE_QUESTIONS_ORDER = "updateQuestionsOrder";
 const RANKING = "ranking";
 const PARTY_CONNECTIONS = "partyConnections";
 
@@ -34,11 +36,11 @@ io.on("connection", (socket) => {
     console.log(`Client ${socket.id} connected`);
 
     // Join a room
-    let { roomId } = socket.handshake.query;
+    let { roomId, publicName } = socket.handshake.query;
     if (roomId) {
         socket.join(roomId);
         party.publics.push(
-            new Public(socket.id, `public${party.publics.length}`, roomId)
+            new Public(socket.id, publicName, roomId)
         );
 
         InformRoomConnections(roomId);
@@ -102,16 +104,24 @@ io.on("connection", (socket) => {
             questionVoting[0].no +
             questionVoting[0].yes;
         if (totalVote == party.publics.length) {
+            let publicUser = null
+            party.publics.forEach((public) => {
+                if(public.id == questionVoting[0].senderId ){
+                    publicUser = public
+                }
+            })
+
             if (questionVoting[0].no < questionVoting[0].yes) {
                 io.in(roomId).emit(NEW_QUESTIONS, questionVoting);
                 party.questions.push(...questionVoting);
-                console.log(party.questions)
+                publicUser.score += 10
             } else {
                 party.publics.forEach((public) => {
                     socket.broadcast
                         .to(public.id)
                         .emit(NEW_QUESTIONS, "refuse");
                 });
+                publicUser.score -= 5
             }
         }
     });
@@ -120,9 +130,11 @@ io.on("connection", (socket) => {
     socket.on(RESPONSES, (data) => {
         //check answer and add point accordingly
         console.log(data);
+        let userName = null
         if (data) {
             party.competitors.forEach((c) => {
                 if (c.id === socket.id) {
+                    userName = c.name
                     if(data.type.localeCompare('Photo')) {
                         console.log("photo waiting for vote");
                     } else {
@@ -141,19 +153,35 @@ io.on("connection", (socket) => {
             });
         }
 
-        const r = new CompetitorResponse(data.questionId, data.response, data.type, socket.id, roomId);
+        const r = new CompetitorResponse(data.questionId, data.response, data.type, socket.id, userName, roomId);
 
         //send ranking to room
         io.in(roomId).emit(RANKING, {
             ranking: party.getRankedCompetitorsOfRoom(roomId),
         });
 
-        //send answer to competitors
-        io.in(roomId).emit(RESPONSES, r);
-
         //save answer 
-        party.questions.push(r);
+        party.competitorResponses.push(r);
+        
+        //add counter responses
+        let question = party.getQuestionOfRoom(roomId, data.questionId);
+        question[0].nbResponses++;
 
+        //fix question index
+        if(question[0].nbResponses > 1){
+            question[0].isDisable = true;
+            io.in(roomId).emit(UPDATE_QUESTION, question);
+        }
+         //send answer to competitors
+        if(question[0].nbResponses == party.competitors.length){
+            let responses = party.getCompetitorResponsesOfRoomForQuestion(roomId, data.questionId)
+            io.in(roomId).emit(RESPONSES, responses);
+        }
+
+    });
+
+    socket.on(UPDATE_QUESTIONS_ORDER, (questionsList) => {
+        io.in(roomId).emit(UPDATE_QUESTIONS_ORDER, questionsList);
     });
 
     // Listen to connections

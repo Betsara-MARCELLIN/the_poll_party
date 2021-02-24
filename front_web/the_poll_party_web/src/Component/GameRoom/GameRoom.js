@@ -13,20 +13,19 @@ import Classement from "../Classement/Classement"
 
 import "./GameRoom.css";
 import 'react-toastify/dist/ReactToastify.css';
+import { version } from "react";
 
 const GameRoom = (props) => {
-    const { roomId } = props.match.params; // Gets roomId from URL
-    const { messages, questionsVoting, questions, ranking, sendMessage, sendQuestion, sendQuestionVotingResult } = useServer(roomId); // Creates a websocket and manages 
+    const { messages, questionsVoting, questions, ranking, responses,sendMessage, sendQuestion, sendQuestionVotingResult, orderQuestionsList } = useServer(props.location.query.roomId, props.location.query.public); // Creates a websocket and manages 
 
-    console.log(questionsVoting)
     return (
         <div>
             <Row>
                 <Col md="2" className="Question-list">
-                    <QuestionList questions={questions}/>
+                    <QuestionList questions={questions} orderQuestionsList={orderQuestionsList}/>
                 </Col>
                 <Col md="8" >
-                    <h1 className="room-name">Salle: {roomId}</h1>
+                    <h1 className="room-name">Salle: {props.location.query.roomId}</h1>
                     <QuestionListVoting questionsVoting={questionsVoting}/>
                     <QuestionVoting questionsVoting={questionsVoting} sendQuestionVotingResult={sendQuestionVotingResult} />
                     <Row>

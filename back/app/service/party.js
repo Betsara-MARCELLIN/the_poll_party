@@ -18,11 +18,20 @@ module.exports = class Party {
     getRankedCompetitorsOfRoom(roomId) {
         return this.competitors
             .filter((c) => c.room === roomId)
-            .sort((a, b) => a.score.localeCompare(b.score));
+            .sort((a, b) => a.score > b.score);
+    }
+
+    getRankedPublicsOfRoom(roomId) {
+        return this.publics
+            .filter((c) => c.room === roomId)
+            .sort((a, b) => a.score > b.score);
     }
 
     getQuestionsOfRoom(roomId) {
         return this.questions.filter((q) => q.room === roomId);
+    }
+    getQuestionOfRoom(roomId, questionID) {
+        return this.getQuestionsOfRoom(roomId).filter((q) => q.id === questionID);
     }
     getQuestionsforVotingOfRoom(roomId) {
         return this.questionsVoting.filter((q) => q.room === roomId);
@@ -35,5 +44,9 @@ module.exports = class Party {
 
     getCompetitorResponsesOfRoom(roomId) {
         return this.competitorResponses.filter(r => r.room === roomId);
+    }
+
+    getCompetitorResponsesOfRoomForQuestion(roomId, questionID) {
+        return this.getCompetitorResponsesOfRoom(roomId).filter((q) => q.questionId === questionID);
     }
 };

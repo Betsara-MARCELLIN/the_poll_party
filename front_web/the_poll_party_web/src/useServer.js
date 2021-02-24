@@ -5,19 +5,23 @@ const NEW_MESSAGE_EVENT = "newMessage";
 const NEW_QUESTIONS = "addQuestions";
 const NEW_VOTING_QUESTIONS = "addQuestionsforVoting";
 const NEW_VOTING_QUESTIONS_RESPONSE = "addQuestionsforVotingResponse";
+const UPDATE_QUESTION = "updateQuestion";
+const UPDATE_QUESTIONS_ORDER = "updateQuestionsOrder";
 const RANKING = "ranking";
+const RESPONSES = "responses";
 const SOCKET_SERVER_URL = "http://127.0.0.1:3000";
 
-const useServer = (roomId) => {
+const useServer = (roomId, publicName) => {
     const [messages, setMessages] = useState([]);
     const [questionsVoting, setQuestionsVoting] = useState([]);
     const [questions, setQuestions] = useState([]);
     const [ranking, setRanking] = useState([]);
+    const [responses, setResponses] = useState([]);
     const socketRef = useRef();
 
     useEffect(() => {
         socketRef.current = socketIOClient(SOCKET_SERVER_URL, {
-            query: { roomId },
+            query: { roomId, publicName },
         });
 
         socketRef.current.on(NEW_MESSAGE_EVENT, (message) => {
@@ -47,6 +51,17 @@ const useServer = (roomId) => {
             }
         });
 
+        
+        socketRef.current.on(UPDATE_QUESTION, (question) => {
+            let newQuestions =  questions;
+            newQuestions.forEach(quest => {
+                if(quest[0].id == question[0].id){
+                    quest[0].isDisable = true;
+                }
+            })
+            setQuestions(newQuestions)
+        });
+
         socketRef.current.on(RANKING, (rank) => {
             console.log(rank.ranking[0]);
             let ranks = [];
@@ -55,6 +70,10 @@ const useServer = (roomId) => {
                 ranks.push(incomingRank);
             });
             setRanking(ranks);
+        });
+
+        socketRef.current.on(RESPONSES, (userResponses) => {
+            setResponses(userResponses)
         });
 
         return () => {
@@ -102,15 +121,21 @@ const useServer = (roomId) => {
         }
         setQuestionsVoting(array);
     };
+    
+    const orderQuestionsList = (questionsList) =>{
+        socketRef.current.emit(UPDATE_QUESTIONS_ORDER, questionsList);
+    }
 
     return {
         messages,
         questionsVoting,
         questions,
         ranking,
+        responses,
         sendMessage,
         sendQuestion,
         sendQuestionVotingResult,
+        orderQuestionsList,
     };
 };
 
