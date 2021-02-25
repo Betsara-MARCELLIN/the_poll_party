@@ -14,6 +14,7 @@ const RESPONSES_VOTING = "responsesVoting";
 
 const CLOSE_QUESTION = "closeQuestion";
 const CLOSE_GAME = "closeGame";
+const DATA_GAME = "dataGame";
 
 const SOCKET_SERVER_URL = "http://127.0.0.1:3000";
 
@@ -21,10 +22,14 @@ const useServer = (roomId, publicName) => {
     const [messages, setMessages] = useState([]);
     const [questionsVoting, setQuestionsVoting] = useState([]);
     const [questions, setQuestions] = useState([]);
-    const [ranking, setRanking] = useState([]);
+    const [competitorRanking, setCompetitorRanking] = useState([]);
+    const [publicsRanking, setPublicsRanking] = useState([]);
     const [responses, setResponses] = useState([]);
     const [isClosedQuestion, setIsClosedQuestion] = useState(false);
     const [isClosedGame, setIsClosedGame] = useState(false);
+
+    const [publics, setPublics] = useState([]);
+    const [competitors, setCompetitors] = useState([]);
     const socketRef = useRef();
 
     useEffect(() => {
@@ -43,7 +48,7 @@ const useServer = (roomId, publicName) => {
         socketRef.current.on(NEW_VOTING_QUESTIONS, (questionVoting) => {
             const incomingQuestion = {
                 ...questionVoting,
-                type : "Question",
+                type_data : "Question",
             };
             setQuestionsVoting((questionsVoting) => [...questionsVoting, incomingQuestion,]);
         });
@@ -55,7 +60,7 @@ const useServer = (roomId, publicName) => {
         socketRef.current.on(UPDATE_QUESTIONS_ORDER_VOTING, (questions) => {
             const incomingQuestions = {
                 ...questions,
-                type : "Order",
+                type_data : "Order",
             };
             setQuestionsVoting((questionsVoting) => [...questionsVoting, incomingQuestions,]);
         });
@@ -89,14 +94,14 @@ const useServer = (roomId, publicName) => {
                 const incomingRank = [i + 1, competitor.name, competitor.score];
                 ranks.push(incomingRank);
             });
-            setRanking(ranks);
+            setCompetitorRanking(ranks);
         });
 
         socketRef.current.on(RESPONSES, (userResponses) => {
             if(userResponses[0].type == "Photo"){
                 const incomingResponse = {
                     ...userResponses,
-                    type : "Responses",
+                    type_data : "Responses",
                 };
                 setQuestionsVoting((ResponsesVoting) => [...ResponsesVoting, incomingResponse,]);
             }
@@ -108,7 +113,17 @@ const useServer = (roomId, publicName) => {
         });
 
         socketRef.current.on(CLOSE_GAME, (bool) => {
-            setIsClosedGame(bool);
+            socketRef.current.emit(CLOSE_GAME,"");
+        });
+
+        socketRef.current.on(DATA_GAME, (data) => {
+            setQuestions(data.questionList)
+            setResponses(data.responses)
+            setPublics(data.publics)
+            setCompetitors(data.competitors)
+            setCompetitorRanking(data.competitorRanking)
+            setPublicsRanking(data.publicRanking)
+            setIsClosedGame(data.bool);
         });
 
         return () => {
@@ -177,10 +192,13 @@ const useServer = (roomId, publicName) => {
         messages,
         questionsVoting,
         questions,
-        ranking,
+        competitorRanking,
+        publicsRanking,
         responses,
         isClosedQuestion,
         isClosedGame,
+        publics,
+        competitors,
         sendMessage,
         sendQuestion,
         sendQuestionVotingResult,

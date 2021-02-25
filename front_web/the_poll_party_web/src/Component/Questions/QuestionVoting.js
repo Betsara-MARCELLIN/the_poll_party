@@ -30,7 +30,7 @@ const QuestionVoting = (props) => {
         if(questionsVoting[0] == null){
             return 
         }
-        switch(questionsVoting[0].type){
+        switch(questionsVoting[0].type_data){
             case "Question":
                 return <h3 className={classes.cardTitle}>{questionsVoting[0].question}</h3>
             case "Order":
@@ -47,7 +47,7 @@ const QuestionVoting = (props) => {
         }
 
         
-        switch(questionsVoting[0].type){
+        switch(questionsVoting[0].type_data){
             case "Question":
                 return <Row className="text-center">
                             <Col md="2"><h4>Type : <span>{questionsVoting[0].type}</span> </h4></Col>
@@ -67,7 +67,7 @@ const QuestionVoting = (props) => {
         if(questionsVoting[0] == null){
             return 
         }
-        switch(questionsVoting[0].type){
+        switch(questionsVoting[0].type_data){
             case "Question":
                 if (vote == "null") {
                     return <CardFooter stats >
@@ -77,6 +77,7 @@ const QuestionVoting = (props) => {
                 }
                 return <h4 className="text-center">A voté !</h4>
             case "Order":
+                console.log(questionsVoting[0])
                 return  //<Button  variant="contained" color="primary" > Envoyer</Button>
             case "Responses":
                 return //<Button  variant="contained" color="primary" > Envoyer</Button>
@@ -142,7 +143,7 @@ const QuestionVoting = (props) => {
                     <CardBody>
                     {displayBody()}
 
-                    {questionsVoting[0]? questionsVoting[0].type == "Order" ? 
+                    {questionsVoting[0]? questionsVoting[0].type_data == "Order" ? 
                     <Row>
                         {questionsVoting.map(questions =>{
                             return Object.values(questions).map(question=>{
@@ -172,7 +173,7 @@ const QuestionVoting = (props) => {
                             })
                         })}</Row>:<div></div>:<div></div>}
 
-                    {questionsVoting[0]? questionsVoting[0].type == "Responses" ? 
+                    {questionsVoting[0]? questionsVoting[0].type_data == "Responses" ? 
                     <Row>
                         {questionsVoting.map(responses =>{
                             return Object.values(responses).map(response=>{

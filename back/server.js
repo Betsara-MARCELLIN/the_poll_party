@@ -33,6 +33,7 @@ const PARTY_CONNECTIONS = "partyConnections";
 
 const CLOSE_QUESTION = "closeQuestion";
 const CLOSE_GAME = "closeGame";
+const DATA_GAME = "dataGame";
 
 // PERSISTENCE
 const party = new Party();
@@ -109,7 +110,7 @@ io.on("connection", (socket) => {
             questionVoting[0].no +
             questionVoting[0].yes;
 
-        if (totalVote == party.publics.length) {
+        if (totalVote == party.getPublicsOfRoom(roomId).length) {
             let publicUser = null
             party.publics.forEach((public) => {
                 if(public.id == questionVoting[0].senderId ){
@@ -122,7 +123,7 @@ io.on("connection", (socket) => {
                 party.questions.push(...questionVoting);
                 publicUser.score += 10
 
-                if(party.questions.length >= 10){
+                if(party.getQuestionsOfRoom(roomId).length >= 10){
                     io.in(roomId).emit(CLOSE_QUESTION, true);
                 }
             } else {
@@ -184,11 +185,15 @@ io.on("connection", (socket) => {
             io.in(roomId).emit(UPDATE_QUESTION, question);
         }
          //send answer to competitors
-        if(question[0].nbResponses == party.competitors.length){
+        if(question[0].nbResponses == party.getCompetitorsOfRoom(roomId).length){
             let responses = party.getCompetitorResponsesOfRoomForQuestion(roomId, data.questionId)
             io.in(roomId).emit(RESPONSES, responses);
         }
 
+        //send close game if last quesiton
+        if(party.getCompetitorResponsesOfRoom(roomId).length >= 10*party.getCompetitorsOfRoom(roomId).length){
+            io.in(roomId).emit(CLOSE_GAME, true);
+        }
     });
 
     socket.on(RESPONSES_VOTING, (data) => {
@@ -198,7 +203,7 @@ io.on("connection", (socket) => {
             }
             party.responseVoteCounter++;
 
-            if(party.responseVoteCounter == party.publics.length){
+            if(party.responseVoteCounter == party.getPublicsOfRoom(roomId).length){
                 let winRes = party.getCompetitorResponsesOfRoomSortedByScore(roomId,data.questionID)[0];
                 winRes.isWin = true;
                 party.competitors.forEach((c) => {
@@ -211,30 +216,42 @@ io.on("connection", (socket) => {
             
         });
     });
-
-
     socket.on(UPDATE_QUESTIONS_ORDER, (data) => {
-        io.in(roomId).emit(UPDATE_QUESTIONS_ORDER_VOTING, party.questions);
+        io.in(roomId).emit(UPDATE_QUESTIONS_ORDER_VOTING, party.getQuestionsOfRoom(roomId));
     });
 
     socket.on(UPDATE_QUESTIONS_ORDER_VOTING, (question) => {
-        console.log(question)
         let questionVoting = party.getQuestionOfRoom(roomId,question.id);
         questionVoting[0].nbVoteOrder++
         party.orderVoteCounter++
         
-        if(party.orderVoteCounter == party.publics.length){
+        if(party.orderVoteCounter == party.getPublicsOfRoom(roomId).length){
             let newOrder = party.getQuestionOfRoomSortByVote(roomId)
 
             io.in(roomId).emit(UPDATE_QUESTIONS_ORDER, newOrder);
 
             party.setOrderVoteCounter(0)
-            party.questions.forEach(question =>{
+            party.getQuestionsOfRoom(roomId).forEach(question =>{
                 if(!question.isDisable){
                     question.nbVoteOrder = 0
                 }
             })
         }
+
+    });
+
+    //// Listen to close the game
+    socket.on(CLOSE_GAME, (data) => {
+        io.in(roomId).emit(DATA_GAME, {
+            questionList : party.getQuestionsOfRoom(roomId),
+            responses: party.getCompetitorResponsesOfRoom(roomId),
+            publics: party.getPublicsOfRoom(roomId),
+            competitors: party.getCompetitorsOfRoom(roomId),
+            publicRanking : party.getRankedPublicsOfRoom(roomId),
+            competitorRanking : party.getRankedCompetitorsOfRoom(roomId),
+            bool: true,
+        });
+
 
     });
 

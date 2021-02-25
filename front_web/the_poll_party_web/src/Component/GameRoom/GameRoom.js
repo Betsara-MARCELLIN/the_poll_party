@@ -14,21 +14,40 @@ import Classement from "../Classement/Classement"
 import "./GameRoom.css";
 import 'react-toastify/dist/ReactToastify.css';
 import { version } from "react";
+import { Link } from "react-router-dom";
 
 const GameRoom = (props) => {
-    const { messages, 
-        questionsVoting, 
-        questions, 
-        ranking, 
+    const {roomId, publicName} = props.location.query
+    const {messages,
+        questionsVoting,
+        questions,
+        competitorRanking,
+        publicsRanking,
         responses,
         isClosedQuestion,
         isClosedGame,
-        sendMessage, 
-        sendQuestion, 
-        sendQuestionVotingResult, 
-        orderQuestionsList, 
-        orderQuestionsListVote, 
-        sendResponseVote } = useServer(props.location.query.roomId, props.location.query.public); // Creates a websocket and manages 
+        publics,
+        competitors,
+        sendMessage,
+        sendQuestion,
+        sendQuestionVotingResult,
+        orderQuestionsList,
+        orderQuestionsListVote,
+        sendResponseVote } = useServer(roomId, publicName); // Creates a websocket and manages 
+
+        if(isClosedGame){
+            return <Link to={{ 
+                        pathname:`/${roomId}/vizu`,
+                        query :{questionList: questions, 
+                            responses: responses,
+                            publics:publics,
+                            competitors: competitors,
+                            competitorRanking: competitorRanking,
+                            publicRanking: publicsRanking
+                        }}} >
+                        GO TO VISU
+                      </Link>
+        }
 
     return (
         <div>
@@ -45,7 +64,7 @@ const GameRoom = (props) => {
                             <EventsTabs sendQuestion={sendQuestion} isClosedQuestion={isClosedQuestion} />
                         </Col>
                         <Col md="4">
-                            <Classement ranking={ranking}/>
+                            <Classement competitorRanking={competitorRanking}/>
                         </Col>
                     </Row>
                 </Col>

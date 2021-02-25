@@ -24,8 +24,6 @@ const QuestionList = (props) => {
     const sendReOrderQuestions = () => {
         orderQuestionsList(questions)
       };
-    
-    console.log(questions)
 
     return(
         <div>

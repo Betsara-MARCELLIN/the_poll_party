@@ -28,14 +28,14 @@ const QuestionListVoting = (props) => {
                     <Card>
                         <CardHeader icon>
                             <div className="None">
-                                {questionVoting.type === "Order"? colorCard= "info":null}
-                                {questionVoting.type === "Responses"? colorCard= "warning":null}
+                                {questionVoting.type_data === "Order"? colorCard= "info":null}
+                                {questionVoting.type_data === "Responses"? colorCard= "warning":null}
                             </div>
                             <CardIcon color={colorCard}>
                                 <Icon>{i+1}</Icon>
                             </CardIcon>
                             <CardBody>
-                                <h4 className={classes.cardTitle}>{questionVoting.type}</h4>
+                                <h4 className={classes.cardTitle}>{questionVoting.type_data}</h4>
                                 <p className={classes.cardCategory}>{questionVoting.question}</p>
                             </CardBody>
                         </CardHeader>

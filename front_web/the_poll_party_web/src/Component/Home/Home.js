@@ -32,7 +32,7 @@ const Home = () => {
         className="text-input-field"
       />
   
-      <Link to={{ pathname:`/${roomName}`, query :{roomId: roomName, public: userName }}} className="enter-room-button">
+      <Link to={{ pathname:`/${roomName}`, query :{roomId: roomName, publicName: userName }}} className="enter-room-button">
         Join room
       </Link>
     </div>
