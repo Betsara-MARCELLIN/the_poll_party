@@ -19,13 +19,13 @@ module.exports = class Party {
     getRankedCompetitorsOfRoom(roomId) {
         return this.competitors
             .filter((c) => c.room === roomId)
-            .sort((a, b) => a.score > b.score);
+            .sort((a, b) => b.score - a.score);
     }
 
     getRankedPublicsOfRoom(roomId) {
         return this.publics
             .filter((p) => p.room === roomId)
-            .sort((a, b) => a.score > b.score);
+            .sort((a, b) => b.score - a.score);
     }
 
     getQuestionsOfRoom(roomId) {
@@ -37,7 +37,7 @@ module.exports = class Party {
     getQuestionOfRoomSortByVote(roomId){
             return this.questions
                 .filter((r) => r.room === roomId)
-                .sort((a, b) => a.nbVoteOrder > b.nbVoteOrder );
+                .sort((a, b) => b.nbVoteOrder - a.nbVoteOrder );
     }
 
     getQuestionsforVotingOfRoom(roomId) {
