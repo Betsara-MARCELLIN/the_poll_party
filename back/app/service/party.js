@@ -5,7 +5,8 @@ module.exports = class Party {
         this.questions = [];
         this.questionsVoting = [];
         this.competitorResponses = [];
-        this.nbVoteCounter = 0;
+        this.orderVoteCounter = 0;
+        this.responseVoteCounter= 0;
     }
 
     getPublicsOfRoom(roomId) {
@@ -56,11 +57,17 @@ module.exports = class Party {
     getCompetitorResponsesOfRoomForQuestion(roomId, questionID) {
         return this.getCompetitorResponsesOfRoom(roomId).filter((q) => q.questionId === questionID);
     }
-
-    getVoteCounter() {
-        return this.nbVoteCounter;
+    getCompetitorResponsesOfRoomForQuestionSortedByScore(roomId) {
+        return this.getCompetitorResponsesOfRoom(roomId).sort((a, b) => b.nbVote - a.nbVote );
     }
-    setVoteCounter(vote){
-        this.nbVoteCounter = vote;
+
+    getOrderVoteCounter() {
+        return this.orderVoteCounter;
+    }
+    setOrderVoteCounter(vote){
+        this.orderVoteCounter = vote;
+    }
+    setResponseVoteCounter(vote){
+        this.responseVoteCounter = vote;
     }
 };

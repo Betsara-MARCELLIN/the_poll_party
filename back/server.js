@@ -183,6 +183,26 @@ io.on("connection", (socket) => {
 
     });
 
+    socket.on(RESPONSES_VOTING, (data) => {
+        party.getCompetitorResponsesOfRoomForQuestion(roomId, data.questionID).forEach((res) =>{
+            if(res.senderId === data.userID){
+                res.nbVote ++;
+            }
+        party.responseVoteCounter++;
+
+        if(party.responseVoteCounter == party.publics.length){
+            let winRes = party.getCompetitorResponsesOfRoomSortedByScore(roomId,data.questionID)[0];
+            winRes.isWin = true;
+            party.competitors.forEach((c) => {
+                if (c.id === winRes.senderId) {
+                    c.score += 10;
+                }
+            });
+            party.setResponseVoteCounter(0)
+        }
+        
+    });
+
     socket.on(UPDATE_QUESTIONS_ORDER, (data) => {
         io.in(roomId).emit(UPDATE_QUESTIONS_ORDER_VOTING, party.questions);
     });
@@ -190,9 +210,9 @@ io.on("connection", (socket) => {
     socket.on(UPDATE_QUESTIONS_ORDER_VOTING, (question) => {
         let questionVoting = party.getQuestionOfRoom(roomId,question.id);
         questionVoting[0].nbVoteOrder++
-        party.nbVoteCounter++
+        party.orderVoteCounter++
         
-        if(party.nbVoteCounter == party.publics.length){
+        if(party.orderVoteCounter == party.publics.length){
             let newOrder = party.getQuestionOfRoomSortByVote(roomId)
 
             io.in(roomId).emit(UPDATE_QUESTIONS_ORDER, newOrder);

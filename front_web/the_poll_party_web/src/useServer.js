@@ -132,8 +132,11 @@ const useServer = (roomId, publicName) => {
         socketRef.current.emit(UPDATE_QUESTIONS_ORDER_VOTING, vote);
         removeItemOnceFromQuestionsVoting(questionlist, question);
     }
-    const sendResponseVote = (vote, questionlist, question) =>{
-        socketRef.current.emit(RESPONSES_VOTING, vote);
+    const sendResponseVote = (questionID,userID, questionlist, question) =>{
+        socketRef.current.emit(RESPONSES_VOTING, {
+            questionID : questionID,
+            userID: userID,
+        });
         removeItemOnceFromQuestionsVoting(questionlist, question);
     }
 

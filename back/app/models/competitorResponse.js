@@ -6,6 +6,8 @@ module.exports = class CompetitorResponse {
       this.senderId = senderId;
       this.name = name, 
       this.room = room;
+      this.isWin = false;
+      this.nbVote =0;
     }
   }
   

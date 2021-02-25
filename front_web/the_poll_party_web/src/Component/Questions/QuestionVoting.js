@@ -97,8 +97,8 @@ const QuestionVoting = (props) => {
     const handleSendOrder = (data) =>{
         orderQuestionsListVote(questionsVoting[0][data],questionsVoting,questionsVoting[0])
     }
-    const handleSendOResponseVote = (data) =>{
-        sendResponseVote(questionsVoting[0][data],questionsVoting,questionsVoting[0])
+    const handleSendOResponseVote = (q,u) =>{
+        sendResponseVote(q, u,questionsVoting,questionsVoting[0])
     }
 
     const renderer = ({ seconds, completed }) => {
@@ -164,7 +164,7 @@ const QuestionVoting = (props) => {
                         {questionsVoting.map(responses =>{
                             return Object.values(responses).map(response=>{
                                 if(response.response)
-                                return <Card onClick={() => {handleSendOResponseVote(response.senderId) }}>
+                                return <Card onClick={() => {handleSendOResponseVote(response.questionId, response.senderId) }}>
                                             <CardHeader color="success">
                                                 {response.name}
                                             </CardHeader>
