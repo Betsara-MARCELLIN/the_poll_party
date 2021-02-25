@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, version } from "react";
 import socketIOClient from "socket.io-client";
 
 const NEW_MESSAGE_EVENT = "newMessage";
@@ -7,6 +7,7 @@ const NEW_VOTING_QUESTIONS = "addQuestionsforVoting";
 const NEW_VOTING_QUESTIONS_RESPONSE = "addQuestionsforVotingResponse";
 const UPDATE_QUESTION = "updateQuestion";
 const UPDATE_QUESTIONS_ORDER = "updateQuestionsOrder";
+const UPDATE_QUESTIONS_ORDER_VOTING = "updateQuestionsOrderVoting";
 const RANKING = "ranking";
 const RESPONSES = "responses";
 const SOCKET_SERVER_URL = "http://127.0.0.1:3000";
@@ -35,17 +36,27 @@ const useServer = (roomId, publicName) => {
         socketRef.current.on(NEW_VOTING_QUESTIONS, (questionVoting) => {
             const incomingQuestion = {
                 ...questionVoting,
+                type : "Question",
             };
-            setQuestionsVoting((questionsVoting) => [
-                ...questionsVoting,
-                incomingQuestion,
-            ]);
+            setQuestionsVoting((questionsVoting) => [...questionsVoting, incomingQuestion,]);
+        });
+
+        socketRef.current.on(UPDATE_QUESTIONS_ORDER, (questions) => {
+            setQuestions(questions);
+        });
+        
+        socketRef.current.on(UPDATE_QUESTIONS_ORDER_VOTING, (questions) => {
+            const incomingQuestions = {
+                ...questions,
+                type : "Order",
+            };
+            setQuestionsVoting((questionsVoting) => [...questionsVoting, incomingQuestions,]);
         });
 
         socketRef.current.on(NEW_QUESTIONS, (question) => {
             if (question != "refuse") {
                 const incomingQuestion = {
-                    ...question,
+                    ...question[0],
                 };
                 setQuestions((questions) => [...questions, incomingQuestion]);
             }
@@ -62,6 +73,8 @@ const useServer = (roomId, publicName) => {
             setQuestions(newQuestions)
         });
 
+
+
         socketRef.current.on(RANKING, (rank) => {
             console.log(rank.ranking[0]);
             let ranks = [];
@@ -73,6 +86,13 @@ const useServer = (roomId, publicName) => {
         });
 
         socketRef.current.on(RESPONSES, (userResponses) => {
+            if(userResponses[0].type == "Photo"){
+                const incomingResponse = {
+                    ...userResponses,
+                    type : "Responses",
+                };
+                setQuestionsVoting((ResponsesVoting) => [...ResponsesVoting, incomingResponse,]);
+            }
             setResponses(userResponses)
         });
 
@@ -104,6 +124,13 @@ const useServer = (roomId, publicName) => {
         });
         removeItemOnceFromQuestionsVoting(questionlist, question);
     };
+    const orderQuestionsList = (questionsList) =>{
+        socketRef.current.emit(UPDATE_QUESTIONS_ORDER, questionsList);
+    }
+    const orderQuestionsListVote = (vote, questionlist, question) =>{
+        socketRef.current.emit(UPDATE_QUESTIONS_ORDER_VOTING, vote);
+        removeItemOnceFromQuestionsVoting(questionlist, question);
+    }
 
     const removeItemOnceFromQuestionsVoting = (arr, value) => {
         var array = [...arr];
@@ -122,9 +149,7 @@ const useServer = (roomId, publicName) => {
         setQuestionsVoting(array);
     };
     
-    const orderQuestionsList = (questionsList) =>{
-        socketRef.current.emit(UPDATE_QUESTIONS_ORDER, questionsList);
-    }
+
 
     return {
         messages,
@@ -136,6 +161,7 @@ const useServer = (roomId, publicName) => {
         sendQuestion,
         sendQuestionVotingResult,
         orderQuestionsList,
+        orderQuestionsListVote,
     };
 };
 

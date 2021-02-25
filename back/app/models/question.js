@@ -10,5 +10,8 @@ module.exports = class Question {
     this.yes = 0;
     this.no = 0;
     this.neutral = 0;
+    this.nbResponses = 0;
+    this.nbVoteOrder = 0;
+    this.isDisable = false;
   }
 }

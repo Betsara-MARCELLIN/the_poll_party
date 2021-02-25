@@ -14,6 +14,7 @@ const QuestionForm = (props) => {
 
 	});
     const handleChange = (newData) => { setFormData(newData); };
+    const handleChangeResponse = (response) => {setFormData({reponses: response});}
 
     const handleSendQuestion = () => {
         sendQuestion(formData.question, formData.reponses, questionType, formData.timer);
@@ -44,31 +45,11 @@ const QuestionForm = (props) => {
                 <Field component={Input} type="input" name="reponses" id="reponses" placeholder="Reponse" value={formData.reponses} />
                 <FieldError name="reponses" />
             </FormGroup>
-            case "QCM":
-                return <div>
-                        <FormGroup>
-                            <Label for="qcmtext_1">Réponses</Label>
-                            <Row>
-                                <Col><Input required type="text" name="qcmtext_1" id="qcmtext_1" placeholder="Reponse A" /></Col>
-                                <Col><Input required type="text" name="qcmtext_2" id="qcmtext_2" placeholder="Reponse B"  /></Col>
-                            </Row>
-                            <Row>
-                                <Col><Input required type="text" name="qcmtext_3" id="qcmtext_3" placeholder="Reponse C" /></Col>
-                                <Col><Input required type="text" name="qcmtext_4" id="qcmtext_4" placeholder="Reponse D" /></Col>
-                            </Row>
-                        </FormGroup>
-                        <FormGroup>
-                            <Label for="qcmRightAnswer">Selectionner la bonne réponse</Label>
-                            <Input type="select" name="qcmRightAnswer" id="qcmRightAnswer">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                            </Input>
-                        </FormGroup>
-                    </div>
-            default:
+            case "Photo":
                 return
+                
+            default:
+                return 
         }
             
     }

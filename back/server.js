@@ -26,6 +26,7 @@ const NEW_VOTING_QUESTIONS = "addQuestionsforVoting";
 const NEW_VOTING_QUESTIONS_RESPONSE = "addQuestionsforVotingResponse";
 const UPDATE_QUESTION = "updateQuestion";
 const UPDATE_QUESTIONS_ORDER = "updateQuestionsOrder";
+const UPDATE_QUESTIONS_ORDER_VOTING = "updateQuestionsOrderVoting";
 const RANKING = "ranking";
 const PARTY_CONNECTIONS = "partyConnections";
 
@@ -180,8 +181,26 @@ io.on("connection", (socket) => {
 
     });
 
-    socket.on(UPDATE_QUESTIONS_ORDER, (questionsList) => {
-        io.in(roomId).emit(UPDATE_QUESTIONS_ORDER, questionsList);
+    socket.on(UPDATE_QUESTIONS_ORDER, (data) => {
+        io.in(roomId).emit(UPDATE_QUESTIONS_ORDER_VOTING, party.questions);
+    });
+
+    socket.on(UPDATE_QUESTIONS_ORDER_VOTING, (question) => {
+        let questionVoting = party.getQuestionOfRoom(roomId,question.id);
+        questionVoting[0].nbVoteOrder++
+        party.nbVoteCounter++
+        
+        if(party.nbVoteCounter == party.publics.length){
+            let newOrder = party.getQuestionOfRoomSortByVote(roomId)
+
+            io.in(roomId).emit(UPDATE_QUESTIONS_ORDER, newOrder);
+            
+            party.setVoteCounter(0)
+            party.questions.forEach(question =>{
+                question.nbVoteOrder = 0
+            })
+        }
+
     });
 
     // Listen to connections

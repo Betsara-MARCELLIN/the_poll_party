@@ -18,6 +18,7 @@ const QuestionListVoting = (props) => {
     const {questionsVoting}= props;
     const classes = useStyles();
 
+    let colorCard = "success";
     return(
         <div>
             <h4>Total de question à voter : {questionsVoting.length}</h4>
@@ -26,11 +27,15 @@ const QuestionListVoting = (props) => {
                 <Col md="3" key={i}>
                     <Card>
                         <CardHeader icon>
-                            <CardIcon color="success">
+                            <div className="None">
+                                {questionVoting.type === "Order"? colorCard= "info":null}
+                                {questionVoting.type === "Responses"? colorCard= "warning":null}
+                            </div>
+                            <CardIcon color={colorCard}>
                                 <Icon>{i+1}</Icon>
                             </CardIcon>
                             <CardBody>
-                                <h4 className={classes.cardTitle}>Question</h4>
+                                <h4 className={classes.cardTitle}>{questionVoting.type}</h4>
                                 <p className={classes.cardCategory}>{questionVoting.question}</p>
                             </CardBody>
                         </CardHeader>
