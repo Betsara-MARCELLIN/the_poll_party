@@ -34,3 +34,10 @@ hr{
 .None{
     display: none;
 }
+
+
+.media {
+    align-self:center;
+    width: 50%;
+    height: 50%;
+  }

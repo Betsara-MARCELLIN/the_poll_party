@@ -12,6 +12,7 @@ import CardHeader from "../Card/CardHeader.js";
 import CardIcon from "../Card/CardIcon.js";
 import CardBody from "../Card/CardBody.js";
 import CardFooter from "../Card/CardFooter.js";
+import CardMedia from '@material-ui/core/CardMedia';
 
 import "./Question.css";
 
@@ -49,8 +50,9 @@ const QuestionVoting = (props) => {
         switch(questionsVoting[0].type){
             case "Question":
                 return <Row className="text-center">
-                            <Col md="6"><h4>Réponse : <span>{questionsVoting[0].answer}</span></h4></Col>
-                            <Col md="6"><h4>Type : <span>{questionsVoting[0].type}</span> </h4></Col>
+                            <Col md="2"><h4>Type : <span>{questionsVoting[0].type}</span> </h4></Col>
+                            <Col md="10"><h4>Réponse : <span>{questionsVoting[0].answer}</span></h4></Col>
+                            
                         </Row>
             case "Order":
                 return 
@@ -146,14 +148,25 @@ const QuestionVoting = (props) => {
                             return Object.values(questions).map(question=>{
                                 if(question.question){
                                     if(!question.isDisable)
-                                        return <Card onClick={() => { handleSendOrder(question.id) }}>
-                                                    <CardHeader color="success">
-                                                        {question.question}
-                                                    </CardHeader>
-                                                    <CardBody>
-                                                        {question.type}
-                                                    </CardBody>
-                                                </Card>
+                                        return <Col md="6">
+                                                    <Card onClick={() => { handleSendOrder(question.id) }}>
+                                                        <CardHeader color="success">
+                                                            {question.question}
+                                                        </CardHeader>
+                                                        <CardBody>
+                                                            <Row>
+                                                                <Col md="2">
+                                                                    {question.type}
+                                                                </Col>
+                                                                <Col md="10">
+                                                                    {question.answer} 
+                                                                </Col>
+                                                            </Row>
+                                                            
+                                                        </CardBody>
+                                                    </Card>
+                                                </Col>
+                                        
                                 }
 
                             })
@@ -164,14 +177,16 @@ const QuestionVoting = (props) => {
                         {questionsVoting.map(responses =>{
                             return Object.values(responses).map(response=>{
                                 if(response.response)
-                                return <Card onClick={() => {handleSendOResponseVote(response.questionId, response.senderId) }}>
-                                            <CardHeader color="success">
-                                                {response.name}
-                                            </CardHeader>
-                                            <CardBody>
-                                                <img src={response.response} />
-                                            </CardBody>
-                                        </Card>
+                                return <Col md="6">
+                                            <Card onClick={() => {handleSendOResponseVote(response.questionId, response.senderId) }}>
+                                                <CardHeader color="success">
+                                                    {response.name}
+                                                </CardHeader>
+                                                <CardBody>
+                                                    <img className="media" src={response.response} alt={response.name}/>
+                                                </CardBody>
+                                            </Card>
+                                        </Col>
                             })
                         })}</Row>:<div></div>:<div></div>}
                     </CardBody>

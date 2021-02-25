@@ -188,26 +188,29 @@ io.on("connection", (socket) => {
             if(res.senderId === data.userID){
                 res.nbVote ++;
             }
-        party.responseVoteCounter++;
+            party.responseVoteCounter++;
 
-        if(party.responseVoteCounter == party.publics.length){
-            let winRes = party.getCompetitorResponsesOfRoomSortedByScore(roomId,data.questionID)[0];
-            winRes.isWin = true;
-            party.competitors.forEach((c) => {
-                if (c.id === winRes.senderId) {
-                    c.score += 10;
-                }
-            });
-            party.setResponseVoteCounter(0)
-        }
-        
+            if(party.responseVoteCounter == party.publics.length){
+                let winRes = party.getCompetitorResponsesOfRoomSortedByScore(roomId,data.questionID)[0];
+                winRes.isWin = true;
+                party.competitors.forEach((c) => {
+                    if (c.id === winRes.senderId) {
+                        c.score += 10;
+                    }
+                });
+                party.setResponseVoteCounter(0)
+            }
+            
+        });
     });
+
 
     socket.on(UPDATE_QUESTIONS_ORDER, (data) => {
         io.in(roomId).emit(UPDATE_QUESTIONS_ORDER_VOTING, party.questions);
     });
 
     socket.on(UPDATE_QUESTIONS_ORDER_VOTING, (question) => {
+        console.log(question)
         let questionVoting = party.getQuestionOfRoom(roomId,question.id);
         questionVoting[0].nbVoteOrder++
         party.orderVoteCounter++
@@ -217,7 +220,7 @@ io.on("connection", (socket) => {
 
             io.in(roomId).emit(UPDATE_QUESTIONS_ORDER, newOrder);
 
-            party.setVoteCounter(0)
+            party.setOrderVoteCounter(0)
             party.questions.forEach(question =>{
                 if(!question.isDisable){
                     question.nbVoteOrder = 0
