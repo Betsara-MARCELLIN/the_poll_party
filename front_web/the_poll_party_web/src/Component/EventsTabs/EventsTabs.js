@@ -11,7 +11,14 @@ import CustomTabs from "../CustomTabs/CustomTabs.js";
 import QuestionForm from "./QuestionForm"
 
 const EventsTabs = (props) => {
-    const { sendQuestion } = props;
+    const { sendQuestion , isClosedQuestion} = props;
+
+    const renderer = () => {
+        if(isClosedQuestion){
+            return <h4 className="text-center">Le maximum de question a été atteint.</h4>
+        }
+        return <QuestionForm sendQuestion={sendQuestion} />
+      };
 
     return(
         <CustomTabs
@@ -22,7 +29,7 @@ const EventsTabs = (props) => {
             tabName: "Créer une Question",
             tabIcon: QuestionAnswerIcon,
             tabContent: (
-                <QuestionForm sendQuestion={sendQuestion}/>
+                renderer()
             )
             },
             {

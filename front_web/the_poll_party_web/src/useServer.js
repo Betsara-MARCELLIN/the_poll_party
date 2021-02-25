@@ -11,6 +11,10 @@ const UPDATE_QUESTIONS_ORDER_VOTING = "updateQuestionsOrderVoting";
 const RANKING = "ranking";
 const RESPONSES = "responses";
 const RESPONSES_VOTING = "responsesVoting";
+
+const CLOSE_QUESTION = "closeQuestion";
+const CLOSE_GAME = "closeGame";
+
 const SOCKET_SERVER_URL = "http://127.0.0.1:3000";
 
 const useServer = (roomId, publicName) => {
@@ -19,6 +23,8 @@ const useServer = (roomId, publicName) => {
     const [questions, setQuestions] = useState([]);
     const [ranking, setRanking] = useState([]);
     const [responses, setResponses] = useState([]);
+    const [isClosedQuestion, setIsClosedQuestion] = useState(false);
+    const [isClosedGame, setIsClosedGame] = useState(false);
     const socketRef = useRef();
 
     useEffect(() => {
@@ -97,6 +103,14 @@ const useServer = (roomId, publicName) => {
             setResponses(userResponses)
         });
 
+        socketRef.current.on(CLOSE_QUESTION, (bool) => {
+            setIsClosedQuestion(bool);
+        });
+
+        socketRef.current.on(CLOSE_GAME, (bool) => {
+            setIsClosedGame(bool);
+        });
+
         return () => {
             socketRef.current.disconnect();
         };
@@ -165,6 +179,8 @@ const useServer = (roomId, publicName) => {
         questions,
         ranking,
         responses,
+        isClosedQuestion,
+        isClosedGame,
         sendMessage,
         sendQuestion,
         sendQuestionVotingResult,

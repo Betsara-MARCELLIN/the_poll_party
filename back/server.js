@@ -31,6 +31,9 @@ const UPDATE_QUESTIONS_ORDER_VOTING = "updateQuestionsOrderVoting";
 const RANKING = "ranking";
 const PARTY_CONNECTIONS = "partyConnections";
 
+const CLOSE_QUESTION = "closeQuestion";
+const CLOSE_GAME = "closeGame";
+
 // PERSISTENCE
 const party = new Party();
 
@@ -105,6 +108,7 @@ io.on("connection", (socket) => {
             questionVoting[0].neutral +
             questionVoting[0].no +
             questionVoting[0].yes;
+
         if (totalVote == party.publics.length) {
             let publicUser = null
             party.publics.forEach((public) => {
@@ -117,6 +121,10 @@ io.on("connection", (socket) => {
                 io.in(roomId).emit(NEW_QUESTIONS, questionVoting);
                 party.questions.push(...questionVoting);
                 publicUser.score += 10
+
+                if(party.questions.length >= 10){
+                    io.in(roomId).emit(CLOSE_QUESTION, true);
+                }
             } else {
                 party.publics.forEach((public) => {
                     socket.broadcast
