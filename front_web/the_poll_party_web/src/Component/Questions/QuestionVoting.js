@@ -20,7 +20,7 @@ import styles from "../../assets/jss/material-dashboard-react/views/dashboardSty
 const useStyles = makeStyles(styles);
 
 const QuestionVoting = (props) => {
-    const {questionsVoting, sendQuestionVotingResult, orderQuestionsListVote} = props;
+    const {questionsVoting, sendQuestionVotingResult, orderQuestionsListVote, sendResponseVote} = props;
     const [vote, setVote] = useState("null");
     const classes = useStyles();
 
@@ -97,6 +97,9 @@ const QuestionVoting = (props) => {
     const handleSendOrder = (data) =>{
         orderQuestionsListVote(questionsVoting[0][data],questionsVoting,questionsVoting[0])
     }
+    const handleSendOResponseVote = (data) =>{
+        sendResponseVote(questionsVoting[0][data],questionsVoting,questionsVoting[0])
+    }
 
     const renderer = ({ seconds, completed }) => {
         if(questionsVoting[0] != null){
@@ -141,13 +144,32 @@ const QuestionVoting = (props) => {
                     <Row>
                         {questionsVoting.map(questions =>{
                             return Object.values(questions).map(question=>{
-                                if(question.question)
-                                return <Card onClick={() => { handleSendOrder(question.id) }}>
+                                if(question.question){
+                                    if(!question.isDisable)
+                                        return <Card onClick={() => { handleSendOrder(question.id) }}>
+                                                    <CardHeader color="success">
+                                                        {question.question}
+                                                    </CardHeader>
+                                                    <CardBody>
+                                                        {question.type}
+                                                    </CardBody>
+                                                </Card>
+                                }
+
+                            })
+                        })}</Row>:<div></div>:<div></div>}
+
+                    {questionsVoting[0]? questionsVoting[0].type == "Responses" ? 
+                    <Row>
+                        {questionsVoting.map(responses =>{
+                            return Object.values(responses).map(response=>{
+                                if(response.response)
+                                return <Card onClick={() => {handleSendOResponseVote(response.senderId) }}>
                                             <CardHeader color="success">
-                                                {question.question}
+                                                {response.name}
                                             </CardHeader>
                                             <CardBody>
-                                                {question.type}
+                                                <img src={response.response} />
                                             </CardBody>
                                         </Card>
                             })

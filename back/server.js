@@ -21,6 +21,7 @@ const CompetitorResponse = require("./app/models/competitorResponse");
 const NEW_MESSAGE_EVENT = "newMessage";
 const JOIN_ROOM = "joinRoom";
 const RESPONSES = "responses";
+const RESPONSES_VOTING = "responsesVoting";
 const NEW_QUESTIONS = "addQuestions";
 const NEW_VOTING_QUESTIONS = "addQuestionsforVoting";
 const NEW_VOTING_QUESTIONS_RESPONSE = "addQuestionsforVotingResponse";
@@ -171,6 +172,7 @@ io.on("connection", (socket) => {
         //fix question index
         if(question[0].nbResponses > 1){
             question[0].isDisable = true;
+            question[0].nbVoteOrder = 999;
             io.in(roomId).emit(UPDATE_QUESTION, question);
         }
          //send answer to competitors
@@ -194,10 +196,12 @@ io.on("connection", (socket) => {
             let newOrder = party.getQuestionOfRoomSortByVote(roomId)
 
             io.in(roomId).emit(UPDATE_QUESTIONS_ORDER, newOrder);
-            
+
             party.setVoteCounter(0)
             party.questions.forEach(question =>{
-                question.nbVoteOrder = 0
+                if(!question.isDisable){
+                    question.nbVoteOrder = 0
+                }
             })
         }
 

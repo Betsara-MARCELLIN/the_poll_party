@@ -10,6 +10,7 @@ const UPDATE_QUESTIONS_ORDER = "updateQuestionsOrder";
 const UPDATE_QUESTIONS_ORDER_VOTING = "updateQuestionsOrderVoting";
 const RANKING = "ranking";
 const RESPONSES = "responses";
+const RESPONSES_VOTING = "responsesVoting";
 const SOCKET_SERVER_URL = "http://127.0.0.1:3000";
 
 const useServer = (roomId, publicName) => {
@@ -131,6 +132,10 @@ const useServer = (roomId, publicName) => {
         socketRef.current.emit(UPDATE_QUESTIONS_ORDER_VOTING, vote);
         removeItemOnceFromQuestionsVoting(questionlist, question);
     }
+    const sendResponseVote = (vote, questionlist, question) =>{
+        socketRef.current.emit(RESPONSES_VOTING, vote);
+        removeItemOnceFromQuestionsVoting(questionlist, question);
+    }
 
     const removeItemOnceFromQuestionsVoting = (arr, value) => {
         var array = [...arr];
@@ -162,6 +167,7 @@ const useServer = (roomId, publicName) => {
         sendQuestionVotingResult,
         orderQuestionsList,
         orderQuestionsListVote,
+        sendResponseVote,
     };
 };
 
