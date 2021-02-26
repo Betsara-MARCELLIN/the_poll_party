@@ -35,21 +35,6 @@ const GameRoom = (props) => {
         orderQuestionsListVote,
         sendResponseVote } = useServer(roomId, publicName); // Creates a websocket and manages 
 
-        if(isClosedGame){
-            return <Link to={{ 
-                        pathname:`/${roomId}/vizu`,
-                        query :{roomId:roomId,
-                            questionList: questions, 
-                            responses: responses,
-                            publics:publics,
-                            competitors: competitors,
-                            competitorRanking: competitorRanking,
-                            publicRanking: publicsRanking
-                        }}} >
-                        GO TO VISU
-                      </Link>
-        }
-
     return (
         <div>
             <Row>
@@ -58,16 +43,33 @@ const GameRoom = (props) => {
                 </Col>
                 <Col md="8" >
                     <h1 className="room-name">Salle: {props.location.query.roomId}</h1>
-                    <QuestionListVoting questionsVoting={questionsVoting}/>
-                    <QuestionVoting questionsVoting={questionsVoting} sendQuestionVotingResult={sendQuestionVotingResult} orderQuestionsListVote={orderQuestionsListVote} sendResponseVote={sendResponseVote}/>
-                    <Row>
-                        <Col md="8">
-                            <EventsTabs sendQuestion={sendQuestion} isClosedQuestion={isClosedQuestion} />
-                        </Col>
-                        <Col md="4">
-                            <Classement users={competitorRanking} name="Classement"/>
-                        </Col>
-                    </Row>
+                    {!isClosedGame?
+                        <div>
+                        <QuestionListVoting questionsVoting={questionsVoting}/>
+                        <QuestionVoting questionsVoting={questionsVoting} sendQuestionVotingResult={sendQuestionVotingResult} orderQuestionsListVote={orderQuestionsListVote} sendResponseVote={sendResponseVote}/>
+                        <Row>
+                            <Col md="8">
+                                <EventsTabs sendQuestion={sendQuestion} isClosedQuestion={isClosedQuestion} />
+                            </Col>
+                            <Col md="4">
+                                <Classement users={competitorRanking} name="Classement"/>
+                            </Col>
+                        </Row>
+                        </div>
+                        :
+                        <Link to={{ 
+                            pathname:`/${roomId}/vizu`,
+                            query :{roomId:roomId,
+                                questionList: questions, 
+                                responses: responses,
+                                publics:publics,
+                                competitors: competitors,
+                                competitorRanking: competitorRanking,
+                                publicRanking: publicsRanking
+                            }}} className="visu-room-button">
+                                Voir le récapitulatif de la partie
+                        </Link> }
+                    
                 </Col>
                 <Col md="2">
                     <ChatRoom messages={messages} sendMessage={sendMessage}/>
