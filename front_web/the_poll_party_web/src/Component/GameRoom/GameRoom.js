@@ -13,7 +13,7 @@ import Classement from "../Classement/Classement"
 
 import "./GameRoom.css";
 import 'react-toastify/dist/ReactToastify.css';
-import { version } from "react";
+
 import { Link } from "react-router-dom";
 
 const GameRoom = (props) => {
@@ -38,7 +38,8 @@ const GameRoom = (props) => {
         if(isClosedGame){
             return <Link to={{ 
                         pathname:`/${roomId}/vizu`,
-                        query :{questionList: questions, 
+                        query :{roomId:roomId,
+                            questionList: questions, 
                             responses: responses,
                             publics:publics,
                             competitors: competitors,
@@ -64,7 +65,7 @@ const GameRoom = (props) => {
                             <EventsTabs sendQuestion={sendQuestion} isClosedQuestion={isClosedQuestion} />
                         </Col>
                         <Col md="4">
-                            <Classement competitorRanking={competitorRanking}/>
+                            <Classement users={competitorRanking} name="Classement"/>
                         </Col>
                     </Row>
                 </Col>

@@ -12,7 +12,6 @@ import CardHeader from "../Card/CardHeader.js";
 import CardIcon from "../Card/CardIcon.js";
 import CardBody from "../Card/CardBody.js";
 import CardFooter from "../Card/CardFooter.js";
-import CardMedia from '@material-ui/core/CardMedia';
 
 import "./Question.css";
 
@@ -178,16 +177,16 @@ const QuestionVoting = (props) => {
                         {questionsVoting.map(responses =>{
                             return Object.values(responses).map(response=>{
                                 if(response.response)
-                                return <Col md="6">
-                                            <Card onClick={() => {handleSendOResponseVote(response.questionId, response.senderId) }}>
-                                                <CardHeader color="success">
-                                                    {response.name}
-                                                </CardHeader>
-                                                <CardBody>
-                                                    <img className="media" src={response.response} alt={response.name}/>
-                                                </CardBody>
-                                            </Card>
-                                        </Col>
+                                    return <Col md="6">
+                                                <Card onClick={() => {handleSendOResponseVote(response.questionId, response.senderId) }}>
+                                                    <CardHeader color="success">
+                                                        {response.name}
+                                                    </CardHeader>
+                                                    <CardBody>
+                                                        <img className="media" src={response.response} alt={response.name}/>
+                                                    </CardBody>
+                                                </Card>
+                                            </Col>
                             })
                         })}</Row>:<div></div>:<div></div>}
                     </CardBody>

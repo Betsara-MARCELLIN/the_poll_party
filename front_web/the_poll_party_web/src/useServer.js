@@ -89,13 +89,9 @@ const useServer = (roomId, publicName) => {
 
         socketRef.current.on(RANKING, (rank) => {
             console.log(rank.ranking[0]);
-            let ranks = [];
-            rank.ranking.forEach((competitor, i) => {
-                const incomingRank = [i + 1, competitor.name, competitor.score];
-                ranks.push(incomingRank);
-            });
-            setCompetitorRanking(ranks);
+            setCompetitorRanking(getRankData(rank.ranking));
         });
+
 
         socketRef.current.on(RESPONSES, (userResponses) => {
             if(userResponses[0].type == "Photo"){
@@ -121,8 +117,8 @@ const useServer = (roomId, publicName) => {
             setResponses(data.responses)
             setPublics(data.publics)
             setCompetitors(data.competitors)
-            setCompetitorRanking(data.competitorRanking)
-            setPublicsRanking(data.publicRanking)
+            setCompetitorRanking(getRankData(data.competitorRanking))
+            setPublicsRanking(getRankData(data.publicRanking))
             setIsClosedGame(data.bool);
         });
 
@@ -185,6 +181,15 @@ const useServer = (roomId, publicName) => {
         }
         setQuestionsVoting(array);
     };
+
+    const getRankData= (rank)=>{
+        let ranks = [];
+        rank.forEach((c, i) => {
+            const incomingRank = [i + 1, c.name, c.score];
+            ranks.push(incomingRank);
+        });
+        return ranks;
+    }
     
 
 

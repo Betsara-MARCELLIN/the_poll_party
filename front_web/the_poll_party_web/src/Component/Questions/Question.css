@@ -20,6 +20,9 @@ hr{
     color: #121212!important;
     background-color: #757575!important;
 }
+.MuiDivider-root {
+    background-color: rgba(255, 255, 255, 0.12)!important;
+}
 .question_disable {
     color: #fff!important;
     transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms!important;

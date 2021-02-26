@@ -8,6 +8,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from "@material-ui/core/Typography"
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
 
 import ImageIcon from '@material-ui/icons/Image';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
@@ -27,7 +28,8 @@ const QuestionList = (props) => {
 
     return(
         <div>
-            <h2>Questions</h2><hr/>
+            <h2>Questions</h2>
+            <Divider />
             <List>
             {questions.map((question, i) => (
                 <Card className={question.isDisable? "question_disable": "question_actived"} variant="outlined">

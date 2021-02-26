@@ -9,18 +9,17 @@ import Icon from "@material-ui/core/Icon";
 
 
 const Classement =(props) => {
-    const { competitorRanking }= props;
+    const { users, name }= props;
     return(
         <Card>
             <CardHeader color="primary">
-                <Icon>Classement</Icon>
+                <Icon>{name}</Icon>
             </CardHeader>
             <CardBody>
 
                 <Table
-                
                     tableHead={["Rang", "Nom", "Points"]}
-                    tableData={competitorRanking}
+                    tableData={users}
                 />
             </CardBody>
         </Card>
