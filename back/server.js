@@ -204,7 +204,7 @@ io.on("connection", (socket) => {
             party.responseVoteCounter++;
 
             if(party.responseVoteCounter == party.getPublicsOfRoom(roomId).length){
-                let winRes = party.getCompetitorResponsesOfRoomSortedByScore(roomId,data.questionID)[0];
+                let winRes = party.getCompetitorResponsesOfRoomForQuestionSortedByScore(roomId,data.questionID)[0];
                 winRes.isWin = true;
                 party.competitors.forEach((c) => {
                     if (c.id === winRes.senderId) {

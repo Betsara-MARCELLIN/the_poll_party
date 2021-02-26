@@ -57,8 +57,8 @@ module.exports = class Party {
     getCompetitorResponsesOfRoomForQuestion(roomId, questionID) {
         return this.getCompetitorResponsesOfRoom(roomId).filter((q) => q.questionId === questionID);
     }
-    getCompetitorResponsesOfRoomForQuestionSortedByScore(roomId) {
-        return this.getCompetitorResponsesOfRoom(roomId).sort((a, b) => b.nbVote - a.nbVote );
+    getCompetitorResponsesOfRoomForQuestionSortedByScore(roomId, questionID) {
+        return this.getCompetitorResponsesOfRoomForQuestion(roomId, questionID).sort((a, b) => b.nbVote - a.nbVote );
     }
 
     getOrderVoteCounter() {
