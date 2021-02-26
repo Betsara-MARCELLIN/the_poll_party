@@ -4,14 +4,17 @@ class Question {
   final String type;
   final int timer;
   final int id;
+  final bool isDisable;
 
-  Question(this.question, this.answer, this.type, this.timer, this.id);
+  Question(this.question, this.answer, this.type, this.timer, this.isDisable,
+      this.id);
 
   Question.fromJson(Map<String, dynamic> json)
       : question = json['question'],
         answer = json['answer'],
         type = json['type'],
         timer = int.parse(_isNumeric(json['timer']) ? json['timer'] : '30'),
+        isDisable = json['isDisable'],
         id = json['id'];
 
   Map<String, dynamic> toJson() => {
@@ -19,6 +22,7 @@ class Question {
         "answer": answer,
         "type": type,
         "timer": timer,
+        "isDisable": isDisable,
         "id": id
       };
 }

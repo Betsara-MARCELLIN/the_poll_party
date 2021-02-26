@@ -12,6 +12,6 @@ module.exports = class Question {
     this.neutral = 0;
     this.nbResponses = 0;
     this.nbVoteOrder = 0;
-    this.isDisable = false;
+    this.isDisable = false; //TODO issue here for multiple client
   }
 }

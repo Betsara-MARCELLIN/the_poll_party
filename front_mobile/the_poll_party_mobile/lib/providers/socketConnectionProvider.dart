@@ -54,6 +54,7 @@ class SocketConnectionProvider extends ChangeNotifier {
       socket.on('addQuestions', (_) => _handleQuestions(_));
       socket.on('partyConnections', (_) => _handleConnections(_));
       socket.on('ranking', (_) => _handleCompetitorRanking(_));
+      socket.on('updateQuestionsOrder', (_) => _handleQuestionUpdate(_));
 
       // Join room
       _enterRoom(roomId, playerName);
@@ -93,7 +94,21 @@ class SocketConnectionProvider extends ChangeNotifier {
     datas.forEach(
         (element) => {this.questions.add(new Question.fromJson(element))});
     print("Question length: ${questions.length}");
+    notifyListeners();
+  }
 
+  _handleQuestionUpdate(List<dynamic> datas) {
+    List<Question> questionsOrderUpdated = new List<Question>();
+    datas.forEach((element) {
+      Question q = Question.fromJson(element);
+      if (!q.isDisable) {
+        questionsOrderUpdated.add(q);
+      }
+    });
+    questions.clear();
+    questions.addAll(questionsOrderUpdated);
+    print("UPDATED QUESTIONS");
+    print(questions);
     notifyListeners();
   }
 
