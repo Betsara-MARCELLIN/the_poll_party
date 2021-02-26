@@ -37,7 +37,7 @@ class SocketConnectionProvider extends ChangeNotifier {
 
       // TODO change socket.io server when deploied
       // Configure socket transports must be sepecified
-      socket = io('http://192.168.43.156:3000', <String, dynamic>{
+      socket = io('http://93.23.204.103:3000', <String, dynamic>{
         'transports': ['websocket'],
         'autoConnect': false,
       });

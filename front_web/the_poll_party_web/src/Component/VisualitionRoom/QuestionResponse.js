@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import {Row, Col  } from 'reactstrap';
 import Icon from "@material-ui/core/Icon";
@@ -30,7 +30,6 @@ const QuestionResponses = (props) => {
     const handleQuit = useCallback(() => history.push('/'), [history]);
     const handleQuestionCounter = (index)=> {setQuestionCounter({value : questionCounter.value+index})}
 
-    const updateData = () =>{setResponsesForQuestion(responses.filter(r => r.questionId === questionList[questionCounter.value].id))}
 
 
     const displayFooter = ()=>{
@@ -51,8 +50,7 @@ const QuestionResponses = (props) => {
                 </CardFooter>
         
     }
-    console.log(Object.values(questionList).length)
-    console.log(questionCounter.value)
+    console.log(responses.filter(r => r.questionId === questionList[questionCounter.value].id))
 return(
     <Row>
         <Col md="12">
@@ -89,8 +87,9 @@ return(
                 </Row>
                 <Divider />
                 <Row>
-                    {responsesForQuestion.map(responses =>{
+                    {responses.filter(r => r.questionId === questionList[questionCounter.value].id).map(responses =>{
                         return Object.values(responses).map(response=>{
+                            console.log(response)
                             if(response.type == "Photo"){
                                 return <Col md="6">
                                             <Card>
