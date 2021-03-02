@@ -12,11 +12,9 @@ class MotionAnswerMode extends StatefulWidget {
   const MotionAnswerMode({
     Key key,
     @required this.socketProvider,
-    @required this.timerCallback,
   }) : super(key: key);
 
   final SocketConnectionProvider socketProvider;
-  final VoidCallback timerCallback;
   final int maxCursorValue = 100;
 
   @override
@@ -83,8 +81,7 @@ class _MotionAnswerModeState extends State<MotionAnswerMode> {
                             widget.socketProvider.getCurrentQuestion().type)),
                     Provider.of<SocketConnectionProvider>(context,
                             listen: false)
-                        .nextQuestion(),
-                    widget.timerCallback()
+                        .waitQuestion()
                   },
               text: 'Envoyer ma réponse',
               icon: Icons.check),

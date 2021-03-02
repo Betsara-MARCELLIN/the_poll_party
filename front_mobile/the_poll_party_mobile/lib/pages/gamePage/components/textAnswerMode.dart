@@ -5,24 +5,25 @@ import 'package:the_poll_party_mobile/components/myTextField.dart';
 import 'package:the_poll_party_mobile/models/response.dart';
 import 'package:the_poll_party_mobile/providers/socketConnectionProvider.dart';
 
-class TextAnswerMode extends StatelessWidget {
-  const TextAnswerMode({
+class TextAnswerMode extends StatefulWidget {
+  TextAnswerMode({
     Key key,
     @required this.socketProvider,
-    @required TextEditingController answerController,
-    @required this.timerCallback,
-  })  : _answerController = answerController,
-        super(key: key);
-
+  }) : super(key: key);
   final SocketConnectionProvider socketProvider;
-  final TextEditingController _answerController;
-  final VoidCallback timerCallback;
+
+  @override
+  _TextAnswerModeState createState() => _TextAnswerModeState();
+}
+
+class _TextAnswerModeState extends State<TextAnswerMode> {
+  TextEditingController _answerController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text('Question: ${socketProvider.getCurrentQuestion().question}',
+        Text('Question: ${widget.socketProvider.getCurrentQuestion().question}',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
         Padding(
           padding: const EdgeInsets.all(15.0),
@@ -37,14 +38,13 @@ class TextAnswerMode extends StatelessWidget {
                     Provider.of<SocketConnectionProvider>(context,
                             listen: false)
                         .sendAnswer(new Response(
-                      socketProvider.getCurrentQuestion().id,
+                      widget.socketProvider.getCurrentQuestion().id,
                       _answerController.text,
-                      socketProvider.getCurrentQuestion().type,
+                      widget.socketProvider.getCurrentQuestion().type,
                     )),
                     Provider.of<SocketConnectionProvider>(context,
                             listen: false)
-                        .nextQuestion(),
-                    timerCallback()
+                        .waitQuestion()
                   },
               text: 'Envoyer ma réponse',
               icon: Icons.check),

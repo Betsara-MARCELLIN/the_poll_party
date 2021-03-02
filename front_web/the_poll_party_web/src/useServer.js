@@ -16,7 +16,7 @@ const CLOSE_QUESTION = "closeQuestion";
 const CLOSE_GAME = "closeGame";
 const DATA_GAME = "dataGame";
 
-const SOCKET_SERVER_URL = "http://93.23.204.103:3000";
+const SOCKET_SERVER_URL = "http://127.0.0.1:3000";
 
 const useServer = (roomId, publicName) => {
     const [messages, setMessages] = useState([]);

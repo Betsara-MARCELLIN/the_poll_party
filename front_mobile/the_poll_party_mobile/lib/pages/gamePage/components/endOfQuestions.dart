@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:the_poll_party_mobile/components/myIconButton.dart';
 
-class EndOfQuestions extends StatelessWidget {
-  const EndOfQuestions({
-    Key key,
-  }) : super(key: key);
+class EndOfQuestions extends StatefulWidget {
+  final VoidCallback startTimerCallBack;
+  EndOfQuestions({Key key, @required this.startTimerCallBack})
+      : super(key: key);
+
+  @override
+  _EndOfQuestionsState createState() => _EndOfQuestionsState();
+}
+
+class _EndOfQuestionsState extends State<EndOfQuestions> {
+  @override
+  void dispose() {
+    widget.startTimerCallBack();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -128,9 +128,9 @@ io.on("connection", (socket) => {
                 }
             } else {
                 party.publics.forEach((public) => {
-                    socket.broadcast
+                    socket.broadcast   
                         .to(public.id)
-                        .emit(NEW_QUESTIONS, "refuse");
+                        .emit(NEW_QUESTIONS, "refuse"); //TODO socket.broadcast seems to not work, what is the purpose of this line ? why send "refuse" as question ??
                 });
                 publicUser.score -= 5
             }
@@ -184,10 +184,23 @@ io.on("connection", (socket) => {
             question[0].nbVoteOrder = 999;
             io.in(roomId).emit(UPDATE_QUESTION, question);
         }
-         //send answer to competitors
+         //send live response to competitors
+        party.getCompetitorsOfRoom(roomId).forEach(c => {
+                io
+                .to(c.id)
+                .emit(RESPONSES, party.getCompetitorResponsesOfRoomForQuestion(roomId, data.questionId));  
+            }
+        );
+
+        // send response of question to publics
         if(question[0].nbResponses == party.getCompetitorsOfRoom(roomId).length){
             let responses = party.getCompetitorResponsesOfRoomForQuestion(roomId, data.questionId)
-            io.in(roomId).emit(RESPONSES, responses);
+            party.getPublicsOfRoom(roomId).forEach(p => {
+                    io
+                    .to(p.id)
+                    .emit(RESPONSES, responses);  
+                }
+            );
         }
 
         //send close game if last quesiton

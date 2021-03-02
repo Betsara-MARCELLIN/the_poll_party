@@ -44,7 +44,7 @@ class OtherCompetitorsAnswers extends StatelessWidget {
                           height: 6,
                         ),
                         itemBuilder: (BuildContext context, int index) {
-                          if (othersResponses[index].type == "Libre") {
+                          if (othersResponses[index].type == "Photo") {
                             return SizedBox(
                               child: BorderedImage(
                                   imageUrl: othersResponses[index].response),

@@ -12,20 +12,34 @@ class SocketConnectionProvider extends ChangeNotifier {
   List<Public> publics = [];
   List<Competitor> competitors = [];
   List<Question> questions = [];
-  List<Response> responses = [];
+  Map<int, List<Response>> responses = new Map<int, List<Response>>();
+  bool waitingNextQuestion = false;
 
   List<Public> get getPublics => publics;
   List<Competitor> get getCompetitors => competitors;
   List<Question> get getQuestions => questions;
-  List<Response> get getResponses => responses;
+  Map<int, List<Response>> get getResponses => responses;
+  bool get getWaitingNextQuestion => waitingNextQuestion;
+
+  void waitQuestion() {
+    waitingNextQuestion = true;
+    notifyListeners();
+  }
+
+  void doNotWaitQuestion() {
+    waitingNextQuestion = false;
+    notifyListeners();
+  }
 
   Question getCurrentQuestion() {
     return questions.length > 0 ? questions[0] : null;
   }
 
   List<Response> getCurrentResponse(int questionId) {
-    if (responses.length > 0) {
-      return responses.where((r) => r.questionId == questionId).toList();
+    if (responses[questionId] != null) {
+      if (responses[questionId].isNotEmpty) {
+        return responses[questionId];
+      }
     }
     return new List<Response>();
   }
@@ -46,7 +60,7 @@ class SocketConnectionProvider extends ChangeNotifier {
 
       // TODO change socket.io server when deploied
       // Configure socket transports must be sepecified
-      socket = io('http://93.23.204.103:3000', <String, dynamic>{
+      socket = io('http://192.168.43.156:3000', <String, dynamic>{
         'transports': ['websocket'],
         'autoConnect': false,
       });
@@ -122,12 +136,20 @@ class SocketConnectionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _handleResponses(Map<String, dynamic> data) {
+  void _handleResponses(List<dynamic> data) {
     print("NEW RESPONSE RECEIVED");
     print(data);
-    responses.add(new Response.fromJson(data));
+    List<Response> liveResponses = new List<Response>();
+    int question = data[0]['questionId'];
+    print(question);
+    data.forEach((element) {
+      Response r = Response.fromJson(element);
+      liveResponses.add(r);
+    });
+    responses[question] = liveResponses;
+    // responses.add(new Response.fromJson(data));
     print("responses:");
-    print(responses);
+    print(liveResponses);
     notifyListeners();
   }
 

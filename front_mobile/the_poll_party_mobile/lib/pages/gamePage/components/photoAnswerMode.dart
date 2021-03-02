@@ -13,11 +13,9 @@ class PhotoAnswerMode extends StatefulWidget {
   PhotoAnswerMode({
     Key key,
     @required this.socketProvider,
-    @required this.timerCallback,
   }) : super(key: key);
 
   final SocketConnectionProvider socketProvider;
-  final VoidCallback timerCallback;
 
   @override
   _PhotoAnswerModeState createState() => _PhotoAnswerModeState();
@@ -134,10 +132,9 @@ class _PhotoAnswerModeState extends State<PhotoAnswerMode>
                         setState(() {
                           isAnswerSent = true;
                         });
-                        // Provider.of<SocketConnectionProvider>(context,
-                        //         listen: false)
-                        //     .nextQuestion();
-                        // widget.timerCallback();
+                        Provider.of<SocketConnectionProvider>(context,
+                                listen: false)
+                            .waitQuestion();
                       } catch (e) {
                         print("ERROR !!!!!!!!!!!!!!");
                         print(e);

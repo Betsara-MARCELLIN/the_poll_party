@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:the_poll_party_mobile/components/myIconButton.dart';
 import 'package:the_poll_party_mobile/pages/gamePage/components/motionAnswerMode.dart';
+import 'package:the_poll_party_mobile/pages/gamePage/components/otherCompetitorsAnswers.dart';
 import 'package:the_poll_party_mobile/pages/gamePage/components/photoAnswerMode.dart';
 import 'package:the_poll_party_mobile/pages/gamePage/components/textAnswerMode.dart';
 import 'package:the_poll_party_mobile/providers/roomProvider.dart';
@@ -22,7 +23,6 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> {
-  TextEditingController _answerController = TextEditingController();
   String roomId;
   String playerName;
   int remainingTime;
@@ -63,6 +63,7 @@ class _GamePageState extends State<GamePage> {
             remainingTime--;
           } else {
             _timer.cancel();
+            socketProvider.doNotWaitQuestion();
             if (socketProvider.getQuestions.length > 0) {
               Provider.of<SocketConnectionProvider>(context, listen: false)
                   .nextQuestion();
@@ -88,7 +89,7 @@ class _GamePageState extends State<GamePage> {
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     child: Text(
-                      "$remainingTime",
+                      "${remainingTime == 0 ? "" : remainingTime}", //TODO this is a hack for the timer showing 0, must be fixed
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -102,11 +103,13 @@ class _GamePageState extends State<GamePage> {
                 visible: socketProvider.getQuestions.length > 0),
             Spacer(),
             socketProvider.getQuestions.length > 0
-                ? Container(
-                    child: buildAnswerMode(
-                        socketProvider.getCurrentQuestion().type,
-                        socketProvider))
-                : EndOfQuestions(),
+                ? (socketProvider.waitingNextQuestion
+                    ? OtherCompetitorsAnswers()
+                    : Container(
+                        child: buildAnswerMode(
+                            socketProvider.getCurrentQuestion().type,
+                            socketProvider)))
+                : EndOfQuestions(startTimerCallBack: _startTimer),
             // PhotoAnswerMode(),
             Spacer(),
             Padding(
@@ -124,21 +127,17 @@ class _GamePageState extends State<GamePage> {
 
   buildAnswerMode(String type, var socketProvider) {
     switch (type) {
-      // case 'Libre':
-      //   return TextAnswerMode(
-      //     socketProvider: socketProvider,
-      //     answerController: _answerController,
-      //     timerCallback: _startTimer,
-      //   );
+      case 'Libre':
+        return TextAnswerMode(
+          socketProvider: socketProvider,
+        );
       case 'Slider':
         return MotionAnswerMode(
           socketProvider: socketProvider,
-          timerCallback: _startTimer,
         );
-      case 'Libre':
+      case 'Photo':
         return PhotoAnswerMode(
           socketProvider: socketProvider,
-          timerCallback: _startTimer,
         );
     }
   }
