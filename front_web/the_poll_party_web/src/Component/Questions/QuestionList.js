@@ -12,9 +12,10 @@ import Divider from '@material-ui/core/Divider';
 import ImageIcon from '@material-ui/icons/Image';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import VibrationIcon from '@material-ui/icons/Vibration';
+import {Row, Col  } from 'reactstrap';
 
 const QuestionList = (props) => {
-    const {questions, orderQuestionsList } = props;
+    const {questions, orderQuestionsList, competitorLenght} = props;
 
     let questionsEnable = [];
     questions.map(question => (
@@ -40,8 +41,15 @@ const QuestionList = (props) => {
                                 {question.type === "Photo"?  <ImageIcon />: null}
                             </Avatar>
                         </ListItemAvatar>
-                        <ListItemText primary={"Question "+(i+1)} secondary={<Typography variant="body2" style={{ color: '#FFFFFF' }}>{question.question}</Typography>} />
-                    </ListItem>
+                        <ListItemText 
+                            primary={"Question "+(i+1)}
+                            secondary={<Typography variant="body2" style={{ color: '#FFFFFF' }}>
+                                            <Row>
+                                                <Col md="8">{question.question}</Col>
+                                                {question.isDisable? <Col md="4">{question.nbResponses}/{competitorLenght}</Col>: <p></p>}
+                                            </Row>
+                                        </Typography>} />
+                        </ListItem>
                 </Card>
             ))}
             </List>

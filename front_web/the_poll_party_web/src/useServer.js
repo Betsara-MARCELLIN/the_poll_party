@@ -75,14 +75,16 @@ const useServer = (roomId, publicName) => {
             }
         });
         
-        socketRef.current.on(UPDATE_QUESTION, (question) => {
+        socketRef.current.on(UPDATE_QUESTION, (questions) => {
             let newQuestions =  questions;
-            newQuestions.forEach(quest => {
+
+            /*newQuestions.forEach(quest => {
                 if(quest[0].id === question[0].id){
                     quest[0].isDisable = true;
                 }
-            })
+            })*/
             setQuestions(newQuestions)
+
         });
 
         socketRef.current.on(RANKING, (rank) => {

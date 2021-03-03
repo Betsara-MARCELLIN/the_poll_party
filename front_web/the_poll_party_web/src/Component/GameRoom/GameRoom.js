@@ -42,7 +42,7 @@ const GameRoom = (props) => {
         <div>
             <Row>
                 <Col md="2" className="Question-list">
-                    <QuestionList questions={questions} orderQuestionsList={orderQuestionsList}/>
+                    <QuestionList questions={questions} orderQuestionsList={orderQuestionsList} competitorLenght={competitorRanking.length}/>
                 </Col>
                 <Col md="9" >
                     <h1 className="room-name">Salle: {props.location.query.roomId}</h1>

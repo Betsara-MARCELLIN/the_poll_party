@@ -141,6 +141,8 @@ io.on("connection", (socket) => {
     socket.on(RESPONSES, (data) => {
         //check answer and add point accordingly
         let userName = null
+        console.log(data)
+        let responseCompare = null
         if (data) {
             party.competitors.forEach((c) => {
                 if (c.id === socket.id) {
@@ -151,7 +153,7 @@ io.on("connection", (socket) => {
                         const q = party.questions.find(
                             (e) => e.id === data.questionId
                         );
-                        let responseCompare = data.response.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                        responseCompare = data.response.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
                         .localeCompare(q.answer.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))
 
                         if (responseCompare === 0){
@@ -165,6 +167,8 @@ io.on("connection", (socket) => {
         }
 
         const r = new CompetitorResponse(data.questionId, data.response, data.type, socket.id, userName, roomId);
+        if(responseCompare === 0)
+            r.isWin =true
 
         //send ranking to room
         io.in(roomId).emit(RANKING, {
@@ -179,10 +183,10 @@ io.on("connection", (socket) => {
         question[0].nbResponses++;
 
         //fix question index
-        if(question[0].nbResponses > 1){
+        if(question[0].nbResponses >= 1){
             question[0].isDisable = true;
             question[0].nbVoteOrder = 999;
-            io.in(roomId).emit(UPDATE_QUESTION, question);
+            io.in(roomId).emit(UPDATE_QUESTION, party.getQuestionOfRoomSortByVote(roomId));
         }
 
         //send live response to competitors
@@ -202,12 +206,14 @@ io.on("connection", (socket) => {
                     .emit(RESPONSES, responses);  
                 }
             );
+
+            //send close game if last quesiton
+            if(party.getCompetitorResponsesOfRoom(roomId).length >= 10*party.getCompetitorsOfRoom(roomId).length){
+                io.in(roomId).emit(CLOSE_GAME, true);
+            }
         }
 
-        //send close game if last quesiton
-        if(party.getCompetitorResponsesOfRoom(roomId).length >= 10*party.getCompetitorsOfRoom(roomId).length){
-            io.in(roomId).emit(CLOSE_GAME, true);
-        }
+
     });
 
     socket.on(RESPONSES_VOTING, (data) => {
@@ -238,6 +244,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on(UPDATE_QUESTIONS_ORDER_VOTING, (question) => {
+        console.log(question)
         let questionVoting = party.getQuestionOfRoom(roomId,question.id);
         questionVoting[0].nbVoteOrder++
         party.orderVoteCounter++
