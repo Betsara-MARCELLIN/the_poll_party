@@ -50,7 +50,6 @@ const QuestionResponses = (props) => {
                 </CardFooter>
         
     }
-    console.log(responses.filter(r => r.questionId === questionList[questionCounter.value].id))
 return(
     <Row>
         <Col md="12">
@@ -88,16 +87,14 @@ return(
                 <Divider />
                 <Row>
                     {responses.filter(r => r.questionId === questionList[questionCounter.value].id).map(responses =>{
-                        return Object.values(responses).map(response=>{
-                            console.log(response)
-                            if(response.type == "Photo"){
+                        if(responses.type == "Photo"){
                                 return <Col md="6">
                                             <Card>
                                                 <CardHeader color="success">
-                                                    {response.name}
+                                                    {responses.name}
                                                 </CardHeader>
                                                 <CardBody>
-                                                    <img className="media" src={response.response} alt={response.name}/>
+                                                    <img className="media" src={responses.response} alt={responses.name}/>
                                                 </CardBody>
                                             </Card>
                                         </Col>
@@ -105,15 +102,14 @@ return(
                                 return <Col md="6">
                                             <Card>
                                                 <CardHeader color="success">
-                                                    {response.name}
+                                                    {responses.name}
                                                 </CardHeader>
                                                 <CardBody>
-                                                    {response.response}
+                                                    {responses.response}
                                                 </CardBody>
                                             </Card>
                                         </Col>
                             }   
-                        })
                     })}
                 </Row>
             </CardBody>
