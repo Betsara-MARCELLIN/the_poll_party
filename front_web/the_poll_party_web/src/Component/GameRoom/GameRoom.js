@@ -11,6 +11,7 @@ import QuestionVoting from "../Questions/QuestionVoting"
 import EventsTabs from "../EventsTabs/EventsTabs"
 import Classement from "../Classement/Classement"
 
+
 import "./GameRoom.css";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -35,15 +36,17 @@ const GameRoom = (props) => {
         orderQuestionsListVote,
         sendResponseVote } = useServer(roomId, publicName); // Creates a websocket and manages 
 
+
+
     return (
         <div>
             <Row>
                 <Col md="2" className="Question-list">
                     <QuestionList questions={questions} orderQuestionsList={orderQuestionsList}/>
                 </Col>
-                <Col md="8" >
+                <Col md="9" >
                     <h1 className="room-name">Salle: {props.location.query.roomId}</h1>
-                    {!isClosedGame?
+                    {!isClosedGame || questionsVoting[0] != null?
                         <div>
                         <QuestionListVoting questionsVoting={questionsVoting}/>
                         <QuestionVoting questionsVoting={questionsVoting} sendQuestionVotingResult={sendQuestionVotingResult} orderQuestionsListVote={orderQuestionsListVote} sendResponseVote={sendResponseVote}/>
@@ -68,11 +71,8 @@ const GameRoom = (props) => {
                                 publicRanking: publicsRanking
                             }}} className="visu-room-button">
                                 Voir le récapitulatif de la partie
-                        </Link> }
-                    
-                </Col>
-                <Col md="2">
-                    <ChatRoom messages={messages} sendMessage={sendMessage}/>
+                        </Link> }  
+                        <ChatRoom messages={messages} sendMessage={sendMessage}/>
                 </Col>
             </Row>
             <ToastContainer />

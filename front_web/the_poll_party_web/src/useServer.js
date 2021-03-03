@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, version } from "react";
 import socketIOClient from "socket.io-client";
 
+
 const NEW_MESSAGE_EVENT = "newMessage";
 const NEW_QUESTIONS = "addQuestions";
 const NEW_VOTING_QUESTIONS = "addQuestionsforVoting";
@@ -73,7 +74,6 @@ const useServer = (roomId, publicName) => {
                 setQuestions((questions) => [...questions, incomingQuestion]);
             }
         });
-
         
         socketRef.current.on(UPDATE_QUESTION, (question) => {
             let newQuestions =  questions;
@@ -85,14 +85,11 @@ const useServer = (roomId, publicName) => {
             setQuestions(newQuestions)
         });
 
-
-
         socketRef.current.on(RANKING, (rank) => {
             console.log(rank.ranking[0]);
             setCompetitorRanking(getRankData(rank.ranking));
         });
-
-
+        
         socketRef.current.on(RESPONSES, (userResponses) => {
             if(userResponses[0].type == "Photo"){
                 const incomingResponse = {
