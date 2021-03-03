@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import {Row, Col  } from 'reactstrap';
 import Icon from "@material-ui/core/Icon";
@@ -24,21 +24,17 @@ const QuestionResponses = (props) => {
     const classes = useStyles();
     const history = useHistory();
     const [questionCounter, setQuestionCounter] = useState({value: 0,});
-    const [responsesForQuestion, setResponsesForQuestion] = useState([])
 
-    
     const handleQuit = useCallback(() => history.push('/'), [history]);
     const handleQuestionCounter = (index)=> {setQuestionCounter({value : questionCounter.value+index})}
 
-
-
     const displayFooter = ()=>{
-        if (questionCounter.value == 0){
+        if (questionCounter.value === 0){
             return <CardFooter stats >
                         <Button className="button_next_alone"variant="contained" color="primary" onClick={() => { handleQuestionCounter(1)}}>Suivante</Button>
                     </CardFooter>
         }
-        if(questionCounter.value == Object.values(questionList).length){
+        if(questionCounter.value === Object.values(questionList).length){
             return <CardFooter stats >
                         <Button className="button-prev" variant="contained" color="primary" onClick={() => {handleQuestionCounter(-1) }}>Précedente </Button>
                         <Button className="button-next" variant="contained" color="secondary" onClick={() => {handleQuit() }}>Quitter</Button>
@@ -53,7 +49,7 @@ const QuestionResponses = (props) => {
 return(
     <Row>
         <Col md="12">
-            {questionCounter.value == Object.values(questionList).length?
+            {questionCounter.value === Object.values(questionList).length?
             <Card>
                 <CardHeader color="info" icon>
                     <CardIcon color="info">
@@ -87,7 +83,7 @@ return(
                 <Divider />
                 <Row>
                     {responses.filter(r => r.questionId === questionList[questionCounter.value].id).map(responses =>{
-                        if(responses.type == "Photo"){
+                        if(responses.type === "Photo"){
                                 return <Col md="6">
                                             <Card>
                                                 <CardHeader color="success">

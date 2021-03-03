@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, version } from "react";
+import { useEffect, useRef, useState } from "react";
 import socketIOClient from "socket.io-client";
 
 
@@ -67,7 +67,7 @@ const useServer = (roomId, publicName) => {
         });
 
         socketRef.current.on(NEW_QUESTIONS, (question) => {
-            if (question != "refuse") {
+            if (question !== "refuse") {
                 const incomingQuestion = {
                     ...question[0],
                 };
@@ -78,7 +78,7 @@ const useServer = (roomId, publicName) => {
         socketRef.current.on(UPDATE_QUESTION, (question) => {
             let newQuestions =  questions;
             newQuestions.forEach(quest => {
-                if(quest[0].id == question[0].id){
+                if(quest[0].id === question[0].id){
                     quest[0].isDisable = true;
                 }
             })
@@ -89,9 +89,9 @@ const useServer = (roomId, publicName) => {
             console.log(rank.ranking[0]);
             setCompetitorRanking(getRankData(rank.ranking));
         });
-        
+
         socketRef.current.on(RESPONSES, (userResponses) => {
-            if(userResponses[0].type == "Photo"){
+            if(userResponses[0].type === "Photo"){
                 const incomingResponse = {
                     ...userResponses,
                     type_data : "Responses",
@@ -167,7 +167,7 @@ const useServer = (roomId, publicName) => {
         var index = -1;
         if (array[0] != null) {
             array.forEach((element, i) => {
-                if (element.id == value.id) {
+                if (element.id === value.id) {
                     index = element;
                 }
             });

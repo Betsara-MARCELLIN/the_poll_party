@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 // core components
 import Table from "../Table/Table.js";

@@ -1,5 +1,4 @@
 import React from "react";
-import {useState } from "react";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -36,9 +35,9 @@ const QuestionList = (props) => {
                     <ListItem>
                         <ListItemAvatar>
                             <Avatar>
-                                {question.type == "Libre"?  <TextFieldsIcon />: null}
-                                {question.type == "Slider"?  <VibrationIcon />: null}
-                                {question.type == "Photo"?  <ImageIcon />: null}
+                                {question.type === "Libre"?  <TextFieldsIcon />: null}
+                                {question.type === "Slider"?  <VibrationIcon />: null}
+                                {question.type === "Photo"?  <ImageIcon />: null}
                             </Avatar>
                         </ListItemAvatar>
                         <ListItemText primary={"Question "+(i+1)} secondary={<Typography variant="body2" style={{ color: '#FFFFFF' }}>{question.question}</Typography>} />

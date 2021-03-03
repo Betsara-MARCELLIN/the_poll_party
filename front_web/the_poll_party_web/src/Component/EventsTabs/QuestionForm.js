@@ -1,6 +1,6 @@
 import React from 'react';
 import {useState } from "react";
-import { Button, FormGroup, Label, Input, FormText, Row, Col} from 'reactstrap';
+import { Button, FormGroup, Label, Input, FormText} from 'reactstrap';
 import { Field, FieldError, Form } from 'react-jsonschema-form-validation';
 import schema from "./schema"
 

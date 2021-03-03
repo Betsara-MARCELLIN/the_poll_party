@@ -1,6 +1,5 @@
 import React from "react";
 
-import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
 import AnnouncementIcon from '@material-ui/icons/Announcement';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
