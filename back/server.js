@@ -140,24 +140,24 @@ io.on("connection", (socket) => {
     // add response and get points
     socket.on(RESPONSES, (data) => {
         //check answer and add point accordingly
-        console.log(data);
         let userName = null
         if (data) {
             party.competitors.forEach((c) => {
                 if (c.id === socket.id) {
                     userName = c.name
-                    if(data.type.localeCompare('Photo')) {
+                    if(data.type === 'Photo') {
                         console.log("photo waiting for vote");
                     } else {
                         const q = party.questions.find(
                             (e) => e.id === data.questionId
                         );
-                        if (
-                            data.response
-                                .toLowerCase()
-                                .localeCompare(q.answer.toLowerCase())
-                        )
+                        let responseCompare = data.response.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                        .localeCompare(q.answer.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))
+
+                        if (responseCompare === 0){
                             c.score += 10;
+                        }
+
                         console.log(c.name + " : " + c.score);
                     }
                 }
@@ -184,7 +184,8 @@ io.on("connection", (socket) => {
             question[0].nbVoteOrder = 999;
             io.in(roomId).emit(UPDATE_QUESTION, question);
         }
-         //send live response to competitors
+
+        //send live response to competitors
         party.getCompetitorsOfRoom(roomId).forEach(c => {
                 io
                 .to(c.id)
@@ -222,6 +223,9 @@ io.on("connection", (socket) => {
                 party.competitors.forEach((c) => {
                     if (c.id === winRes.senderId) {
                         c.score += 10;
+                        io.in(roomId).emit(RANKING, {
+                            ranking: party.getRankedCompetitorsOfRoom(roomId),
+                        });
                     }
                 });
                 party.setResponseVoteCounter(0)
