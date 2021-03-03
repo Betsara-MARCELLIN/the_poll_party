@@ -85,9 +85,9 @@ return(
                     {responses.filter(r => r.questionId === questionList[questionCounter.value].id).map(responses =>{
                         if(responses.type === "Photo"){
                                 return <Col md="6">
-                                            <Card>
-                                                <CardHeader color="success">
-                                                    {responses.name}
+                                            <Card className={responses.isWin? "bg_true":"bg_false"}>
+                                                <CardHeader color="info">
+                                                    <strong>{responses.name}</strong>
                                                 </CardHeader>
                                                 <CardBody>
                                                     <img className="media" src={responses.response} alt={responses.name}/>
@@ -96,9 +96,9 @@ return(
                                         </Col>
                             }else{
                                 return <Col md="6">
-                                            <Card>
-                                                <CardHeader color="success">
-                                                    {responses.name}
+                                            <Card className={responses.isWin? "bg_true":"bg_false"}>
+                                                <CardHeader color="info">
+                                                    <strong>{responses.name}</strong>
                                                 </CardHeader>
                                                 <CardBody>
                                                     {responses.response}

@@ -31,3 +31,12 @@
 .button-next {
     right: 33%;
 }
+.bg_true{
+    background-color: rgb(92, 205, 130)!important;
+}
+.bg_false{
+    background-color:indianred!important;
+}
+.makeStyles-cardBody-36{
+    color: white!important;
+}
