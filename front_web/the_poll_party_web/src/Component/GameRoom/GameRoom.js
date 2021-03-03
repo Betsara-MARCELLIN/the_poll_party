@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import useServer from "../../useServer";
 import ChatRoom from "../ChatRoom/ChatRoom";
+import ResponsesRoom from "../ResponsesRoom/ResponsesRoom";
 import QuestionList from "../Questions/QuestionList"
 import QuestionListVoting from "../Questions/QuestionListVoting"
 import QuestionVoting from "../Questions/QuestionVoting"
@@ -73,6 +74,7 @@ const GameRoom = (props) => {
                                 Voir le récapitulatif de la partie
                         </Link> }  
                         <ChatRoom messages={messages} sendMessage={sendMessage}/>
+                        <ResponsesRoom questions={questions} responses={responses} />
                 </Col>
             </Row>
             <ToastContainer />

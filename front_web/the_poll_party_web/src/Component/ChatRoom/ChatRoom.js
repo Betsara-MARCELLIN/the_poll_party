@@ -20,7 +20,7 @@ const ChatRoom = (props) => {
   };
 
   return (<div>
-            <ToggleButton className="chat-room-toogle-button" value="bold" selected={checked} aria-label="bold" onChange={() => {setChecked(!checked);}}>
+            <ToggleButton className="chat-room-toogle-button" selected={checked} onChange={() => {setChecked(!checked);}}>
               <ChatIcon />
             </ToggleButton>
             <Fade in={checked}>
