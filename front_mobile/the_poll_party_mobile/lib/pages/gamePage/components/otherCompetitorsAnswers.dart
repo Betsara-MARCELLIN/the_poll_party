@@ -44,14 +44,16 @@ class OtherCompetitorsAnswers extends StatelessWidget {
                           height: 6,
                         ),
                         itemBuilder: (BuildContext context, int index) {
-                          if (othersResponses[index].type == "Photo") {
-                            return SizedBox(
-                              child: BorderedImage(
-                                  imageUrl: othersResponses[index].response),
-                            );
-                          } else {
-                            return BorderedText(
-                                text: '${othersResponses[index].response}');
+                          if (othersResponses[index].response.isNotEmpty) {
+                            if (othersResponses[index].type == "Photo") {
+                              return SizedBox(
+                                child: BorderedImage(
+                                    imageUrl: othersResponses[index].response),
+                              );
+                            } else {
+                              return BorderedText(
+                                  text: '${othersResponses[index].response}');
+                            }
                           }
                         },
                       )

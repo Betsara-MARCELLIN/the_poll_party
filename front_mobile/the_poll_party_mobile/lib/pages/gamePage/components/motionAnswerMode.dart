@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sensors/sensors.dart';
 import 'package:the_poll_party_mobile/components/myIconButton.dart';
+import 'package:the_poll_party_mobile/models/question.dart';
 import 'package:the_poll_party_mobile/models/response.dart';
 import 'package:the_poll_party_mobile/providers/socketConnectionProvider.dart';
 import 'package:the_poll_party_mobile/styles/Colors.dart';
@@ -23,6 +24,8 @@ class MotionAnswerMode extends StatefulWidget {
 
 class _MotionAnswerModeState extends State<MotionAnswerMode> {
   int cursorValue = 0;
+  bool isAnswersent = false;
+  Question actual;
 
   StreamSubscription<UserAccelerometerEvent> accel;
 
@@ -36,12 +39,23 @@ class _MotionAnswerModeState extends State<MotionAnswerMode> {
         });
       }
     });
+    actual = widget.socketProvider.getCurrentQuestion();
   }
 
   @override
   void dispose() {
+    print("dispose");
     accel.cancel();
+    if (!isAnswersent) {
+      print("No answer sent");
+      sendAnwser();
+    }
     super.dispose();
+  }
+
+  void sendAnwser() {
+    widget.socketProvider.sendAnswer(
+        new Response(actual.id, cursorValue.toString(), actual.type));
   }
 
   @override
@@ -72,17 +86,12 @@ class _MotionAnswerModeState extends State<MotionAnswerMode> {
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: MyIconButton(
-              callback: () => {
-                    Provider.of<SocketConnectionProvider>(context,
-                            listen: false)
-                        .sendAnswer(new Response(
-                            widget.socketProvider.getCurrentQuestion().id,
-                            cursorValue.toString(),
-                            widget.socketProvider.getCurrentQuestion().type)),
-                    Provider.of<SocketConnectionProvider>(context,
-                            listen: false)
-                        .waitQuestion()
-                  },
+              callback: () {
+                sendAnwser();
+                isAnswersent = true;
+                Provider.of<SocketConnectionProvider>(context, listen: false)
+                    .waitQuestion();
+              },
               text: 'Envoyer ma réponse',
               icon: Icons.check),
         ),

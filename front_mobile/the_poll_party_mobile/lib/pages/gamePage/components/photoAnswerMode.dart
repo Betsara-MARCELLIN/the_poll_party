@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:the_poll_party_mobile/components/myIconButton.dart';
+import 'package:the_poll_party_mobile/models/question.dart';
 import 'package:the_poll_party_mobile/models/response.dart';
 import 'package:the_poll_party_mobile/pages/gamePage/components/otherCompetitorsAnswers.dart';
 import 'package:the_poll_party_mobile/providers/socketConnectionProvider.dart';
@@ -27,6 +28,7 @@ class _PhotoAnswerModeState extends State<PhotoAnswerMode>
   Future<void> _initController;
   bool isCameraReady = false;
   bool isAnswerSent = false;
+  Question actual;
 
   //Firebase
   FirebaseStorage storage = FirebaseStorage.instance;
@@ -60,13 +62,22 @@ class _PhotoAnswerModeState extends State<PhotoAnswerMode>
   @override
   void initState() {
     super.initState();
+    actual = widget.socketProvider.getCurrentQuestion();
     _initializeCamera();
   }
 
   @override
   void dispose() {
+    if (!isAnswerSent) {
+      print("No answer sent");
+      sendAnwser(actual.id, "", actual.type);
+    }
     _controller.dispose();
     super.dispose();
+  }
+
+  void sendAnwser(int id, String url, String type) {
+    widget.socketProvider.sendAnswer(new Response(id, url, type));
   }
 
   @override
@@ -125,8 +136,7 @@ class _PhotoAnswerModeState extends State<PhotoAnswerMode>
                           print("Complete");
                           var downloadUrl = await ref.getDownloadURL();
                           print("IMAGE URL: " + downloadUrl);
-                          widget.socketProvider.sendAnswer(new Response(
-                              question.id, downloadUrl, question.type));
+                          sendAnwser(question.id, downloadUrl, question.type);
                           print("Provider send");
                         });
                         setState(() {
