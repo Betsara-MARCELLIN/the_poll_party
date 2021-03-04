@@ -14,12 +14,14 @@ class SocketConnectionProvider extends ChangeNotifier {
   List<Question> questions = [];
   Map<int, List<Response>> responses = new Map<int, List<Response>>();
   bool waitingNextQuestion = false;
+  bool gameStart = false;
 
   List<Public> get getPublics => publics;
   List<Competitor> get getCompetitors => competitors;
   List<Question> get getQuestions => questions;
   Map<int, List<Response>> get getResponses => responses;
   bool get getWaitingNextQuestion => waitingNextQuestion;
+  bool get getGameStart => gameStart;
 
   void waitQuestion() {
     waitingNextQuestion = true;
@@ -79,6 +81,7 @@ class SocketConnectionProvider extends ChangeNotifier {
       socket.on('ranking', (_) => _handleCompetitorRanking(_));
       socket.on('updateQuestionsOrder', (_) => _handleQuestionUpdate(_));
       socket.on('responses', (_) => _handleResponses(_));
+      socket.on('startCompetitorSide', (_) => _handleGameStart(_));
 
       // Join room
       _enterRoom(roomId, playerName);
@@ -111,17 +114,24 @@ class SocketConnectionProvider extends ChangeNotifier {
     socket.emit("responses", response.toJson());
   }
 
+  void _handleGameStart(bool data) {
+    print("BEGIN GAME FOR ALL");
+    print(data);
+    gameStart = data;
+    notifyListeners();
+  }
+
   // Listen to all question events from public
-  void _handleQuestions(List<dynamic> datas) {
+  void _handleQuestions(List<dynamic> data) {
     print("NEW QUESTION RECEIVED");
-    print(datas);
-    datas.forEach(
+    print(data);
+    data.forEach(
         (element) => {this.questions.add(new Question.fromJson(element))});
     print("Question length: ${questions.length}");
     notifyListeners();
   }
 
-  _handleQuestionUpdate(List<dynamic> datas) {
+  void _handleQuestionUpdate(List<dynamic> datas) {
     List<Question> questionsOrderUpdated = new List<Question>();
     datas.forEach((element) {
       Question q = Question.fromJson(element);

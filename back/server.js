@@ -34,6 +34,7 @@ const PARTY_CONNECTIONS = "partyConnections";
 const CLOSE_QUESTION = "closeQuestion";
 const CLOSE_GAME = "closeGame";
 const DATA_GAME = "dataGame";
+const START_COMPETITOR_SIDE = "startCompetitorSide";
 
 // PERSISTENCE
 const party = new Party();
@@ -125,6 +126,9 @@ io.on("connection", (socket) => {
 
                 if(party.getQuestionsOfRoom(roomId).length >= 10){
                     io.in(roomId).emit(CLOSE_QUESTION, true);
+
+                    // Send a start signal when enough question is Ready
+                    io.in(roomId).emit(START_COMPETITOR_SIDE, true);
                 }
             } else {
                 party.publics.forEach((public) => {

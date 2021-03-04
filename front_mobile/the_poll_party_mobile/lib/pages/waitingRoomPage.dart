@@ -15,29 +15,76 @@ class WaitingRoomPage extends StatefulWidget {
 }
 
 class _WaitingRoomPageState extends State<WaitingRoomPage> {
+  bool startGame;
+  String roomId;
+  String playerName;
+  int nbQuestions;
+
   @override
   void initState() {
     super.initState();
-    var roomId = Provider.of<RoomProvider>(context, listen: false).getRoomId;
-    var playerName =
+    roomId = Provider.of<RoomProvider>(context, listen: false).getRoomId;
+    playerName =
         Provider.of<RoomProvider>(context, listen: false).getPlayerName;
     Provider.of<SocketConnectionProvider>(context, listen: false)
         .connectToServer(roomId, playerName);
+    startGame = Provider.of<SocketConnectionProvider>(context, listen: false)
+        .getGameStart;
+    nbQuestions = Provider.of<SocketConnectionProvider>(context, listen: false)
+        .getQuestions
+        .length;
   }
 
   @override
   Widget build(BuildContext context) {
+    startGame = Provider.of<SocketConnectionProvider>(context, listen: true)
+        .getGameStart;
+    nbQuestions = Provider.of<SocketConnectionProvider>(context, listen: true)
+        .getQuestions
+        .length;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (startGame) {
+        Navigator.pushNamed(context, '/game');
+      }
+    });
+
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(16.0).copyWith(top: 45),
+              padding: const EdgeInsets.all(16.0),
               child: Text(
-                "Veuillez attendre les autres participants",
-                style: TextStyle(fontSize: titleTextSize, color: lightBlack),
+                "Salle $roomId",
+                style: TextStyle(
+                    fontSize: titleTextSize,
+                    color: lightBlack,
+                    fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
+            ),
+            Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: LinearProgressIndicator(
+                    backgroundColor: secondaryBisColor,
+                    valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
+                    value: nbQuestions / 10,
+                    minHeight: normalTextSize + 10,
+                  ),
+                ),
+                Text(
+                  "$nbQuestions/10 questions préparés",
+                  style: TextStyle(
+                      fontSize: normalTextSize,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
             WaitingPlayerHolder(
                 title: "Membres du public",
@@ -49,6 +96,7 @@ class _WaitingRoomPageState extends State<WaitingRoomPage> {
                 players:
                     Provider.of<SocketConnectionProvider>(context, listen: true)
                         .getCompetitors),
+            Spacer(),
             MyIconButton(
                 callback: () => {
                       Provider.of<SocketConnectionProvider>(context,
@@ -58,10 +106,14 @@ class _WaitingRoomPageState extends State<WaitingRoomPage> {
                     },
                 text: "Quitter",
                 icon: Icons.exit_to_app),
-            MyIconButton(
-                callback: () => {Navigator.pushNamed(context, '/game')},
-                text: "Jeux",
-                icon: Icons.play_arrow)
+            Spacer(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [Text("salle: $roomId"), Text("joueur: $playerName")],
+              ),
+            )
           ],
         ),
       ),
