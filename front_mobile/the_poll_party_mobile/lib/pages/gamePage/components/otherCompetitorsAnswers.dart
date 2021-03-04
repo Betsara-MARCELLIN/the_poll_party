@@ -17,7 +17,7 @@ class OtherCompetitorsAnswers extends StatelessWidget {
             .getCurrentQuestion()
             .id;
     List<Response> othersResponses =
-        Provider.of<SocketConnectionProvider>(context, listen: true)
+        Provider.of<SocketConnectionProvider>(context, listen: false)
             .getCurrentResponse(currentQuestionId);
 
     return Container(

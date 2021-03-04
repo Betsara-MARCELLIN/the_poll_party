@@ -39,7 +39,7 @@ class _WaitingRoomPageState extends State<WaitingRoomPage> {
   Widget build(BuildContext context) {
     startGame = Provider.of<SocketConnectionProvider>(context, listen: true)
         .getGameStart;
-    nbQuestions = Provider.of<SocketConnectionProvider>(context, listen: true)
+    nbQuestions = Provider.of<SocketConnectionProvider>(context, listen: false)
         .getQuestions
         .length;
 

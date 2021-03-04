@@ -78,7 +78,7 @@ class _GamePageState extends State<GamePage> {
   @override
   Widget build(BuildContext context) {
     var socketProvider =
-        Provider.of<SocketConnectionProvider>(context, listen: true);
+        Provider.of<SocketConnectionProvider>(context, listen: false);
     return Scaffold(
       body: SafeArea(
         child: Column(
