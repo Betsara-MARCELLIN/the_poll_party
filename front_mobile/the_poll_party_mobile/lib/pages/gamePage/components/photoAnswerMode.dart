@@ -68,10 +68,10 @@ class _PhotoAnswerModeState extends State<PhotoAnswerMode>
 
   @override
   void dispose() {
-    if (!isAnswerSent) {
-      print("No answer sent");
-      sendAnwser(actual.id, "", actual.type);
-    }
+    // if (!isAnswerSent) {
+    //   print("No answer sent");
+    //   sendAnwser(actual.id, "", actual.type);
+    // }
     _controller.dispose();
     super.dispose();
   }

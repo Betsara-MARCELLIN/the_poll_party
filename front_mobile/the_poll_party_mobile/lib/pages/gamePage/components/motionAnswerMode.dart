@@ -46,10 +46,10 @@ class _MotionAnswerModeState extends State<MotionAnswerMode> {
   void dispose() {
     print("dispose");
     accel.cancel();
-    if (!isAnswersent) {
-      print("No answer sent");
-      sendAnwser();
-    }
+    // if (!isAnswersent) {
+    //   print("No answer sent");
+    //   sendAnwser();
+    // }
     super.dispose();
   }
 

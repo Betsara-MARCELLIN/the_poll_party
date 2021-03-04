@@ -30,10 +30,10 @@ class _TextAnswerModeState extends State<TextAnswerMode> {
 
   @override
   void dispose() {
-    if (!isAnswersent) {
-      print("No answer sent");
-      sendAnwser();
-    }
+    // if (!isAnswersent) {
+    //   print("No answer sent");
+    //   sendAnwser();
+    // }
     super.dispose();
   }
 
