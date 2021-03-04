@@ -10,7 +10,7 @@ const QuestionForm = (props) => {
     const [formData, setFormData] = useState({
 		question: '',
 		reponses: '',
-        timer: '30',
+        timer: '',
 
 	});
     const handleChange = (newData) => { setFormData(newData); };

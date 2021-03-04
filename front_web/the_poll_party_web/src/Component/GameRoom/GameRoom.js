@@ -74,7 +74,7 @@ const GameRoom = (props) => {
                                 Voir le récapitulatif de la partie
                         </Link> }  
                         <ChatRoom messages={messages} sendMessage={sendMessage}/>
-                        <ResponsesRoom questions={questions} responses={responses} />
+                        <ResponsesRoom questions={questions}responses={responses} />
                 </Col>
             </Row>
             <ToastContainer />

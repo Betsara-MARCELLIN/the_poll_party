@@ -126,10 +126,12 @@ io.on("connection", (socket) => {
 
                 if(party.getQuestionsOfRoom(roomId).length >= 10){
                     io.in(roomId).emit(CLOSE_QUESTION, true);
-
+                }
+                if(party.getQuestionsOfRoom(roomId).length >= 1){
                     // Send a start signal when enough question is Ready
                     io.in(roomId).emit(START_COMPETITOR_SIDE, true);
                 }
+
             } else {
                 party.publics.forEach((public) => {
                     socket.broadcast   

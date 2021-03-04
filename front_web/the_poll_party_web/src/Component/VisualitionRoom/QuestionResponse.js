@@ -90,7 +90,7 @@ return(
                                                     <strong>{responses.name}</strong>
                                                 </CardHeader>
                                                 <CardBody>
-                                                    <img className="media" src={responses.response} alt={responses.name}/>
+                                                {responses.response? <img className="media" src={responses.response} alt={responses.name}/>: "Pas de réponse"}
                                                 </CardBody>
                                             </Card>
                                         </Col>
@@ -101,7 +101,7 @@ return(
                                                     <strong>{responses.name}</strong>
                                                 </CardHeader>
                                                 <CardBody>
-                                                    {responses.response}
+                                                    {responses.response? responses.response: "pas de réponse"}
                                                 </CardBody>
                                             </Card>
                                         </Col>

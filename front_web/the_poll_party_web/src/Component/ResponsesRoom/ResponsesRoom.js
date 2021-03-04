@@ -23,7 +23,7 @@ const ResponsesRoom = (props) => {
                 <div className="responses-list"> <br />
                   {responses.map((response, i) => (
                       <CardHeader color="info">
-                      {response.name} : {response.response}
+                      {response.name} : {response.response? response.response: "pas de réponse"}
                   </CardHeader>
                   ))}
                 </div>
