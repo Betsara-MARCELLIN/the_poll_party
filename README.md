@@ -25,7 +25,7 @@ npm run start
 ```
 
 ## Front Mobile
-# Running with local backend
+### Running with local backend
 
 I assumed you have already installed flutter and `flutter doctor` is ok on your machine
 
