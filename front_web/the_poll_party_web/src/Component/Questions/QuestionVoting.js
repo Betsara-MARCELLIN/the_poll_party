@@ -48,7 +48,7 @@ const QuestionVoting = (props) => {
         
         switch(questionsVoting[0].type_data){
             case "Question":
-                return <Row className="text-center">
+                return <Row className="text-center black">
                             <Col md="2"><h4>Type : <span>{questionsVoting[0].type}</span> </h4></Col>
                             <Col md="10"><h4>Réponse : <span>{questionsVoting[0].answer}</span></h4></Col>
                             

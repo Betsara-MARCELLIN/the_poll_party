@@ -43,4 +43,7 @@ hr{
     align-self:center;
     width: 50%;
     height: 50%;
-  }
+}
+.black {
+    color: black!important;
+}

@@ -60,6 +60,10 @@ module.exports = class Party {
     getCompetitorResponsesOfRoomForQuestionSortedByScore(roomId, questionID) {
         return this.getCompetitorResponsesOfRoomForQuestion(roomId, questionID).sort((a, b) => b.nbVote - a.nbVote );
     }
+    getCompetitorResponsesOfRoomForQuestionForCompitor(roomId, questionID, senderId) {
+        return this.getCompetitorResponsesOfRoomForQuestion(roomId, questionID).filter((q) => q.senderId === senderId);
+    }
+
 
     getOrderVoteCounter() {
         return this.orderVoteCounter;

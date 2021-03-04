@@ -13,7 +13,7 @@ class Question {
       : question = json['question'],
         answer = json['answer'],
         type = json['type'],
-        timer = int.parse(_isNumeric(json['timer']) ? json['timer'] : '30'),
+        timer = int.parse(_isNumeric(json['timer']) ? json['timer'] : '15'),
         isDisable = json['isDisable'],
         id = json['id'];
 
