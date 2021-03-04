@@ -14,7 +14,7 @@ const EventsTabs = (props) => {
 
     const renderer = () => {
         if(isClosedQuestion){
-            return <h4 className="text-center">Le maximum de question a été atteint.</h4>
+            return <h4 className="text-center black">Le maximum de question a été atteint.</h4>
         }
         return <QuestionForm sendQuestion={sendQuestion} />
       };

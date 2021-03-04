@@ -42,7 +42,7 @@ const QuestionVoting = (props) => {
 
     const displayBody= ()=>{
         if(questionsVoting[0] == null){
-            return <h4 className="text-center">En attente d'évènement</h4>
+            return <h4 className="text-center black">En attente d'évènement</h4>
         }
 
         
@@ -153,8 +153,8 @@ const QuestionVoting = (props) => {
                                                         <CardHeader color="success">
                                                             {question.question}
                                                         </CardHeader>
-                                                        <CardBody>
-                                                            <Row>
+                                                        <CardBody >
+                                                            <Row className="black">
                                                                 <Col md="2">
                                                                     {question.type}
                                                                 </Col>
